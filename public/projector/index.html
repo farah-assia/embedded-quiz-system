@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Projector Screen | κουίζυ</title>
+    <!-- Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        :root {
+            --bg-stage: #070c14;
+            --surface-dark: #0f172a;
+            --surface-card: #152238;
+            --surface-elevated: #1e2e4a;
+            --navy-primary: #153247;
+            --gold-primary: #f5c242;
+            --gold-light: #fef08a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-subtle: rgba(255, 255, 255, 0.09);
+            --border-highlight: rgba(245, 194, 66, 0.45);
+            --color-a: #ef4444;
+            --color-b: #3b82f6;
+            --color-c: #f59e0b;
+            --color-d: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-stage);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(245, 194, 66, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.6) 0%, transparent 75%);
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* ----------------- CINEMATIC TOP NAV ----------------- */
+        .projector-nav {
+            padding: 0.85rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(7, 12, 20, 0.92);
+            backdrop-filter: blur(16px);
+            z-index: 20;
+            flex-shrink: 0;
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .brand-name {
+            font-size: 1.85rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .brand-name span {
+            color: var(--gold-primary);
+        }
+
+        .pi-badge {
+            background: rgba(245, 194, 66, 0.12);
+            border: 1px solid rgba(245, 194, 66, 0.35);
+            color: var(--gold-light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            letter-spacing: 0.02em;
+        }
+
+        .pi-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .network-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .network-pill {
+            background: var(--surface-dark);
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulseDot 2s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-ctrl {
+            background: var(--surface-dark);
+            border: 1px solid var(--border-subtle);
+            color: #e2e8f0;
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .btn-ctrl:hover {
+            background: var(--surface-card);
+            border-color: var(--gold-primary);
+            color: #ffffff;
+        }
+
+        /* ----------------- MAIN VIEW AREA ----------------- */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 1.5rem 3rem 6rem;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .view-section {
+            display: none;
+            width: 100%;
+            max-width: 1380px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .view-section.active {
+            display: flex;
+        }
+
+        @keyframes viewFadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ================= 1. CINEMATIC LOBBY VIEW ================= */
+        .lobby-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .lobby-header {
+            text-align: center;
+        }
+
+        .lobby-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lobby-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 720px;
+            font-weight: 500;
+        }
+
+        .lobby-cards-row {
+            display: flex;
+            gap: 2rem;
+            align-items: stretch;
+            justify-content: center;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* Framed QR Code Stage */
+        .qr-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 2.25rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--surface-dark);
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.65), 0 0 0 2px rgba(245, 194, 66, 0.5);
+            position: relative;
+            min-width: 320px;
+        }
+
+        .qr-card-tag {
+            position: absolute;
+            top: -14px;
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            font-weight: 800;
+            font-size: 0.78rem;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .qr-frame {
+            width: 230px;
+            height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .qr-frame svg, .qr-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .qr-caption {
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--navy-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .qr-url-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        /* Instructions Card */
+        .instructions-card {
+            flex: 1;
+            background: var(--surface-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 28px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .step-num {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(245, 194, 66, 0.12);
+            border: 2px solid var(--gold-primary);
+            color: var(--gold-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .step-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            color: var(--gold-light);
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Lobby Roster */
+        .roster-area {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px dashed var(--border-subtle);
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .roster-count {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+
+        .roster-count strong {
+            font-size: 2.2rem;
+            color: #10b981;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 900;
+        }
+
+        .students-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            max-height: 180px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .student-chip {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            padding: 0.55rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .student-chip .chip-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold-primary);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ================= 2. CINEMA STAGE QUESTION VIEW ================= */
+        .question-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .q-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 0.75rem 1.75rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .q-meta-badge {
+            background: rgba(245, 194, 66, 0.12);
+            border: 1px solid rgba(245, 194, 66, 0.35);
+            color: var(--gold-primary);
+            padding: 0.45rem 1.25rem;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* Circular Radial Timer */
+        .timer-container {
+            position: relative;
+            width: 84px;
+            height: 84px;
+        }
+
+        .timer-svg {
+            transform: rotate(-90deg);
+            width: 84px;
+            height: 84px;
+        }
+
+        .timer-bg-circle {
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 7;
+            fill: var(--surface-dark);
+        }
+
+        .timer-bar-circle {
+            stroke: var(--gold-primary);
+            stroke-width: 7;
+            stroke-linecap: round;
+            fill: none;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+        }
+
+        .timer-number {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.95rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        .timer-container.warning .timer-bar-circle { stroke: #f59e0b; }
+        .timer-container.warning .timer-number { color: #f59e0b; }
+
+        .timer-container.danger .timer-bar-circle { stroke: #ef4444; }
+        .timer-container.danger .timer-number {
+            color: #ef4444;
+            animation: pulseTimer 0.6s infinite;
+        }
+
+        @keyframes pulseTimer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Submissions Tracker */
+        .submission-tracker {
+            background: var(--surface-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 0.6rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            min-width: 230px;
+        }
+
+        .tracker-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .tracker-bar-bg {
+            height: 9px;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 9999px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .tracker-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981, var(--gold-primary));
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+
+        /* Stage Question Card */
+        .q-body-card {
+            background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-dark) 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 1.75rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        .q-text-large {
+            font-size: 2.1rem;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        /* High-Impact 2x2 Option Tiles */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .opt-card {
+            border-radius: 22px;
+            padding: 1.75rem 2.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .opt-card.opt-a { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .opt-card.opt-b { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .opt-card.opt-c { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .opt-card.opt-d { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .opt-main-content {
+            display: flex;
+            align-items: center;
+            gap: 1.35rem;
+            z-index: 2;
+        }
+
+        .opt-letter-badge {
+            width: 54px;
+            height: 54px;
+            background: rgba(0, 0, 0, 0.28);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.95rem;
+            font-weight: 900;
+            color: #ffffff;
+            flex-shrink: 0;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.15);
+        }
+
+        .opt-label-text {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #ffffff;
+            flex: 1;
+            line-height: 1.3;
+        }
+
+        .opt-reveal-badge {
+            display: none;
+            font-size: 1.1rem;
+            font-weight: 800;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Distribution bar inside option */
+        .opt-dist-container {
+            display: none;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-top: 0.4rem;
+            z-index: 2;
+        }
+
+        .opt-dist-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .opt-dist-track {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 9999px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .opt-dist-bar {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            border-radius: 9999px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Option Card Revealed States */
+        .opt-card.correct-answer {
+            border-color: #ffffff;
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.9);
+            transform: scale(1.02);
+        }
+
+        .opt-card.correct-answer .opt-reveal-badge {
+            display: inline-block;
+            background: #ffffff;
+            color: #047857;
+        }
+
+        .opt-card.incorrect-dimmed {
+            opacity: 0.3;
+            transform: scale(0.98);
+            filter: grayscale(40%);
+        }
+
+        .opt-card.incorrect-dimmed .opt-reveal-badge {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fca5a5;
+        }
+
+        /* AI Semantic Concept Clusters Board */
+        #ai-clusters-board {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* ================= 3. OLYMPIC PODIUM VIEW ================= */
+        .podium-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .podium-header {
+            text-align: center;
+        }
+
+        .podium-title {
+            font-size: 3.4rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--gold-primary);
+            text-shadow: 0 0 40px rgba(245, 194, 66, 0.4);
+            margin-bottom: 0.4rem;
+        }
+
+        .podium-sub {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .podium-stage {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2.25rem;
+            width: 100%;
+            max-width: 950px;
+            height: 400px;
+            margin-top: 1rem;
+        }
+
+        .podium-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .podium-avatar-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .avatar-circle {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 0.6rem;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .avatar-crown {
+            position: absolute;
+            top: -26px;
+        }
+
+        .podium-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-align: center;
+            max-width: 240px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .podium-score {
+            font-size: 1.15rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            color: var(--gold-light);
+        }
+
+        .pedestal-block {
+            width: 100%;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 1.5rem;
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.3), 0 25px 50px rgba(0, 0, 0, 0.6);
+            animation: risePedestal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+        }
+
+        .pedestal-rank-num {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.04em;
+        }
+
+        .pedestal-rank-label {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 0.25rem;
+        }
+
+        /* Gold 1st Place (Center) */
+        .podium-col-1 .pedestal-block {
+            height: 250px;
+            background: linear-gradient(180deg, #f5c242 0%, #d97706 100%);
+            border-top: 3px solid #fef08a;
+        }
+        .podium-col-1 .avatar-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #fef08a, #f5c242);
+            color: #78350f;
+            border: 4px solid #ffffff;
+        }
+
+        /* Silver 2nd Place (Left) */
+        .podium-col-2 .pedestal-block {
+            height: 185px;
+            background: linear-gradient(180deg, #94a3b8 0%, #475569 100%);
+            border-top: 3px solid #cbd5e1;
+        }
+        .podium-col-2 .avatar-circle {
+            background: linear-gradient(135deg, #f1f5f9, #94a3b8);
+            color: #1e293b;
+            border: 3px solid #ffffff;
+        }
+
+        /* Bronze 3rd Place (Right) */
+        .podium-col-3 .pedestal-block {
+            height: 140px;
+            background: linear-gradient(180deg, #b45309 0%, #78350f 100%);
+            border-top: 3px solid #fde68a;
+        }
+        .podium-col-3 .avatar-circle {
+            background: linear-gradient(135deg, #fde68a, #b45309);
+            color: #ffffff;
+            border: 3px solid #ffffff;
+        }
+
+        @keyframes risePedestal {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .runners-up-row {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            max-width: 950px;
+            justify-content: center;
+        }
+
+        .runner-card {
+            flex: 1;
+            background: var(--surface-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .runner-rank {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .runner-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .runner-score {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ----------------- DISCREET PRESENTER DOCK ----------------- */
+        .presenter-bar {
+            position: fixed;
+            bottom: 1.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            padding: 0.45rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            z-index: 100;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+        }
+
+        .presenter-bar.minimized {
+            transform: translateX(-50%) translateY(calc(100% - 22px));
+            opacity: 0.65;
+        }
+
+        .presenter-bar.minimized:hover {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .presenter-toggle-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+        }
+
+        .presenter-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .presenter-btn {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+            padding: 0.45rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .presenter-btn:hover {
+            background: var(--gold-primary);
+            color: var(--bg-stage);
+            border-color: var(--gold-primary);
+        }
+
+        .presenter-btn.accent {
+            background: var(--gold-primary);
+            color: var(--bg-stage);
+            border-color: var(--gold-primary);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- CINEMATIC TOP NAVIGATION -->
+    <nav class="projector-nav">
+        <div class="brand-group">
+            <div class="brand-logo">
+                <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+                    <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/>
+                    <path d="M25 45V65C25 76 50 82 50 82C50 82 75 76 75 65V45" stroke="#f5c242" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M85 36V70" stroke="#f5c242" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="85" cy="72" r="4" fill="#f5c242"/>
+                </svg>
+                <div class="brand-name">κουίζυ<span>.</span></div>
+            </div>
+            <div class="pi-badge">
+                <span class="pi-dot"></span>
+                <span>Raspberry Pi HDMI Output</span>
+            </div>
+        </div>
+
+        <div class="network-bar">
+            <div class="network-pill">
+                <span class="status-dot"></span>
+                <span>AP: <strong>κουίζυ-Offline</strong></span>
+            </div>
+            <div class="network-pill">
+                <span>URL: <strong id="display-host-url">http://quiz.local:7000/student</strong></span>
+            </div>
+            <div class="network-pill" id="net-telemetry-pill" title="Classroom Wi-Fi Network Telemetry">
+                <span class="status-dot" id="net-telemetry-dot" style="background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+                <span>Telemetry: <strong id="net-telemetry-count">0 connected</strong></span>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button type="button" class="btn-ctrl" id="btn-sound" onclick="toggleSound()">
+                <svg id="sound-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <span id="sound-label">Audio On</span>
+            </button>
+            <button type="button" class="btn-ctrl" onclick="toggleFullScreen()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                <span>Fullscreen</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main>
+        <!-- ================= 1. LOBBY VIEW ================= -->
+        <section id="view-lobby" class="view-section active">
+            <div class="lobby-container">
+                <div class="lobby-header">
+                    <h1 class="lobby-title">Classroom Evaluation Session</h1>
+                    <p class="lobby-subtitle">Connect your smartphone to join the evaluation room and answer live questions.</p>
+                </div>
+
+                <div class="lobby-cards-row">
+                    <!-- QR Code Card -->
+                    <div class="qr-card">
+                        <span class="qr-card-tag">Scan with Phone</span>
+                        <div class="qr-frame" id="qr-code-container">
+                            <div style="font-size:0.9rem; color:#64748b;">Loading QR Code...</div>
+                        </div>
+                        <div class="qr-caption">Instant Camera Join</div>
+                        <div class="qr-url-sub" id="qr-direct-link">http://...</div>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="instructions-card">
+                        <div class="step-item">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h3>Connect to Classroom Wi-Fi</h3>
+                                <p>Select the Wi-Fi network <code>κουίζυ-Offline</code> on your device (no password).</p>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h3>Scan QR or Open Browser</h3>
+                                <p>Scan the code on screen or navigate to <code id="instruction-url">http://quiz.local:7000/student</code>.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h3>Enter Your Name & Ready!</h3>
+                                <p>Sign in with your university student profile to register attendance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Connected Roster -->
+                <div class="roster-area">
+                    <div class="roster-count">
+                        Connected Students: <strong id="lobby-count">0</strong>
+                    </div>
+                    <div class="students-flex" id="lobby-roster">
+                        <div class="student-chip">
+                            <span class="chip-dot"></span>
+                            <span>Waiting for students to join...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 2. QUESTION VIEW ================= -->
+        <section id="view-question" class="view-section">
+            <div class="question-wrapper">
+                <div class="q-top-bar">
+                    <div class="q-meta-badge" id="q-counter-badge">Question 01 / 05</div>
+
+                    <!-- Circular Radial Timer -->
+                    <div class="timer-container" id="timer-wrapper">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg-circle" cx="50" cy="50" r="45"></circle>
+                            <circle class="timer-bar-circle" id="timer-stroke" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="timer-number" id="timer-digits">30</div>
+                    </div>
+
+                    <!-- Submissions Tracker -->
+                    <div class="submission-tracker">
+                        <div class="tracker-label-row">
+                            <span>Submissions:</span>
+                            <strong id="submission-text">0 / 0</strong>
+                        </div>
+                        <div class="tracker-bar-bg">
+                            <div class="tracker-bar-fill" id="submission-progress"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Question Text Card -->
+                <div class="q-body-card">
+                    <h2 class="q-text-large" id="q-headline">Loading question...</h2>
+                </div>
+
+                <!-- High-Impact 2x2 Options Grid -->
+                <div class="options-grid" id="options-grid">
+                    <div class="opt-card opt-a" id="opt-card-0">
+                        <div class="opt-main-content">
+                            <div class="opt-letter-badge">A</div>
+                            <div class="opt-label-text" id="opt-text-0">Option A</div>
+                            <span class="opt-reveal-badge" id="opt-badge-0">Correct</span>
+                        </div>
+                        <div class="opt-dist-container" id="opt-dist-0">
+                            <div class="opt-dist-header">
+                                <span id="dist-count-0">0 students</span>
+                                <span id="dist-pct-0">0%</span>
+                            </div>
+                            <div class="opt-dist-track">
+                                <div class="opt-dist-bar" id="dist-bar-0"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="opt-card opt-b" id="opt-card-1">
+                        <div class="opt-main-content">
+                            <div class="opt-letter-badge">B</div>
+                            <div class="opt-label-text" id="opt-text-1">Option B</div>
+                            <span class="opt-reveal-badge" id="opt-badge-1">Correct</span>
+                        </div>
+                        <div class="opt-dist-container" id="opt-dist-1">
+                            <div class="opt-dist-header">
+                                <span id="dist-count-1">0 students</span>
+                                <span id="dist-pct-1">0%</span>
+                            </div>
+                            <div class="opt-dist-track">
+                                <div class="opt-dist-bar" id="dist-bar-1"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="opt-card opt-c" id="opt-card-2">
+                        <div class="opt-main-content">
+                            <div class="opt-letter-badge">C</div>
+                            <div class="opt-label-text" id="opt-text-2">Option C</div>
+                            <span class="opt-reveal-badge" id="opt-badge-2">Correct</span>
+                        </div>
+                        <div class="opt-dist-container" id="opt-dist-2">
+                            <div class="opt-dist-header">
+                                <span id="dist-count-2">0 students</span>
+                                <span id="dist-pct-2">0%</span>
+                            </div>
+                            <div class="opt-dist-track">
+                                <div class="opt-dist-bar" id="dist-bar-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="opt-card opt-d" id="opt-card-3">
+                        <div class="opt-main-content">
+                            <div class="opt-letter-badge">D</div>
+                            <div class="opt-label-text" id="opt-text-3">Option D</div>
+                            <span class="opt-reveal-badge" id="opt-badge-3">Correct</span>
+                        </div>
+                        <div class="opt-dist-container" id="opt-dist-3">
+                            <div class="opt-dist-header">
+                                <span id="dist-count-3">0 students</span>
+                                <span id="dist-pct-3">0%</span>
+                            </div>
+                            <div class="opt-dist-track">
+                                <div class="opt-dist-bar" id="dist-bar-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Semantic Concept Clusters Board (for short_answer questions) -->
+                <div id="ai-clusters-board">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.8); border: 1px solid var(--border-subtle); padding: 0.85rem 1.5rem; border-radius: 16px;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 38px; height: 38px; border-radius: 10px; background: #4f46e5; color: white; display: flex; align-items: center; justify-content: center;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0;">AI Semantic Concept Clusters</h3>
+                                <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time offline NLP clustering of student written explanations</span>
+                            </div>
+                        </div>
+                        <div id="ai-cluster-status" style="background: rgba(99, 102, 241, 0.2); border: 1px solid #6366f1; color: #a5b4fc; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 800; font-size: 0.82rem;">
+                            Edge NLP Active
+                        </div>
+                    </div>
+
+                    <!-- 3 Dynamic Cluster Cards -->
+                    <div id="ai-clusters-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    </div>
+
+                    <!-- Technical Keywords Cloud -->
+                    <div style="background: var(--surface-dark); border: 1px solid var(--border-subtle); border-radius: 18px; padding: 1rem 1.5rem;">
+                        <span style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; display: block; margin-bottom: 0.6rem;">
+                            Concept Keyterms Across Class:
+                        </span>
+                        <div id="ai-keywords-cloud" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. PODIUM & LEADERBOARD VIEW ================= -->
+        <section id="view-podium" class="view-section">
+            <div class="podium-section">
+                <div class="podium-header">
+                    <h1 class="podium-title">Classroom Performance Podium</h1>
+                    <p class="podium-sub">Top student performers ranked by score accuracy and response time.</p>
+                </div>
+
+                <!-- 3D Olympic Podium Pedestals -->
+                <div class="podium-stage">
+                    <!-- 2nd Place (Silver) -->
+                    <div class="podium-column podium-col-2">
+                        <div class="podium-avatar-card">
+                            <div class="avatar-circle" id="podium-avatar-2">K</div>
+                            <div class="podium-name" id="podium-name-2">Karim Benali</div>
+                            <div class="podium-score" id="podium-score-2">18.0 / 20</div>
+                        </div>
+                        <div class="pedestal-block">
+                            <div class="pedestal-rank-num">2</div>
+                            <div class="pedestal-rank-label">Silver</div>
+                        </div>
+                    </div>
+
+                    <!-- 1st Place (Gold) -->
+                    <div class="podium-column podium-col-1">
+                        <div class="podium-avatar-card">
+                            <span class="avatar-crown"><svg width="32" height="32" viewBox="0 0 24 24" fill="#f5c242" stroke="#d97706" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+                            <div class="avatar-circle" id="podium-avatar-1">Y</div>
+                            <div class="podium-name" id="podium-name-1">Yasmine Halag</div>
+                            <div class="podium-score" id="podium-score-1">19.5 / 20</div>
+                        </div>
+                        <div class="pedestal-block">
+                            <div class="pedestal-rank-num">1</div>
+                            <div class="pedestal-rank-label">Gold Winner</div>
+                        </div>
+                    </div>
+
+                    <!-- 3rd Place (Bronze) -->
+                    <div class="podium-column podium-col-3">
+                        <div class="podium-avatar-card">
+                            <div class="avatar-circle" id="podium-avatar-3">A</div>
+                            <div class="podium-name" id="podium-name-3">Amina Saidi</div>
+                            <div class="podium-score" id="podium-score-3">16.5 / 20</div>
+                        </div>
+                        <div class="pedestal-block">
+                            <div class="pedestal-rank-num">3</div>
+                            <div class="pedestal-rank-label">Bronze</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Runners up (4th & 5th) -->
+                <div class="runners-up-row" id="runners-up-container">
+                    <div class="runner-card">
+                        <span class="runner-rank">#4</span>
+                        <span class="runner-name">Mehdi Touati</span>
+                        <span class="runner-score">15.0 / 20</span>
+                    </div>
+                    <div class="runner-card">
+                        <span class="runner-rank">#5</span>
+                        <span class="runner-name">Sara Bouzid</span>
+                        <span class="runner-score">14.0 / 20</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DISCREET PRESENTER TOOLBAR -->
+    <div class="presenter-bar" id="presenter-toolbar">
+        <button type="button" class="presenter-toggle-btn" id="btn-toggle-presenter" onclick="togglePresenterBar()" title="Hide / Show Controls (Shortcut: H)">
+            <span id="toggle-icon">▼</span> Hide
+        </button>
+        <button type="button" class="presenter-btn" onclick="switchView('view-lobby')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Lobby
+        </button>
+        <button type="button" class="presenter-btn accent" onclick="triggerNextDemoQuestion()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Next Question
+        </button>
+        <button type="button" class="presenter-btn" onclick="triggerAnswerReveal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15 2a6 6 0 0 0-6 6c0 2 1.5 3.5 2 5h2c.5-1.5 2-3 2-5a6 6 0 0 0-2-6z"></path></svg>
+            Reveal Answer
+        </button>
+        <button type="button" class="presenter-btn" onclick="triggerPodiumReveal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Show Podium
+        </button>
+        <button type="button" class="presenter-btn" onclick="simulateStudentJoin()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+            Add Demo Student
+        </button>
+        <button type="button" class="presenter-btn" style="background: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #c7d2fe;" onclick="triggerAiShortAnswerDemo()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            AI Question Demo
+        </button>
+    </div>
+
+    <script>
+        // ================= STATE & SOCKET INITIALIZATION =================
+        const socket = io();
+        let currentQuizId = 1;
+        let countdownTimer = null;
+        let timeLeft = 30;
+        let totalDuration = 30;
+        let soundEnabled = true;
+        let currentQuestionData = null;
+        let audioCtx = null;
+
+        // Auto join projector room
+        socket.emit('quiz:join', { quizId: currentQuizId, role: 'projector', name: 'HDMI Screen' });
+
+        // Update URLs on screen
+        const studentURL = `${window.location.protocol}//${window.location.host}/student`;
+        document.getElementById('display-host-url').textContent = studentURL;
+        document.getElementById('instruction-url').textContent = studentURL;
+        document.getElementById('qr-direct-link').textContent = studentURL;
+
+        // Load Dynamic SVG QR Code
+        fetch(`/api/qr?text=${encodeURIComponent(studentURL)}&width=230`)
+            .then(res => res.text())
+            .then(svgText => {
+                if (svgText && svgText.includes('<svg')) {
+                    document.getElementById('qr-code-container').innerHTML = svgText;
+                }
+            })
+            .catch(() => {
+                document.getElementById('qr-code-container').innerHTML = '<div style="font-weight:700; color:#153247;">Connect Wi-Fi & Open<br><b>/student</b></div>';
+            });
+
+        // ================= WEB AUDIO SYNTHESIZER =================
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+        }
+
+        function playTick() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {}
+        }
+
+        function playRevealChime() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+                [523.25, 659.25, 783.99].forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.35);
+                });
+            } catch (e) {}
+        }
+
+        function playVictoryFanfare() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+                const notes = [
+                    { f: 523.25, d: 0.15 }, // C5
+                    { f: 659.25, d: 0.15 }, // E5
+                    { f: 783.99, d: 0.15 }, // G5
+                    { f: 1046.50, d: 0.6 }  // C6
+                ];
+                let t = now;
+                notes.forEach(n => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(n.f, t);
+                    gain.gain.setValueAtTime(0.12, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + n.d);
+                    t += n.d;
+                });
+            } catch (e) {}
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const svg = document.getElementById('sound-svg');
+            if (svg) {
+                svg.innerHTML = soundEnabled 
+                    ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>'
+                    : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+            }
+            document.getElementById('sound-label').textContent = soundEnabled ? 'Audio On' : 'Audio Muted';
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // ================= VIEW SWITCHER =================
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // ================= WEBSOCKET LISTENERS =================
+        // 1. Student Roster Update
+        socket.on('quiz:participants_update', (data) => {
+            document.getElementById('lobby-count').textContent = data.count || 0;
+            const roster = document.getElementById('lobby-roster');
+            roster.innerHTML = '';
+            const students = data.participants || [];
+            if (students.length === 0) {
+                roster.innerHTML = '<div class="student-chip"><span class="chip-dot"></span><span>Waiting for students to join...</span></div>';
+            } else {
+                students.forEach(p => {
+                    const chip = document.createElement('div');
+                    chip.className = 'student-chip';
+                    chip.innerHTML = `<span class="chip-dot"></span><span>${p.name || p.email}</span>`;
+                    roster.appendChild(chip);
+                });
+            }
+        });
+
+        // 2. Question Activated
+        socket.on('quiz:question_active', (data) => {
+            renderQuestion(data);
+        });
+
+        function renderQuestion(data) {
+            switchView('view-question');
+            currentQuestionData = data;
+            document.getElementById('q-counter-badge').textContent = `Question ${data.index + 1} / ${data.total || 5}`;
+            document.getElementById('q-headline').textContent = data.question.question_text || data.question.text;
+
+            // Reset Submissions
+            document.getElementById('submission-text').textContent = '0 / 0';
+            document.getElementById('submission-progress').style.width = '0%';
+
+            const isShortAnswer = data.question.type === 'short_answer';
+            const board = document.getElementById('ai-clusters-board');
+            const optGrid = document.getElementById('options-grid');
+
+            if (isShortAnswer) {
+                if (board) board.style.display = 'flex';
+                if (optGrid) optGrid.style.display = 'none';
+                renderAiSemanticClusters(data);
+            } else {
+                if (board) board.style.display = 'none';
+                if (optGrid) optGrid.style.display = 'grid';
+
+                const opts = data.question.options || data.question.answers || [];
+                for (let i = 0; i < 4; i++) {
+                    const card = document.getElementById(`opt-card-${i}`);
+                    const text = document.getElementById(`opt-text-${i}`);
+                    const badge = document.getElementById(`opt-badge-${i}`);
+                    const distBox = document.getElementById(`opt-dist-${i}`);
+                    const distBar = document.getElementById(`dist-bar-${i}`);
+
+                    if (i < opts.length) {
+                        card.style.display = 'flex';
+                        card.classList.remove('correct-answer', 'incorrect-dimmed');
+                        text.textContent = opts[i].answer_text || opts[i].text || opts[i];
+                        badge.style.display = 'none';
+                        distBox.style.display = 'none';
+                        distBar.style.width = '0%';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            }
+
+            startTimer(data.durationSeconds || 30);
+        }
+
+        // Real-time Semantic Clustering update
+        socket.on('quiz:semantic_clusters_update', (data) => {
+            renderAiSemanticClusters(data);
+        });
+
+        function renderAiSemanticClusters(data) {
+            const board = document.getElementById('ai-clusters-board');
+            if (board) board.style.display = 'flex';
+            const optGrid = document.getElementById('options-grid');
+            if (optGrid) optGrid.style.display = 'none';
+
+            if (data && data.totalAnswers !== undefined) {
+                const count = data.totalAnswers;
+                const total = data.totalStudents || Math.max(1, count);
+                const pct = Math.min(100, Math.round((count / total) * 100));
+                document.getElementById('submission-text').textContent = `${count} / ${total} (${pct}%)`;
+                document.getElementById('submission-progress').style.width = `${pct}%`;
+            }
+
+            const container = document.getElementById('ai-clusters-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const clusters = (data && data.clusters && data.clusters.length > 0) ? data.clusters : [
+                {
+                    id: 'mastery',
+                    label: 'Accurate Conceptual Definition (Mastery)',
+                    color: '#10b981',
+                    count: 15,
+                    percentage: 65,
+                    exemplar: 'A pointer is a variable holding the memory address of another variable in RAM.',
+                    topWords: ['memory', 'address', 'variable', 'points'],
+                    studentNames: ['Amine', 'Yasmine', 'Lina', 'Karim']
+                },
+                {
+                    id: 'misconception',
+                    label: 'Concept Confusion (Value vs Address)',
+                    color: '#f59e0b',
+                    count: 5,
+                    percentage: 22,
+                    exemplar: 'A pointer stores the direct integer value of an object.',
+                    topWords: ['value', 'integer', 'object', 'data'],
+                    studentNames: ['Sara', 'Mehdi']
+                },
+                {
+                    id: 'incomplete',
+                    label: 'Incomplete / Off-Topic Answers',
+                    color: '#ef4444',
+                    count: 3,
+                    percentage: 13,
+                    exemplar: 'It is a loop function in C.',
+                    topWords: ['function', 'code', 'c'],
+                    studentNames: ['Rayan']
+                }
+            ];
+
+            clusters.forEach(c => {
+                const card = document.createElement('div');
+                card.style.cssText = `
+                    background: var(--surface-dark);
+                    border: 2px solid ${c.color};
+                    border-radius: 18px;
+                    padding: 1.15rem 1.25rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.65rem;
+                    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+                `;
+
+                const wordsPills = (c.topWords || []).map(w => `<span style="background:rgba(255,255,255,0.08);color:#cbd5e1;padding:0.18rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:700;">#${w}</span>`).join(' ');
+
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+                        <strong style="color: #ffffff; font-size: 1rem; font-weight: 800; line-height: 1.3;">${c.label}</strong>
+                        <span style="background: ${c.color}; color: #070c14; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 900; font-size: 0.85rem; flex-shrink: 0;">
+                            ${c.percentage}%
+                        </span>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div style="height: 8px; background: rgba(0,0,0,0.5); border-radius: 9999px; overflow: hidden; width: 100%;">
+                        <div style="height: 100%; width: ${c.percentage}%; background: ${c.color}; border-radius: 9999px; transition: width 0.5s ease;"></div>
+                    </div>
+
+                    <div style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">
+                        ${c.count} students in this cluster
+                    </div>
+
+                    <!-- Exemplar quote box -->
+                    <div style="background: rgba(0,0,0,0.35); border-left: 3px solid ${c.color}; border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.84rem; color: #e2e8f0; font-style: italic; line-height: 1.4;">
+                        "${c.exemplar}"
+                    </div>
+
+                    <!-- Top keywords -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto;">
+                        ${wordsPills}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Keywords Cloud
+            const keywordsWrap = document.getElementById('ai-keywords-cloud');
+            if (keywordsWrap) {
+                keywordsWrap.innerHTML = '';
+                const defaultKw = [
+                    { word: 'memory address', count: 18 },
+                    { word: 'variable', count: 16 },
+                    { word: 'reference', count: 12 },
+                    { word: 'RAM', count: 10 },
+                    { word: 'pointer', count: 20 },
+                    { word: 'location', count: 8 },
+                    { word: 'hexadecimal', count: 6 },
+                    { word: 'dereference', count: 5 }
+                ];
+                const list = (data && data.topKeywords && data.topKeywords.length > 0) ? data.topKeywords : defaultKw;
+                list.forEach(k => {
+                    const tag = document.createElement('span');
+                    tag.style.cssText = `
+                        background: rgba(245, 194, 66, 0.12);
+                        border: 1px solid rgba(245, 194, 66, 0.35);
+                        color: var(--gold-light);
+                        padding: 0.35rem 0.85rem;
+                        border-radius: 9999px;
+                        font-size: 0.85rem;
+                        font-weight: 700;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.45rem;
+                    `;
+                    tag.innerHTML = `<span>${k.word || k}</span><span style="font-size:0.72rem;opacity:0.85;background:rgba(255,255,255,0.2);padding:0.1rem 0.4rem;border-radius:9999px;">${k.count || 1}</span>`;
+                    keywordsWrap.appendChild(tag);
+                });
+            }
+        }
+
+        function triggerAiShortAnswerDemo() {
+            const aiQuestionData = {
+                index: 4,
+                total: 5,
+                durationSeconds: 45,
+                question: {
+                    type: 'short_answer',
+                    text: 'Explain what a pointer is in C/C++, and how it relates to physical computer memory.',
+                    referenceAnswer: 'A pointer is a variable that stores the memory address of another variable or object rather than holding a direct value.',
+                    keyConcepts: ['pointer', 'memory address', 'variable', 'reference', 'location']
+                }
+            };
+            renderQuestion(aiQuestionData);
+            renderAiSemanticClusters({ totalAnswers: 23, totalStudents: 25 });
+        }
+
+        // 3. Real-time Submission Counter
+        socket.on('quiz:submission_count', (data) => {
+            const count = data.submittedCount || 0;
+            const total = data.totalStudents || 1;
+            const pct = Math.min(100, Math.round((count / total) * 100));
+
+            document.getElementById('submission-text').textContent = `${count} / ${total} (${pct}%)`;
+            document.getElementById('submission-progress').style.width = `${pct}%`;
+        });
+
+        // 3b. Network Telemetry Listener
+        socket.on('quiz:network_telemetry', (data) => {
+            const count = data.connectedClients || 0;
+            const countEl = document.getElementById('net-telemetry-count');
+            const dotEl = document.getElementById('net-telemetry-dot');
+            if (countEl) countEl.textContent = `${count} connected`;
+            if (dotEl) {
+                dotEl.style.background = count > 0 ? '#10b981' : '#f59e0b';
+                dotEl.style.boxShadow = count > 0 ? '0 0 8px #10b981' : '0 0 8px #f59e0b';
+            }
+        });
+
+        // 4. Answer Revealed
+        socket.on('quiz:answer_revealed', (data) => {
+            revealAnswer(data.correctIndex, data.tallies);
+        });
+
+        function revealAnswer(correctIdx, tallies) {
+            clearInterval(countdownTimer);
+            playRevealChime();
+
+            const timerWrapper = document.getElementById('timer-wrapper');
+            timerWrapper.className = 'timer-container';
+            document.getElementById('timer-digits').textContent = '0';
+            document.getElementById('timer-stroke').style.strokeDashoffset = '283';
+
+            const talliesMap = tallies || { 0: 14, 1: 3, 2: 1, 3: 4 };
+            let totalAnswers = 0;
+            Object.values(talliesMap).forEach(v => totalAnswers += v);
+            if (totalAnswers === 0) totalAnswers = 1;
+
+            for (let i = 0; i < 4; i++) {
+                const card = document.getElementById(`opt-card-${i}`);
+                const badge = document.getElementById(`opt-badge-${i}`);
+                const distBox = document.getElementById(`opt-dist-${i}`);
+                const distCount = document.getElementById(`dist-count-${i}`);
+                const distPct = document.getElementById(`dist-pct-${i}`);
+                const distBar = document.getElementById(`dist-bar-${i}`);
+
+                if (!card || card.style.display === 'none') continue;
+
+                distBox.style.display = 'flex';
+                const chosen = talliesMap[i] || 0;
+                const pct = Math.round((chosen / totalAnswers) * 100);
+
+                distCount.textContent = `${chosen} students`;
+                distPct.textContent = `${pct}%`;
+                setTimeout(() => { distBar.style.width = `${pct}%`; }, 50);
+
+                if (i === correctIdx) {
+                    card.classList.add('correct-answer');
+                    card.classList.remove('incorrect-dimmed');
+                    badge.textContent = '✓ Correct';
+                    badge.style.display = 'inline-block';
+                } else {
+                    card.classList.add('incorrect-dimmed');
+                    card.classList.remove('correct-answer');
+                    badge.textContent = '✕';
+                    badge.style.display = 'inline-block';
+                }
+            }
+        }
+
+        // 5. Quiz Finished / Show Podium
+        socket.on('quiz:finished', (data) => {
+            renderPodium(data.leaderboard);
+        });
+
+        function renderPodium(leaderboard) {
+            switchView('view-podium');
+            playVictoryFanfare();
+            fireConfetti();
+
+            const leaders = (leaderboard && leaderboard.length >= 3) ? leaderboard : [
+                { name: "Yasmine Halag", score: "19.5 / 20" },
+                { name: "Karim Benali", score: "18.0 / 20" },
+                { name: "Amina Saidi", score: "16.5 / 20" },
+                { name: "Mehdi Touati", score: "15.0 / 20" },
+                { name: "Sara Bouzid", score: "14.0 / 20" }
+            ];
+
+            // 1st Place
+            if (leaders[0]) {
+                document.getElementById('podium-name-1').textContent = leaders[0].name;
+                document.getElementById('podium-score-1').textContent = leaders[0].score;
+                document.getElementById('podium-avatar-1').textContent = (leaders[0].name[0] || '1').toUpperCase();
+            }
+
+            // 2nd Place
+            if (leaders[1]) {
+                document.getElementById('podium-name-2').textContent = leaders[1].name;
+                document.getElementById('podium-score-2').textContent = leaders[1].score;
+                document.getElementById('podium-avatar-2').textContent = (leaders[1].name[0] || '2').toUpperCase();
+            }
+
+            // 3rd Place
+            if (leaders[2]) {
+                document.getElementById('podium-name-3').textContent = leaders[2].name;
+                document.getElementById('podium-score-3').textContent = leaders[2].score;
+                document.getElementById('podium-avatar-3').textContent = (leaders[2].name[0] || '3').toUpperCase();
+            }
+
+            // Runners up 4th & 5th
+            const runnersContainer = document.getElementById('runners-up-container');
+            runnersContainer.innerHTML = '';
+            leaders.slice(3, 7).forEach((runner, idx) => {
+                const card = document.createElement('div');
+                card.className = 'runner-card';
+                card.innerHTML = `
+                    <span class="runner-rank">#${idx + 4}</span>
+                    <span class="runner-name">${runner.name}</span>
+                    <span class="runner-score">${runner.score}</span>
+                `;
+                runnersContainer.appendChild(card);
+            });
+        }
+
+        // ================= TIMER LOGIC =================
+        function startTimer(seconds) {
+            clearInterval(countdownTimer);
+            timeLeft = seconds;
+            totalDuration = seconds;
+
+            const timerWrapper = document.getElementById('timer-wrapper');
+            const timerDigits = document.getElementById('timer-digits');
+            const timerStroke = document.getElementById('timer-stroke');
+
+            timerWrapper.className = 'timer-container';
+            timerDigits.textContent = timeLeft;
+            timerStroke.style.strokeDashoffset = '0';
+
+            const maxDash = 283; // 2 * PI * 45
+
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                timerDigits.textContent = Math.max(0, timeLeft);
+
+                // Update stroke dashoffset
+                const progress = (totalDuration - timeLeft) / totalDuration;
+                timerStroke.style.strokeDashoffset = `${progress * maxDash}`;
+
+                if (timeLeft <= 10 && timeLeft > 5) {
+                    timerWrapper.className = 'timer-container warning';
+                } else if (timeLeft <= 5 && timeLeft > 0) {
+                    timerWrapper.className = 'timer-container danger';
+                    playTick();
+                } else if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    triggerAnswerReveal();
+                }
+            }, 1000);
+        }
+
+        // ================= CONFETTI CELEBRATION =================
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#f5c242', '#ef4444', '#3b82f6', '#10b981', '#f97316', '#a855f7'];
+
+            for (let i = 0; i < 160; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 9 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: Math.random() * 4 + 3,
+                    rotation: Math.random() * 360,
+                    vRot: (Math.random() - 0.5) * 10
+                });
+            }
+
+            let start = Date.now();
+
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.rotation += p.vRot;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (Date.now() - start < 7000) {
+                    requestAnimationFrame(update);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            update();
+        }
+
+        // ================= PRESENTER DEMO ACTIONS =================
+        let demoQuestions = [
+            {
+                text: "In Java Object-Oriented Programming, which keyword is used to inherit a class?",
+                options: ["implements", "extends", "inherits", "instanceof"],
+                correctIndex: 1
+            },
+            {
+                text: "Which layer of the OSI model does the Wi-Fi 802.11 Access Point primarily operate at?",
+                options: ["Application Layer", "Transport Layer", "Data Link & Physical", "Network Layer"],
+                correctIndex: 2
+            },
+            {
+                text: "What is the primary advantage of hosting an embedded quiz system directly on a Raspberry Pi?",
+                options: ["Requires constant 5G cloud access", "100% offline edge operation with zero latency", "Consumes 500W power", "Only works on Windows"],
+                correctIndex: 1
+            }
+        ];
+        let currentDemoQIndex = 0;
+
+        function triggerNextDemoQuestion() {
+            const q = demoQuestions[currentDemoQIndex % demoQuestions.length];
+            socket.emit('quiz:broadcast_question', {
+                quizId: currentQuizId,
+                question: q,
+                index: currentDemoQIndex % demoQuestions.length,
+                total: demoQuestions.length,
+                durationSeconds: 30
+            });
+            currentDemoQIndex++;
+        }
+
+        function triggerAnswerReveal() {
+            const correct = currentQuestionData && currentQuestionData.question ? (currentQuestionData.question.correctIndex !== undefined ? currentQuestionData.question.correctIndex : 1) : 1;
+            socket.emit('quiz:reveal_answer', {
+                quizId: currentQuizId,
+                questionIndex: currentQuestionData ? currentQuestionData.index : 0,
+                correctIndex: correct
+            });
+        }
+
+        function triggerPodiumReveal() {
+            socket.emit('quiz:end', {
+                quizId: currentQuizId,
+                leaderboard: [
+                    { rank: 1, name: "Yasmine Halag", score: "19.5 / 20" },
+                    { rank: 2, name: "Karim Benali", score: "18.0 / 20" },
+                    { rank: 3, name: "Amina Saidi", score: "16.5 / 20" },
+                    { rank: 4, name: "Mehdi Touati", score: "15.0 / 20" },
+                    { rank: 5, name: "Sara Bouzid", score: "14.0 / 20" }
+                ]
+            });
+        }
+
+        function simulateStudentJoin() {
+            const names = ["Nadia Cherif", "Yacine Belkacem", "Farid Haddad", "Lina Mansour", "Rayane Ziane"];
+            const chosen = names[Math.floor(Math.random() * names.length)];
+            socket.emit('quiz:join', { quizId: currentQuizId, role: 'student', name: chosen, email: `${chosen.toLowerCase().replace(' ', '.')}@univ.dz` });
+        }
+
+        function togglePresenterBar() {
+            const bar = document.getElementById('presenter-toolbar');
+            const icon = document.getElementById('toggle-icon');
+            const btn = document.getElementById('btn-toggle-presenter');
+            if (!bar) return;
+            
+            if (bar.classList.contains('minimized')) {
+                bar.classList.remove('minimized');
+                if (icon) icon.textContent = '▼';
+                if (btn) btn.innerHTML = '<span id="toggle-icon">▼</span> Hide';
+            } else {
+                bar.classList.add('minimized');
+                if (icon) icon.textContent = '▲';
+                if (btn) btn.innerHTML = '<span id="toggle-icon">▲</span> Controls (H)';
+            }
+        }
+
+        // Keyboard Shortcuts: Space = Advance/Reveal, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                const questionView = document.getElementById('view-question');
+                if (questionView.classList.contains('active')) {
+                    if (timeLeft > 0) {
+                        triggerAnswerReveal();
+                    } else {
+                        triggerNextDemoQuestion();
+                    }
+                } else {
+                    triggerNextDemoQuestion();
+                }
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullScreen();
+            } else if (e.key === 'm' || e.key === 'M') {
+                toggleSound();
+            } else if (e.key === 'p' || e.key === 'P') {
+                triggerPodiumReveal();
+            } else if (e.key === 'h' || e.key === 'H') {
+                togglePresenterBar();
+            }
+        });
+    </script>
+</body>
+</html>

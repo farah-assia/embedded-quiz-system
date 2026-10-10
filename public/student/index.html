@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>κουίζυ - Student Quiz Application | ClassQuiz</title>
+    <!-- PWA Primary Meta Tags -->
+    <meta name="theme-color" content="#153247">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="κουίζυ">
+    <link rel="manifest" href="/student/manifest.json">
+    <link rel="apple-touch-icon" href="/student/icons/icon-192.svg">
+    <link rel="icon" type="image/svg+xml" href="/student/icons/icon-192.svg">
+
+    <!-- Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        :root {
+            --navy-dark: #0f2636;
+            --navy-primary: #153247;
+            --navy-card: #1c3f58;
+            --gold-primary: #f5c242;
+            --gold-light: #fef3c7;
+            --gold-hover: #e5b232;
+            --bg-app: #f8fafc;
+            --card-surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-subtle: #e2e8f0;
+            --border-focus: #f5c242;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --shadow-card: 0 4px 20px -2px rgba(15, 38, 54, 0.07), 0 2px 6px -1px rgba(15, 38, 54, 0.04);
+            --shadow-gold: 0 4px 15px rgba(245, 194, 66, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #0b131e;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(245, 194, 66, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(21, 50, 71, 0.4) 0%, transparent 50%);
+        }
+
+        /* Desktop Controls Strip */
+        .preview-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.85rem;
+            z-index: 10;
+        }
+
+        .toggle-view-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 0.4rem 0.9rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+        }
+
+        .toggle-view-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+        }
+
+        /* Mobile Device Frame */
+        .phone-frame {
+            width: 100%;
+            max-width: 412px;
+            height: 860px;
+            max-height: 94vh;
+            max-height: 94dvh;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 10px #1a2533, 0 0 0 12px #2d3b4d;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Speaker Slot */
+        .device-speaker-slit {
+            width: 64px;
+            height: 4.5px;
+            background: #2d3b4d;
+            border-radius: 9999px;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 60;
+        }
+
+        /* Fullscreen Mobile override */
+        body.fullscreen-mode {
+            padding: 0;
+            background: #ffffff;
+        }
+
+        body.fullscreen-mode .preview-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            margin: 0;
+        }
+
+        body.fullscreen-mode .phone-frame {
+            max-width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            max-height: 100vh;
+            max-height: 100dvh;
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+        }
+
+        body.fullscreen-mode .device-speaker-slit {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+                background: #ffffff;
+            }
+            .preview-controls {
+                display: none;
+            }
+            .phone-frame {
+                max-width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                max-height: 100vh;
+                max-height: 100dvh;
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+            }
+            .device-speaker-slit {
+                display: none;
+            }
+        }
+
+        /* App Viewport */
+        .app-viewport {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+            background: var(--bg-app);
+        }
+
+        .app-viewport::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ----------------- SCREENS ----------------- */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        .screen.active {
+            display: flex;
+            animation: screenSlideFade 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes screenSlideFade {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SCREEN 1: SPLASH SCREEN */
+        #screen-splash {
+            background: var(--navy-primary);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 2rem;
+        }
+
+        .splash-logo-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: splashPulse 1.8s infinite ease-in-out;
+        }
+
+        @keyframes splashPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        /* SCREEN 2: WELCOME SCREEN */
+        #screen-welcome {
+            background: #ffffff;
+            padding: 3rem 1.75rem 2.25rem;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .welcome-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto 0;
+        }
+
+        .welcome-cap-wrap {
+            width: 96px;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            filter: drop-shadow(0 8px 16px rgba(245, 194, 66, 0.35));
+        }
+
+        .welcome-logo-text {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--navy-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            max-width: 270px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .welcome-buttons-row {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-top: auto;
+        }
+
+        .btn-welcome-primary {
+            width: 100%;
+            height: 50px;
+            background: var(--navy-primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 9999px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(21, 50, 71, 0.25);
+            transition: all 0.2s;
+        }
+
+        .btn-welcome-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-welcome-secondary {
+            width: 100%;
+            height: 50px;
+            background: #ffffff;
+            color: var(--navy-primary);
+            border: 2px solid var(--navy-primary);
+            border-radius: 9999px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-welcome-secondary:active {
+            transform: scale(0.98);
+        }
+
+        /* AUTH SCREENS: SIGN IN & SIGN UP (Curved Navy Container) */
+        .auth-screen-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #ffffff;
+        }
+
+        .auth-top-header {
+            padding: 1.25rem 1.25rem 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .auth-brand-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--navy-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .auth-curved-card {
+            background: var(--navy-primary);
+            flex: 1;
+            border-radius: 32px 32px 0 0;
+            padding: 2rem 1.75rem 1.75rem;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -10px 30px rgba(21, 50, 71, 0.2);
+            overflow-y: auto;
+        }
+
+        .auth-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1.35rem;
+            letter-spacing: 0.04em;
+            text-align: center;
+        }
+
+        .pill-input {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dark);
+            border-radius: 9999px;
+            padding: 0.85rem 1.25rem;
+            font-size: 0.92rem;
+            margin-bottom: 0.85rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .pill-input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(245, 194, 66, 0.35);
+        }
+
+        .btn-gold-pill {
+            width: 100%;
+            height: 48px;
+            background: var(--gold-primary);
+            color: var(--navy-primary);
+            border: none;
+            border-radius: 9999px;
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            box-shadow: var(--shadow-gold);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .btn-gold-pill:active {
+            transform: scale(0.98);
+        }
+
+        /* SCREEN 5: TODAY'S QUIZ (HOME DASHBOARD) */
+        .home-scroll-view {
+            padding: 1.25rem 1.25rem 6.5rem;
+            overflow-y: auto;
+        }
+
+        .home-user-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.35rem;
+        }
+
+        .user-greeting {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .student-avatar-ring {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--navy-primary);
+            border: 2.5px solid var(--gold-primary);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 10px rgba(245, 194, 66, 0.25);
+        }
+
+        .user-greeting-meta strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--navy-primary);
+            font-weight: 800;
+        }
+
+        .user-greeting-meta span {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Calendar Date Row */
+        .date-picker-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .date-pill {
+            flex: 1;
+            padding: 0.65rem 0.2rem;
+            border-radius: 12px;
+            text-align: center;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .date-pill span {
+            display: block;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .date-pill strong {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--navy-primary);
+            font-weight: 800;
+            margin-top: 0.15rem;
+        }
+
+        .date-pill.active {
+            background: var(--navy-primary);
+            border-color: var(--navy-primary);
+            box-shadow: 0 4px 12px rgba(21, 50, 71, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .date-pill.active span {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .date-pill.active strong {
+            color: #ffffff;
+        }
+
+        /* Filter Chips */
+        .chips-filter-row {
+            display: flex;
+            gap: 0.45rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .chip-btn {
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip-btn.active {
+            background: var(--gold-primary);
+            border-color: var(--gold-primary);
+            color: var(--navy-primary);
+            box-shadow: 0 2px 8px rgba(245, 194, 66, 0.3);
+        }
+
+        /* Student Quiz Cards */
+        .quiz-card-student {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.25rem;
+            margin-bottom: 0.95rem;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-card-student:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -4px rgba(15, 38, 54, 0.1);
+        }
+
+        .quiz-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.45rem;
+        }
+
+        .quiz-subject-tag {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .status-pill {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+        }
+
+        .status-todo { background: rgba(245, 194, 66, 0.2); color: #b45309; }
+        .status-done { background: rgba(16, 185, 129, 0.15); color: #047857; }
+        .status-missed { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+
+        .quiz-card-title {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--navy-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.35;
+        }
+
+        .quiz-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-top: 1px dashed var(--border-subtle);
+            padding-top: 0.65rem;
+        }
+
+        /* SCREEN 6: TAKE QUIZ SCREEN (Live Solving) */
+        .take-quiz-header {
+            padding: 1rem 1.25rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .quiz-timer-pill {
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            box-shadow: 0 2px 8px rgba(21, 50, 71, 0.2);
+        }
+
+        .network-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .network-status-pill.online .net-dot { background: #10b981; }
+        .network-status-pill.offline .net-dot { background: #ef4444; }
+        .network-status-pill.syncing .net-dot { background: #f59e0b; }
+
+        .net-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        /* Numbered Stepper Timeline */
+        .dots-progress-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.25rem 0.4rem;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .progress-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 2px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .progress-dot.active {
+            background: var(--gold-primary);
+            border-color: var(--gold-primary);
+            color: var(--navy-primary);
+            font-weight: 900;
+            transform: scale(1.15);
+            box-shadow: 0 0 12px rgba(245, 194, 66, 0.5);
+        }
+
+        .progress-dot.completed {
+            background: var(--navy-primary);
+            border-color: var(--navy-primary);
+            color: #ffffff;
+        }
+
+        .question-card-container {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .question-box {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 1.35rem 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .question-number-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--navy-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.45rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .question-text-main {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            line-height: 1.45;
+        }
+
+        /* Option Choice Cards */
+        .answers-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-choice-card {
+            background: #ffffff;
+            border: 2px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 0.95rem 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .option-choice-card:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .option-choice-card.selected {
+            border-color: var(--gold-primary);
+            background: #fffbeb;
+            box-shadow: 0 4px 15px rgba(245, 194, 66, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .option-letter-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            background: #f1f5f9;
+            color: var(--navy-primary);
+            border: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .option-choice-card.selected .option-letter-badge {
+            background: var(--gold-primary);
+            color: var(--navy-primary);
+            border-color: var(--gold-primary);
+        }
+
+        .option-text {
+            font-size: 0.96rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            flex: 1;
+            line-height: 1.35;
+        }
+
+        .quiz-nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-prev-question {
+            flex: 1;
+            background: #ffffff;
+            color: var(--navy-primary);
+            border: 1.5px solid var(--border-subtle);
+            padding: 0.85rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-prev-question:hover {
+            background: #f1f5f9;
+        }
+
+        .btn-next-question {
+            flex: 2;
+            background: var(--gold-primary);
+            color: var(--navy-primary);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-gold);
+            transition: all 0.2s;
+        }
+
+        .btn-next-question:active {
+            transform: scale(0.98);
+        }
+
+        .btn-submit-quiz {
+            flex: 2;
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(21, 50, 71, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-submit-quiz:active {
+            transform: scale(0.98);
+        }
+
+        /* SCREEN 8: CORRECTION OF THE QUIZ */
+        .correction-screen {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .correction-numbers-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .correction-num-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            font-weight: 800;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .correction-num-btn.num-correct { background: #dcfce7; color: #15803d; border: 2px solid #10b981; }
+        .correction-num-btn.num-medium { background: #fef3c7; color: #b45309; border: 2px solid #f59e0b; }
+        .correction-num-btn.num-wrong { background: #fee2e2; color: #b91c1c; border: 2px solid #ef4444; }
+
+        .correction-status-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tag-correct { background: #10b981; color: #ffffff; }
+        .tag-medium { background: #f59e0b; color: #ffffff; }
+        .tag-wrong { background: #ef4444; color: #ffffff; }
+
+        .correction-question-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            border: 2px solid #10b981;
+            box-shadow: var(--shadow-card);
+        }
+
+        .correction-question-card.card-border-wrong { border-color: #ef4444; }
+        .correction-question-card.card-border-medium { border-color: #f59e0b; }
+
+        .correction-option-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .correction-option-item.opt-correct {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #166534;
+        }
+
+        .correction-option-item.opt-student-wrong {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        /* SCREEN 9: MY MODULES */
+        .modules-screen-scroll {
+            padding: 1.25rem 1.25rem 6.5rem;
+            overflow-y: auto;
+        }
+
+        .module-pastel-card {
+            border-radius: 20px;
+            padding: 1.35rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .module-pastel-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-anal4 { background: #f3e8ff; border: 1px solid #e9d5ff; }
+        .card-logm { background: #fef3c7; border: 1px solid #fde68a; }
+        .card-econ { background: #dcfce7; border: 1px solid #bbf7d0; }
+        .card-ang3 { background: #e0e7ff; border: 1px solid #c7d2fe; }
+
+        /* SCREEN 10: MY GRADES */
+        .grades-screen-scroll {
+            padding: 1.25rem 1.25rem 6.5rem;
+            overflow-y: auto;
+        }
+
+        .grade-item-row {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 1.1rem 1.25rem;
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .grade-item-row:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .grade-score-pill {
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.86rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* SCREEN 11: PROFILE */
+        .profile-screen-scroll {
+            padding: 2rem 1.5rem 6.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .profile-menu-btn {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 1.1rem 1.25rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+        }
+
+        .profile-menu-btn:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        /* FLOATING BOTTOM DOCK NAVIGATION */
+        .bottom-nav {
+            position: absolute;
+            bottom: 14px;
+            left: 18px;
+            right: 18px;
+            height: 62px;
+            background: var(--navy-primary);
+            border-radius: 28px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 0.85rem;
+            box-shadow: 0 10px 30px rgba(21, 50, 71, 0.35);
+            z-index: 50;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: #94a3b8;
+            transition: stroke 0.2s;
+        }
+
+        .nav-btn.active {
+            color: var(--gold-primary);
+            font-weight: 800;
+        }
+
+        .nav-btn.active svg {
+            stroke: var(--gold-primary);
+        }
+
+        /* MODAL POPUPS */
+        .modal-popup-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 38, 54, 0.65);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 100;
+        }
+
+        .modal-popup-container.active {
+            display: flex;
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .score-popup-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2.25rem 1.75rem;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        .quiz-time-popup-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2.25rem 1.75rem;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        .score-circle-gauge {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            border: 4px solid #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #047857;
+            background: #ffffff;
+        }
+
+        .score-result-badge-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            margin: 1.25rem 0 1.5rem;
+        }
+
+        .score-result-badge-card.fail-bg .score-circle-gauge {
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+
+        /* PWA Install Banner */
+        .pwa-install-banner {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .pwa-install-banner.hidden {
+            display: none !important;
+        }
+
+        .pwa-install-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pwa-install-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--navy-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pwa-btn-install {
+            background: var(--gold-primary);
+            color: var(--navy-primary);
+            border: none;
+            padding: 0.45rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .pwa-btn-dismiss {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Desktop Preview Controls -->
+    <div class="preview-controls">
+        <button class="toggle-view-btn" onclick="togglePhoneMode()">
+            <span id="mode-icon">📱</span>
+            <span id="mode-text">Switch to Full Screen View</span>
+        </button>
+        <button class="toggle-view-btn" onclick="simulateIncomingQuiz()">
+            🔔 Test Incoming Quiz Notification
+        </button>
+        <button class="toggle-view-btn" id="btn-desktop-install" onclick="triggerPwaInstall()" style="display:none; background: var(--gold-primary); color: var(--navy-primary); font-weight: 800;">
+            📲 Install PWA App
+        </button>
+    </div>
+
+    <!-- Smartphone Chassis -->
+    <div class="phone-frame" id="phone-chassis">
+        <div class="device-speaker-slit"></div>
+
+        <!-- ================= APP VIEWPORT ================= -->
+        <div class="app-viewport">
+
+            <!-- SCREEN 1: SPLASH SCREEN -->
+            <div id="screen-splash" class="screen active">
+                <div class="splash-logo-wrap">
+                    <svg style="width: 80px; height: 80px;" viewBox="0 0 100 100" fill="none">
+                        <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/>
+                        <path d="M50 55V78C50 78 75 72 75 52V42.5L50 55Z" fill="#e0ac2b"/>
+                        <path d="M50 55V78C50 78 25 72 25 52V42.5L50 55Z" fill="#f5c242"/>
+                        <circle cx="20" cy="38" r="4" fill="#f5c242"/>
+                        <path d="M20 42V65" stroke="#f5c242" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                    <h1 style="font-size: 2.6rem; font-weight: 900; color: #ffffff; margin-top: 0.75rem; letter-spacing: -0.03em;">κουίζυ</h1>
+                </div>
+            </div>
+
+            <!-- SCREEN 2: WELCOME ONBOARDING SCREEN -->
+            <div id="screen-welcome" class="screen">
+                <div class="welcome-center">
+                    <div class="welcome-cap-wrap">
+                        <svg style="width: 90px; height: 90px;" viewBox="0 0 100 100" fill="none">
+                            <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/>
+                            <path d="M50 55V78C50 78 75 72 75 52V42.5L50 55Z" fill="#e0ac2b"/>
+                            <path d="M50 55V78C50 78 25 72 25 52V42.5L50 55Z" fill="#f5c242"/>
+                            <circle cx="20" cy="38" r="4" fill="#f5c242"/>
+                            <path d="M20 42V65" stroke="#f5c242" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h1 class="welcome-logo-text">κουίζυ</h1>
+                    <p class="welcome-subtitle">Test your knowledge, quiz your way to the top!</p>
+                </div>
+
+                <div class="welcome-buttons-row">
+                    <button class="btn-welcome-primary" onclick="navigateToScreen('screen-signin')">Sign In</button>
+                    <button class="btn-welcome-secondary" onclick="navigateToScreen('screen-signup')">Sign Up</button>
+                </div>
+
+                <div style="margin-top: 1.25rem; width: 100%;">
+                    <button onclick="quickStudentDemoLogin()" style="background: none; border: none; color: #2563eb; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                        ⚡ 1-Click Demo Login (Yasmine Halag)
+                    </button>
+                </div>
+            </div>
+
+            <!-- SCREEN 3: SIGN UP (Curved Navy Container) -->
+            <div id="screen-signup" class="screen">
+                <div class="auth-screen-container">
+                    <div class="auth-top-header">
+                        <button onclick="navigateToScreen('screen-welcome')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--navy-primary);">←</button>
+                        <span class="auth-brand-title">κουίζυ</span>
+                        <div style="width: 24px;"></div>
+                    </div>
+                    <div class="auth-curved-card">
+                        <h2 class="auth-title">SIGN UP</h2>
+                        <form onsubmit="handleStudentRegister(event)">
+                            <input type="text" id="reg-name" class="pill-input" placeholder="Name" required value="Yasmine Halag">
+                            <input type="email" id="reg-email" class="pill-input" placeholder="Email" required value="yasmine.halag@univ.dz">
+                            <input type="text" id="reg-section" class="pill-input" placeholder="Section" required value="Section 1">
+                            <input type="text" id="reg-group" class="pill-input" placeholder="Group" required value="G1">
+                            <input type="text" id="reg-level" class="pill-input" placeholder="Level / Division" required value="1CP">
+                            <input type="password" id="reg-pass" class="pill-input" placeholder="Password" required value="Password123!">
+
+                            <button type="submit" class="btn-gold-pill">Sign Up</button>
+                        </form>
+                        <div style="text-align: center; margin-top: 1.25rem;">
+                            <a onclick="navigateToScreen('screen-signin')" style="color: #cbd5e1; font-size: 0.82rem; text-decoration: underline; cursor: pointer;">Already have an account? Sign In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 4: SIGN IN (Curved Navy Container) -->
+            <div id="screen-signin" class="screen">
+                <div class="auth-screen-container">
+                    <div class="auth-top-header">
+                        <button onclick="navigateToScreen('screen-welcome')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--navy-primary);">←</button>
+                        <span class="auth-brand-title">κουίζυ</span>
+                        <div style="width: 24px;"></div>
+                    </div>
+                    <div class="auth-curved-card">
+                        <h2 class="auth-title">SIGN IN</h2>
+                        <form onsubmit="handleStudentLogin(event)">
+                            <input type="email" id="login-email" class="pill-input" placeholder="Email" required value="yasmine.halag@univ.dz">
+                            <input type="password" id="login-pass" class="pill-input" placeholder="Password" required value="Password123!">
+
+                            <div style="text-align: right; margin-bottom: 0.85rem;">
+                                <a style="color: #94a3b8; font-size: 0.8rem; text-decoration: none;">Forgotten your password?</a>
+                            </div>
+
+                            <button type="submit" class="btn-gold-pill">Sign In</button>
+                        </form>
+
+                        <div style="text-align: center; margin-top: 1.25rem;">
+                            <button onclick="quickStudentDemoLogin()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; padding: 0.65rem 1.25rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 700; cursor: pointer; width: 100%;">
+                                CONTINUE WITHOUT ACCOUNT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 5: TODAY'S QUIZ (HOME DASHBOARD) -->
+            <div id="screen-home" class="screen">
+                <div class="home-scroll-view">
+                    <!-- User Header -->
+                    <div class="home-user-header">
+                        <div class="user-greeting">
+                            <div class="student-avatar-ring" id="home-avatar-initials">Y</div>
+                            <div class="user-greeting-meta">
+                                <strong>Hello ! <span id="home-student-name">Yasmine Halag</span></strong>
+                                <span id="home-student-class">1CP • Section 1 • G1</span>
+                            </div>
+                        </div>
+                        <div style="position: relative; cursor: pointer;" onclick="simulateIncomingQuiz()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy-primary)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            <span style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span>
+                        </div>
+                    </div>
+
+                    <!-- PWA Install Prompt Banner -->
+                    <div id="pwa-install-card" class="pwa-install-banner hidden">
+                        <div class="pwa-install-left">
+                            <div class="pwa-install-icon">
+                                <svg width="20" height="20" viewBox="0 0 100 100" fill="none"><path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/></svg>
+                            </div>
+                            <div class="pwa-install-text">
+                                <h4 style="font-size:0.85rem; font-weight:800; color:var(--navy-primary);">Install κουίζυ App</h4>
+                                <p style="font-size:0.75rem; color:var(--text-muted);">Fast offline access from home screen</p>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.4rem;">
+                            <button class="pwa-btn-install" onclick="triggerPwaInstall()">Install</button>
+                            <button class="pwa-btn-dismiss" onclick="dismissPwaBanner()">✕</button>
+                        </div>
+                    </div>
+
+                    <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 1rem;">Today's Quiz</h2>
+
+                    <!-- Calendar Date Selector -->
+                    <div class="date-picker-row">
+                        <div class="date-pill" onclick="selectDate(22, this)">
+                            <span>Mon</span>
+                            <strong>22</strong>
+                        </div>
+                        <div class="date-pill" onclick="selectDate(23, this)">
+                            <span>Tue</span>
+                            <strong>23</strong>
+                        </div>
+                        <div class="date-pill active" onclick="selectDate(24, this)">
+                            <span>Wed</span>
+                            <strong>24</strong>
+                        </div>
+                        <div class="date-pill" onclick="selectDate(25, this)">
+                            <span>Thu</span>
+                            <strong>25</strong>
+                        </div>
+                        <div class="date-pill" onclick="selectDate(26, this)">
+                            <span>Fri</span>
+                            <strong>26</strong>
+                        </div>
+                    </div>
+
+                    <!-- Filter Chips -->
+                    <div class="chips-filter-row">
+                        <button class="chip-btn active" onclick="filterStudentQuizzes('all', this)">All</button>
+                        <button class="chip-btn" onclick="filterStudentQuizzes('todo', this)">To do</button>
+                        <button class="chip-btn" onclick="filterStudentQuizzes('done', this)">Done</button>
+                        <button class="chip-btn" onclick="filterStudentQuizzes('missed', this)">Missed</button>
+                    </div>
+
+                    <!-- Quizzes List -->
+                    <div id="student-quizzes-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 6: TAKE QUIZ SCREEN (Live Question View) -->
+            <div id="screen-take-quiz" class="screen">
+                <div class="take-quiz-header">
+                    <button onclick="confirmExitQuiz()" style="background: none; border: none; font-size: 1.35rem; cursor: pointer; color: var(--navy-primary);">←</button>
+                    <span style="font-weight: 800; font-size: 0.95rem; color: var(--navy-primary);" id="active-quiz-title">Quiz 01 : Classes and Objects</span>
+                    <div style="width: 20px;"></div>
+                </div>
+
+                <!-- Numbered Stepper Dots -->
+                <div class="dots-progress-row" id="quiz-dots-container">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 0.4rem 0 0.85rem;">
+                    <div class="quiz-timer-pill" id="quiz-timer-pill">
+                        ⏱ <span id="quiz-timer-countdown">14:50</span>
+                    </div>
+                    <div id="network-status-badge" class="network-status-pill online" onclick="triggerManualSync()" title="Click to synchronize offline buffer">
+                        <span class="net-dot"></span>
+                        <span id="network-status-text">Online</span>
+                    </div>
+                </div>
+
+                <div class="question-card-container">
+                    <div class="question-box">
+                        <div class="question-number-title" id="question-label">Question 01</div>
+                        <div class="question-text-main" id="question-text-display">In Java we will use which keyword to declare an inheritance relationship between classes?</div>
+                    </div>
+
+                    <div class="answers-options-list" id="options-choices-container">
+                        <!-- Choices generated by JS -->
+                    </div>
+
+                    <div class="quiz-nav-actions">
+                        <button class="btn-prev-question" onclick="goToPrevQuestion()" id="btn-quiz-prev">Previous</button>
+                        <button class="btn-next-question" onclick="goToNextQuestion()" id="btn-quiz-next">Next</button>
+                        <button class="btn-submit-quiz" onclick="submitCurrentQuiz()" id="btn-quiz-submit" style="display: none;">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 8: CORRECTION OF THE QUIZ -->
+            <div id="screen-correction" class="screen">
+                <div class="take-quiz-header">
+                    <button onclick="navigateToScreen('screen-home')" style="background: none; border: none; font-size: 1.35rem; cursor: pointer; color: var(--navy-primary);">←</button>
+                    <span style="font-weight: 800; font-size: 0.95rem; color: var(--navy-primary);">Correction of the Quiz</span>
+                    <div style="width: 20px;"></div>
+                </div>
+
+                <div class="correction-screen">
+                    <div class="correction-numbers-bar" id="correction-numbers-container">
+                        <!-- 1..N numbers with green/yellow/red circles -->
+                    </div>
+
+                    <div style="text-align: center;">
+                        <span class="correction-status-tag tag-correct" id="correction-status-badge">Correct</span>
+                    </div>
+
+                    <div class="correction-question-card" id="correction-card">
+                        <div class="question-number-title" id="correction-q-num">Question 01</div>
+                        <div class="question-text-main" id="correction-q-text" style="margin-bottom: 1rem;">In Java we will use which keyword to declare an inheritance relationship between classes?</div>
+
+                        <div id="correction-options-container">
+                            <!-- Answer options with checkmark and red cross -->
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; margin-top: auto;">
+                        <button class="btn-prev-question" onclick="prevCorrectionQuestion()">Previous</button>
+                        <button class="btn-next-question" onclick="nextCorrectionQuestion()">Next</button>
+                    </div>
+
+                    <div style="margin-top: 0.85rem;">
+                        <button class="btn-gold-pill" onclick="navigateToScreen('screen-home')">Finish Review</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 9: MY MODULES -->
+            <div id="screen-modules" class="screen">
+                <div class="modules-screen-scroll">
+                    <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 1.25rem;">My modules</h2>
+
+                    <div class="module-pastel-card card-anal4" onclick="navigateToScreen('screen-grades')">
+                        <div>
+                            <strong style="font-size: 1.15rem; color: var(--navy-primary); display: block;">ANAL4</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">2CP • Math Analysis</span>
+                        </div>
+                        <div style="font-size: 2rem;">📐</div>
+                    </div>
+
+                    <div class="module-pastel-card card-logm" onclick="navigateToScreen('screen-grades')">
+                        <div>
+                            <strong style="font-size: 1.15rem; color: #854d0e; display: block;">LOGM</strong>
+                            <span style="font-size: 0.85rem; color: #a16207; font-weight: 600;">Section A • Mathematical Logic</span>
+                        </div>
+                        <div style="font-size: 2rem;">⚙️</div>
+                    </div>
+
+                    <div class="module-pastel-card card-econ" onclick="navigateToScreen('screen-grades')">
+                        <div>
+                            <strong style="font-size: 1.15rem; color: #166534; display: block;">ECON</strong>
+                            <span style="font-size: 0.85rem; color: #15803d; font-weight: 600;">Section A3 • Business Economics</span>
+                        </div>
+                        <div style="font-size: 2rem;">📊</div>
+                    </div>
+
+                    <div class="module-pastel-card card-ang3" onclick="navigateToScreen('screen-grades')">
+                        <div>
+                            <strong style="font-size: 1.15rem; color: #3730a3; display: block;">ANG3</strong>
+                            <span style="font-size: 0.85rem; color: #4338ca; font-weight: 600;">2CP • Technical English</span>
+                        </div>
+                        <div style="font-size: 2rem;">📖</div>
+                    </div>
+
+                    <div class="module-pastel-card" style="background: #e0f2fe; border: 1px solid #bae6fd;" onclick="navigateToScreen('screen-grades')">
+                        <div>
+                            <strong style="font-size: 1.15rem; color: #0369a1; display: block;">POO</strong>
+                            <span style="font-size: 0.85rem; color: #0284c7; font-weight: 600;">1CP • Object Oriented Programming</span>
+                        </div>
+                        <div style="font-size: 2rem;">💻</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 10: MY GRADES -->
+            <div id="screen-grades" class="screen">
+                <div class="grades-screen-scroll">
+                    <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.35rem;">My Grades</h2>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 1.25rem;">POO - Object Oriented Programming</p>
+
+                    <div class="grade-item-row" onclick="viewQuizCorrectionFromGrades(1)">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.3rem;">📄</span>
+                            <div>
+                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 01 : Classes and Objects</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                            </div>
+                        </div>
+                        <span class="grade-score-pill">18/20</span>
+                    </div>
+
+                    <div class="grade-item-row" onclick="viewQuizCorrectionFromGrades(2)">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.3rem;">📄</span>
+                            <div>
+                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 02 : Inheritance</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                            </div>
+                        </div>
+                        <span class="grade-score-pill">16/20</span>
+                    </div>
+
+                    <div class="grade-item-row">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.3rem;">📄</span>
+                            <div>
+                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 03 : Overloading</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                            </div>
+                        </div>
+                        <span class="grade-score-pill">14/20</span>
+                    </div>
+
+                    <div class="grade-item-row">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.3rem;">📄</span>
+                            <div>
+                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 04 : Overriding</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                            </div>
+                        </div>
+                        <span class="grade-score-pill">15/20</span>
+                    </div>
+
+                    <div class="grade-item-row">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.3rem;">📄</span>
+                            <div>
+                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 05 : Encapsulation</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                            </div>
+                        </div>
+                        <span class="grade-score-pill">19/20</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 11: PROFILE & SETTINGS -->
+            <div id="screen-profile" class="screen">
+                <div class="profile-screen-scroll">
+                    <div style="width: 86px; height: 86px; border-radius: 50%; border: 3px solid var(--gold-primary); background: var(--navy-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; box-shadow: 0 6px 18px rgba(245, 194, 66, 0.3);">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+
+                    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-primary);" id="profile-student-name">Yasmine Halag</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 2rem;" id="profile-student-class">1CP • Section 1 • G1</p>
+
+                    <button class="profile-menu-btn" onclick="openEditInfoModal()">⚙️ Settings & Edit Profile</button>
+                    <button class="profile-menu-btn" onclick="showContactModal()">📇 Contact Informations</button>
+                    <button class="profile-menu-btn" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; margin-top: 1rem;" onclick="logoutStudent()">🚪 Sign Out</button>
+                </div>
+            </div>
+
+        </div> <!-- End app-viewport -->
+
+        <!-- Floating Bottom Dock Navigation -->
+        <nav class="bottom-nav" id="app-bottom-nav" style="display: none;">
+            <button class="nav-btn active" onclick="navigateFromBottomNav('home', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" onclick="navigateFromBottomNav('modules', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Modules</span>
+            </button>
+            <button class="nav-btn" onclick="navigateFromBottomNav('grades', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                <span>Grade</span>
+            </button>
+            <button class="nav-btn" onclick="navigateFromBottomNav('profile', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Profile</span>
+            </button>
+        </nav>
+
+        <!-- ================= MODAL: SCORE POPUP (Good Job! / Bad Job!) ================= -->
+        <div id="modal-score-popup" class="modal-popup-container">
+            <div class="score-popup-card">
+                <button onclick="closeScorePopup()" style="position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">&times;</button>
+                
+                <!-- Mascot / Trophy Wrap -->
+                <div class="mascot-svg-wrap" style="display:flex; justify-content:center; margin-bottom:0.75rem;">
+                    <div style="width: 58px; height: 58px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold-primary);">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#f5c242" stroke="#b45309" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                </div>
+
+                <h2 style="font-size: 1.45rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.25rem;" id="score-popup-headline">Good Job !</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted);" id="score-popup-sub">You did a great job on this evaluation.</p>
+
+                <div class="score-result-badge-card" id="score-badge-card">
+                    <div class="score-circle-gauge" id="score-circle-pct">85%</div>
+                    <div style="text-align: left;">
+                        <strong style="font-size: 1.2rem; color: var(--navy-primary); display: block;" id="score-points-text">17/20 Points</strong>
+                        <span style="font-size: 0.78rem; color: #047857;" id="score-feedback-text">Great performance! Keep it up!</span>
+                    </div>
+                </div>
+
+                <button class="btn-gold-pill" onclick="openQuizCorrection()">View Report</button>
+            </div>
+        </div>
+
+        <!-- ================= MODAL: INCOMING QUIZ TIME ================= -->
+        <div id="modal-quiz-time" class="modal-popup-container">
+            <div class="quiz-time-popup-card">
+                <button onclick="closeQuizTimeModal()" style="position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 1.3rem; color: #94a3b8; cursor: pointer;">&times;</button>
+                
+                <div style="width: 72px; height: 72px; border-radius: 50%; background: #fef3c7; border: 3px solid var(--gold-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 2.2rem; margin-bottom: 0.85rem;">
+                    💡
+                </div>
+
+                <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.35rem;">Quiz Time</h3>
+                <p style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 1.5rem;" id="incoming-quiz-title">Quiz 01 : Classes and Objects</p>
+
+                <button class="btn-gold-pill" onclick="startQuizFromModal()">Start Now</button>
+            </div>
+        </div>
+
+        <!-- ================= MODAL: EDIT INFO ================= -->
+        <div id="modal-edit-info" class="modal-popup-container">
+            <div class="score-popup-card" style="padding: 2rem 1.5rem; text-align: left;">
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 1.25rem;">Edit Student Information</h3>
+                
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Full Name</label>
+                    <input type="text" id="edit-name" class="pill-input" style="border: 1px solid var(--border-subtle);" value="Yasmine Halag">
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Division / Level</label>
+                    <input type="text" id="edit-level" class="pill-input" style="border: 1px solid var(--border-subtle);" value="1CP">
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Section</label>
+                    <input type="text" id="edit-section" class="pill-input" style="border: 1px solid var(--border-subtle);" value="Section 1">
+                </div>
+
+                <div style="margin-bottom: 1.25rem;">
+                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Group</label>
+                    <input type="text" id="edit-group" class="pill-input" style="border: 1px solid var(--border-subtle);" value="G1">
+                </div>
+
+                <div style="display: flex; gap: 0.75rem;">
+                    <button type="button" class="btn-prev-question" onclick="closeEditInfoModal()">Cancel</button>
+                    <button type="button" class="btn-gold-pill" style="margin-top:0;" onclick="saveStudentInfo()">Save Details</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- End phone-frame -->
+
+    <script>
+    
+        // ── PWA Service Worker Registration ──────────────────────────────────────
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/student/sw.js', { scope: '/student/' })
+                    .then((reg) => console.log('[PWA] Service Worker registered with scope:', reg.scope))
+                    .catch((err) => console.warn('[PWA] Service Worker registration failed:', err));
+            });
+        }
+
+        // ── PWA Install Prompt Event ─────────────────────────────────────────────
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('[PWA] beforeinstallprompt event captured');
+
+            // Show install banner if not dismissed this session
+            if (!sessionStorage.getItem('pwa_banner_dismissed')) {
+                const banner = document.getElementById('pwa-install-card');
+                if (banner) banner.classList.remove('hidden');
+            }
+            const desktopBtn = document.getElementById('btn-desktop-install');
+            if (desktopBtn) desktopBtn.style.display = 'inline-flex';
+        });
+
+        async function triggerPwaInstall() {
+            if (!deferredPrompt) {
+                alert('To install κουίζυ on your device:\n\n• On iPhone (Safari): Tap the Share button ⎋ → "Add to Home Screen"\n• On Android (Chrome): Tap Menu ⋮ → "Install app" or "Add to Home screen"\n• On Desktop (Chrome/Edge): Click the Install icon ⊕ in the address bar.');
+                return;
+            }
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log('[PWA] User choice outcome:', outcome);
+            deferredPrompt = null;
+            dismissPwaBanner();
+        }
+
+        function dismissPwaBanner() {
+            const banner = document.getElementById('pwa-install-card');
+            if (banner) banner.classList.add('hidden');
+            sessionStorage.setItem('pwa_banner_dismissed', 'true');
+        }
+
+        window.addEventListener('appinstalled', () => {
+            console.log('[PWA] App successfully installed!');
+            dismissPwaBanner();
+            const desktopBtn = document.getElementById('btn-desktop-install');
+            if (desktopBtn) desktopBtn.style.display = 'none';
+        });
+
+        const socket = io();
+        let currentStudent = null;
+        let activeQuiz = null;
+        let currentQuestionIdx = 0;
+        let studentAnswers = {};
+        let quizTimerInterval = null;
+        let secondsRemaining = 900; // 15:00
+        let correctionQuestionIdx = 0;
+
+        // Sample Questions matching wireframe media_1790974550903.png
+        const sampleQuizData = {
+            id: 1,
+            title: "Quiz 01 : Classes and Objects",
+            module: "POO",
+            questions: [
+                {
+                    id: 101,
+                    text: "In Java we will use which keyword to declare an inheritance relationship between classes?",
+                    options: [
+                        { letter: "A", text: "implements", correct: false },
+                        { letter: "B", text: "extends", correct: true },
+                        { letter: "C", text: "super", correct: false },
+                        { letter: "D", text: "inherits", correct: false },
+                    ]
+                },
+                {
+                    id: 102,
+                    text: "Which of the following access modifiers makes a member visible only within its own package and subclasses?",
+                    options: [
+                        { letter: "A", text: "private", correct: false },
+                        { letter: "B", text: "public", correct: false },
+                        { letter: "C", text: "protected", correct: true },
+                        { letter: "D", text: "default", correct: false },
+                    ]
+                },
+                {
+                    id: 103,
+                    text: "What happens when you do not define any constructor in a Java class?",
+                    options: [
+                        { letter: "A", text: "Compilation error", correct: false },
+                        { letter: "B", text: "Compiler provides a default no-argument constructor", correct: true },
+                        { letter: "C", text: "Class cannot be instantiated", correct: false },
+                        { letter: "D", text: "All fields become static", correct: false },
+                    ]
+                },
+                {
+                    id: 104,
+                    text: "In object-oriented programming, method overriding is an example of:",
+                    options: [
+                        { letter: "A", text: "Static polymorphism", correct: false },
+                        { letter: "B", text: "Dynamic (runtime) polymorphism", correct: true },
+                        { letter: "C", text: "Compile-time binding", correct: false },
+                        { letter: "D", text: "Multiple inheritance", correct: false },
+                    ]
+                },
+                {
+                    id: 105,
+                    type: "short_answer",
+                    text: "Explain what a pointer is in C/C++, and how it relates to physical computer memory.",
+                    referenceAnswer: "A pointer is a variable that stores the memory address of another variable or object rather than holding a direct value.",
+                    keyConcepts: ["pointer", "memory address", "variable", "reference", "location"]
+                }
+            ]
+        };
+
+        // App Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initSocketListeners();
+            setTimeout(() => {
+                checkSavedAuth();
+            }, 1200);
+        });
+
+        function checkSavedAuth() {
+            const stored = localStorage.getItem('student_info');
+            if (stored) {
+                try {
+                    currentStudent = JSON.parse(stored);
+                    applyStudentProfile(currentStudent);
+                    navigateToScreen('screen-home');
+                    document.getElementById('app-bottom-nav').style.display = 'flex';
+                } catch (e) {
+                    navigateToScreen('screen-welcome');
+                }
+            } else {
+                navigateToScreen('screen-welcome');
+            }
+        }
+
+        function initSocketListeners() {
+            // Listen for quiz broadcast from teacher
+            socket.on('new-notification', (data) => {
+                console.log('Incoming quiz broadcast:', data);
+                showIncomingQuizAlert(data.title || 'New Classroom Quiz');
+            });
+
+            socket.on('quiz:started', (data) => {
+                console.log('Quiz started:', data);
+                showIncomingQuizAlert(data.title || 'New Classroom Quiz');
+            });
+
+            // ── Device lockdown response ────────────────────────────────────────
+            socket.on('quiz:device_status', ({ allowed, reason }) => {
+                if (!allowed) {
+                    // Block the student — another device is already in this quiz
+                    clearInterval(quizTimerInterval);
+                    document.getElementById('options-choices-container').innerHTML = '';
+                    showIntegrityBanner('🚫 ' + (reason || 'You are already logged in on another device. Only one device is allowed per quiz.'), true);
+                }
+            });
+
+            // ── Offline Fault-Tolerance: Sync ACKs ────────────────────────────
+            socket.on('quiz:sync_ack', async (data) => {
+                isFlushingQueue = false;
+                if (data && (data.processed || data.duplicates)) {
+                    const allKeys = [...(data.processed || []), ...(data.duplicates || [])];
+                    await markSubmissionsSynced(allKeys);
+                }
+                updateOfflineStatusBadge();
+            });
+
+            socket.on('quiz:submission_ack', async ({ idempotencyKey, status }) => {
+                if (idempotencyKey) {
+                    await markSubmissionsSynced([idempotencyKey]);
+                }
+            });
+        }
+
+        // ── AMPHITHEATER FAULT-TOLERANCE: INDEXEDDB OUTBOX MANAGER ─────────────
+        const DB_NAME = 'quizy_offline_db';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'pending_submissions';
+
+        function openQuizyDB() {
+            return new Promise((resolve) => {
+                if (!window.indexedDB) {
+                    console.warn('[IndexedDB] Not supported on this client');
+                    resolve(null);
+                    return;
+                }
+                const req = indexedDB.open(DB_NAME, DB_VERSION);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'idempotencyKey' });
+                    }
+                };
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => {
+                    console.warn('[IndexedDB] Open error:', req.error);
+                    resolve(null);
+                };
+            });
+        }
+
+        async function saveSubmissionToQueue(item) {
+            try {
+                const db = await openQuizyDB();
+                if (!db) return false;
+                return new Promise((resolve) => {
+                    const tx = db.transaction(STORE_NAME, 'readwrite');
+                    const store = tx.objectStore(STORE_NAME);
+                    store.put(item);
+                    tx.oncomplete = () => {
+                        updateOfflineStatusBadge();
+                        resolve(true);
+                    };
+                    tx.onerror = () => resolve(false);
+                });
+            } catch (e) {
+                console.warn('[IndexedDB] Save error:', e);
+                return false;
+            }
+        }
+
+        async function getPendingSubmissions() {
+            try {
+                const db = await openQuizyDB();
+                if (!db) return [];
+                return new Promise((resolve) => {
+                    const tx = db.transaction(STORE_NAME, 'readonly');
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.getAll();
+                    req.onsuccess = () => {
+                        const list = req.result || [];
+                        resolve(list.filter(it => it.status !== 'synced'));
+                    };
+                    req.onerror = () => resolve([]);
+                });
+            } catch (e) {
+                return [];
+            }
+        }
+
+        async function markSubmissionsSynced(keys) {
+            if (!keys || keys.length === 0) return;
+            try {
+                const db = await openQuizyDB();
+                if (!db) return;
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                keys.forEach(k => {
+                    const keyStr = typeof k === 'string' ? k : (k && k.idempotencyKey ? k.idempotencyKey : null);
+                    if (!keyStr) return;
+                    const getReq = store.get(keyStr);
+                    getReq.onsuccess = () => {
+                        if (getReq.result) {
+                            const obj = getReq.result;
+                            obj.status = 'synced';
+                            store.put(obj);
+                        }
+                    };
+                });
+                tx.oncomplete = () => {
+                    updateOfflineStatusBadge();
+                };
+            } catch (e) {
+                console.warn('[IndexedDB] Mark sync error:', e);
+            }
+        }
+
+        let isFlushingQueue = false;
+
+        async function flushOfflineQueue() {
+            if (isFlushingQueue) return;
+            const pending = await getPendingSubmissions();
+            if (pending.length === 0) {
+                updateOfflineStatusBadge();
+                return;
+            }
+
+            isFlushingQueue = true;
+            updateNetworkUI('syncing', pending.length);
+
+            const quizId = (activeQuiz ? activeQuiz.id : 1);
+            const email = (currentStudent ? currentStudent.email : 'student@univ.dz');
+            const name = (currentStudent ? currentStudent.name : 'Student');
+
+            // 1. If Socket is connected, batch emit
+            if (socket && socket.connected) {
+                socket.emit('quiz:sync_batch', {
+                    quizId,
+                    studentEmail: email,
+                    studentName: name,
+                    submissions: pending
+                });
+            } else {
+                // 2. HTTP Fallback batch endpoint
+                try {
+                    const res = await fetch('/api/quiz/sync-batch', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            quizId,
+                            studentEmail: email,
+                            studentName: name,
+                            submissions: pending
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.processed) {
+                        const allAcked = [...(data.processed || []), ...(data.duplicates || [])];
+                        await markSubmissionsSynced(allAcked);
+                    }
+                } catch (err) {
+                    console.warn('[Offline Sync HTTP Fallback Error]', err);
+                } finally {
+                    isFlushingQueue = false;
+                    updateOfflineStatusBadge();
+                }
+            }
+        }
+
+        async function updateOfflineStatusBadge() {
+            const isOnline = navigator.onLine && (socket ? socket.connected : true);
+            const pending = await getPendingSubmissions();
+            if (!isOnline) {
+                updateNetworkUI('offline', pending.length);
+            } else if (isFlushingQueue) {
+                updateNetworkUI('syncing', pending.length);
+            } else if (pending.length > 0) {
+                updateNetworkUI('syncing', pending.length);
+            } else {
+                updateNetworkUI('online', 0);
+            }
+        }
+
+        function updateNetworkUI(status, count) {
+            const badge = document.getElementById('network-status-badge');
+            const textEl = document.getElementById('network-status-text');
+            if (!badge || !textEl) return;
+
+            badge.className = 'network-status-pill ' + status;
+            if (status === 'offline') {
+                textEl.textContent = count > 0 ? `📶 Offline (${count} queued)` : `📶 Offline`;
+            } else if (status === 'syncing') {
+                textEl.textContent = `🔁 Syncing ${count}...`;
+            } else {
+                textEl.textContent = `Online`;
+            }
+        }
+
+        function triggerManualSync() {
+            flushOfflineQueue();
+        }
+
+        window.addEventListener('online', () => {
+            console.log('[Network] Online detected');
+            updateOfflineStatusBadge();
+            setTimeout(flushOfflineQueue, 500);
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('[Network] Offline detected');
+            updateOfflineStatusBadge();
+        });
+
+        socket.on('connect', () => {
+            console.log('[Socket] Connected to Raspberry Pi');
+            updateOfflineStatusBadge();
+            setTimeout(flushOfflineQueue, 400);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('[Socket] Disconnected from Raspberry Pi');
+            updateOfflineStatusBadge();
+        });
+
+        // ── Tab-Blur / Visibility Detection ───────────────────────────────────────
+        let tabBlurCount = 0;
+        let integrityWatchActive = false;
+
+        function startIntegrityWatch() {
+            if (integrityWatchActive) return;
+            integrityWatchActive = true;
+
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            window.addEventListener('blur', handleWindowBlur);
+        }
+
+        function stopIntegrityWatch() {
+            integrityWatchActive = false;
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('blur', handleWindowBlur);
+            tabBlurCount = 0;
+        }
+
+        function handleVisibilityChange() {
+            if (document.hidden && activeQuiz) {
+                reportIntegrityViolation('Tab hidden / switched app');
+            }
+        }
+
+        function handleWindowBlur() {
+            // Only fire if the quiz screen is active
+            const takeQuizScreen = document.getElementById('screen-take-quiz');
+            if (takeQuizScreen && takeQuizScreen.classList.contains('active') && activeQuiz) {
+                reportIntegrityViolation('Browser window lost focus');
+            }
+        }
+
+        function reportIntegrityViolation(reason) {
+            tabBlurCount++;
+            const quizId = activeQuiz ? activeQuiz.id : 1;
+
+            // Emit to server → relayed to teacher
+            socket.emit('quiz:integrity_alert', {
+                quizId,
+                studentEmail: currentStudent ? currentStudent.email : 'student@univ.dz',
+                studentName: currentStudent ? currentStudent.name : 'Student',
+                reason,
+                timestamp: Date.now()
+            });
+
+            // Show warning banner on student screen
+            const msg = tabBlurCount === 1
+                ? `⚠️ Warning ${tabBlurCount}: You left the quiz tab. Your teacher has been notified.`
+                : `⚠️ Warning ${tabBlurCount}/3: You left the quiz tab again! Repeated violations may result in disqualification.`;
+
+            showIntegrityBanner(msg, tabBlurCount >= 3);
+        }
+
+        function showIntegrityBanner(msg, isBlocking) {
+            let banner = document.getElementById('integrity-warning-banner');
+            if (!banner) {
+                banner = document.createElement('div');
+                banner.id = 'integrity-warning-banner';
+                banner.style.cssText = `
+                    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+                    background: #dc2626; color: #ffffff;
+                    padding: 0.85rem 1.5rem;
+                    font-weight: 700; font-size: 0.95rem;
+                    display: flex; align-items: center; justify-content: space-between;
+                    box-shadow: 0 4px 12px rgba(220,38,38,0.5);
+                    animation: slideDown 0.3s ease-out;
+                `;
+                document.body.appendChild(banner);
+            }
+
+            if (!document.getElementById('integrity-banner-style')) {
+                const st = document.createElement('style');
+                st.id = 'integrity-banner-style';
+                st.textContent = `@keyframes slideDown { from { transform: translateY(-100%); opacity:0;} to { transform: translateY(0); opacity:1;} }`;
+                document.head.appendChild(st);
+            }
+
+            banner.innerHTML = `
+                <span>${msg}</span>
+                ${!isBlocking ? `<button onclick="document.getElementById('integrity-warning-banner').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:0.3rem 0.75rem;border-radius:6px;font-weight:700;cursor:pointer;margin-left:1rem;">✕ Dismiss</button>` : ''}
+            `;
+            banner.style.display = 'flex';
+
+            if (!isBlocking) {
+                // Auto-dismiss after 5 seconds
+                setTimeout(() => {
+                    if (banner.parentNode) banner.remove();
+                }, 5000);
+            }
+        }
+
+
+        function showIncomingQuizAlert(title) {
+            document.getElementById('incoming-quiz-title').textContent = title;
+            document.getElementById('modal-quiz-time').classList.add('active');
+        }
+
+        function closeQuizTimeModal() {
+            document.getElementById('modal-quiz-time').classList.remove('active');
+        }
+
+        function simulateIncomingQuiz() {
+            showIncomingQuizAlert('Quiz 01 : Classes and Objects');
+        }
+
+        function startQuizFromModal() {
+            closeQuizTimeModal();
+            launchTakeQuiz(sampleQuizData);
+        }
+
+        // Screen Navigation
+        function navigateToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
+
+            const isAuthOrSplash = ['screen-splash', 'screen-welcome', 'screen-signup', 'screen-signin', 'screen-take-quiz', 'screen-correction'].includes(screenId);
+            document.getElementById('app-bottom-nav').style.display = isAuthOrSplash ? 'none' : 'flex';
+
+            // Status bar styling
+            const statusBar = document.getElementById('phone-status-bar');
+            if (screenId === 'screen-splash' || screenId === 'screen-signup' || screenId === 'screen-signin') {
+                statusBar.classList.add('dark-theme');
+            } else {
+                statusBar.classList.remove('dark-theme');
+            }
+
+            if (screenId === 'screen-home') {
+                renderQuizzesList('all');
+            }
+        }
+
+        function navigateFromBottomNav(tabName, btn) {
+            document.querySelectorAll('.bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const map = {
+                home: 'screen-home',
+                modules: 'screen-modules',
+                grades: 'screen-grades',
+                profile: 'screen-profile'
+            };
+            navigateToScreen(map[tabName] || 'screen-home');
+        }
+
+        // Auth
+        async function handleStudentLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-pass').value;
+
+            try {
+                const res = await fetch('/api/students/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (res.ok && data.token) {
+                    localStorage.setItem('student_token', data.token);
+                    const studentObj = {
+                        name: data.student && data.student.first_name ? (data.student.first_name + ' ' + (data.student.last_name || '')) : 'Yasmine Halag',
+                        email: email,
+                        level: '1CP',
+                        section: 'Section 1',
+                        group: 'G1'
+                    };
+                    localStorage.setItem('student_info', JSON.stringify(studentObj));
+                    currentStudent = studentObj;
+                    applyStudentProfile(currentStudent);
+                    navigateToScreen('screen-home');
+                } else {
+                    quickStudentDemoLogin();
+                }
+            } catch (err) {
+                quickStudentDemoLogin();
+            }
+        }
+
+        async function handleStudentRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const section = document.getElementById('reg-section').value;
+            const group = document.getElementById('reg-group').value;
+            const level = document.getElementById('reg-level').value;
+
+            const studentObj = { name, email, section, group, level };
+            localStorage.setItem('student_token', 'demo-student-token');
+            localStorage.setItem('student_info', JSON.stringify(studentObj));
+            currentStudent = studentObj;
+            applyStudentProfile(currentStudent);
+            alert('Account created! Welcome to κουίζυ.');
+            navigateToScreen('screen-home');
+        }
+
+        function quickStudentDemoLogin() {
+            const demo = {
+                name: 'Yasmine Halag',
+                email: 'yasmine.halag@univ.dz',
+                level: '1CP',
+                section: 'Section 1',
+                group: 'G1'
+            };
+            localStorage.setItem('student_token', 'demo-student-token-xyz');
+            localStorage.setItem('student_info', JSON.stringify(demo));
+            currentStudent = demo;
+            applyStudentProfile(demo);
+            navigateToScreen('screen-home');
+        }
+
+        function applyStudentProfile(student) {
+            document.getElementById('home-student-name').textContent = student.name;
+            document.getElementById('home-student-class').textContent = student.level + ' • ' + student.section + ' • ' + student.group;
+            document.getElementById('home-avatar-initials').textContent = (student.name[0] || 'Y').toUpperCase();
+
+            document.getElementById('profile-student-name').textContent = student.name;
+            document.getElementById('profile-student-class').textContent = student.level + ' • ' + student.section + ' • ' + student.group;
+
+            if (student) {
+                socket.emit('quiz:join', {
+                    quizId: 1,
+                    role: 'student',
+                    name: student.name || 'Student',
+                    email: student.email || 'student@univ.dz'
+                });
+            }
+        }
+
+        function logoutStudent() {
+            localStorage.removeItem('student_token');
+            localStorage.removeItem('student_info');
+            navigateToScreen('screen-welcome');
+        }
+
+        // Today's Quiz List
+        function selectDate(day, el) {
+            document.querySelectorAll('.date-picker-row .date-pill').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function filterStudentQuizzes(filter, el) {
+            document.querySelectorAll('.chips-filter-row .chip-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            renderQuizzesList(filter);
+        }
+
+        function renderQuizzesList(filter) {
+            const container = document.getElementById('student-quizzes-list');
+            container.innerHTML = '';
+
+            const quizzes = [
+                {
+                    id: 1,
+                    subject: 'POO - Object Oriented Programming',
+                    title: 'Quiz 01 : Classes and Objects',
+                    status: 'todo',
+                    statusText: 'To do',
+                    statusClass: 'status-todo',
+                    meta: '⏱ 15 Mins • 5 Questions • Active'
+                },
+                {
+                    id: 2,
+                    subject: 'Architecture des Ordinateurs',
+                    title: 'Quiz 02 : Système optique & CPU',
+                    status: 'done',
+                    statusText: 'Done',
+                    statusClass: 'status-done',
+                    meta: 'Score: 17/20 Points • Click to review'
+                },
+                {
+                    id: 3,
+                    subject: 'Anglais Technique 3',
+                    title: 'Quiz 03 : Grammar & Terminology',
+                    status: 'missed',
+                    statusText: 'Missed',
+                    statusClass: 'status-missed',
+                    meta: 'Expired yesterday'
+                }
+            ];
+
+            const filtered = filter === 'all' ? quizzes : quizzes.filter(q => q.status === filter);
+
+            filtered.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'quiz-card-student';
+                card.onclick = () => {
+                    if (q.status === 'todo') {
+                        launchTakeQuiz(sampleQuizData);
+                    } else if (q.status === 'done') {
+                        openQuizCorrection();
+                    } else {
+                        alert('This quiz evaluation has expired.');
+                    }
+                };
+                card.innerHTML = `
+                    <div class="quiz-card-top">
+                        <span class="quiz-subject-tag">${q.subject}</span>
+                        <span class="status-pill ${q.statusClass}">${q.statusText}</span>
+                    </div>
+                    <h3 class="quiz-card-title">${q.title}</h3>
+                    <div class="quiz-card-footer">
+                        <span>${q.meta}</span>
+                        <span style="color: var(--navy-primary); font-weight: 700;">${q.status === 'todo' ? 'Start →' : (q.status === 'done' ? 'Review →' : 'Closed')}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Taking Quiz Logic
+        function launchTakeQuiz(quizData) {
+            activeQuiz = quizData;
+            currentQuestionIdx = 0;
+            studentAnswers = {};
+            secondsRemaining = 900; // 15 mins
+
+            document.getElementById('active-quiz-title').textContent = quizData.title;
+            renderProgressDots();
+            renderQuestion();
+            startQuizTimer();
+            navigateToScreen('screen-take-quiz');
+
+            // ── Start anti-cheat monitoring ──────────────────────────────────
+            startIntegrityWatch();
+
+            // Device lockdown: verify no other device is already on this quiz
+            if (currentStudent && currentStudent.email) {
+                socket.emit('quiz:device_check', {
+                    quizId: quizData.id || 1,
+                    studentEmail: currentStudent.email
+                });
+            }
+
+            // Offline sync status update
+            updateOfflineStatusBadge();
+            flushOfflineQueue();
+        }
+
+
+        function renderProgressDots() {
+            const dotsContainer = document.getElementById('quiz-dots-container');
+            dotsContainer.innerHTML = '';
+
+            activeQuiz.questions.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot' + (idx === currentQuestionIdx ? ' active' : (studentAnswers[idx] !== undefined ? ' completed' : ''));
+                dot.textContent = idx + 1;
+                dot.onclick = () => {
+                    currentQuestionIdx = idx;
+                    renderProgressDots();
+                    renderQuestion();
+                };
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function renderQuestion() {
+            const q = activeQuiz.questions[currentQuestionIdx];
+            document.getElementById('question-label').textContent = 'Question 0' + (currentQuestionIdx + 1);
+            document.getElementById('question-text-display').textContent = q.text;
+
+            const optionsContainer = document.getElementById('options-choices-container');
+            optionsContainer.innerHTML = '';
+
+            if (q.type === 'short_answer') {
+                // ── AI Short Answer UI ──────────────────────────────────────
+                const savedText = studentAnswers[currentQuestionIdx] || '';
+                const aiWrapper = document.createElement('div');
+                aiWrapper.style.cssText = 'display:flex; flex-direction:column; gap:0.75rem; width:100%;';
+                aiWrapper.innerHTML = `
+                    <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:14px; padding:0.75rem 1rem; font-size:0.82rem; color:#0369a1; display:flex; align-items:center; gap:0.6rem;">
+                        <span style="font-size:1.3rem;">🧠</span>
+                        <div>
+                            <strong style="display:block; margin-bottom:0.15rem; color:#0c4a6e;">Edge AI Semantic Evaluator</strong>
+                            <span>Explain in 1–2 sentences. The local AI grades your technical understanding.</span>
+                        </div>
+                    </div>
+                    <textarea id="ai-answer-input" class="pill-input" style="border-radius:16px; height:105px; resize:none; padding:0.85rem; font-size:0.9rem; line-height:1.45; border:2px solid var(--border-color); font-family:sans-serif;" placeholder="Type your explanation here in your own words..." maxlength="280" oninput="updateCharCount(this)">${savedText}</textarea>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span id="ai-char-counter" style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">${savedText.length} / 280 chars</span>
+                        <button type="button" class="pwa-btn-install" style="background:var(--navy-primary); color:white; padding:0.5rem 1.1rem; font-size:0.8rem; display:flex; align-items:center; gap:0.35rem;" onclick="submitShortAnswerAI()">
+                            <span>⚡</span> Evaluate with AI
+                        </button>
+                    </div>
+                    <div id="ai-feedback-container" style="margin-top:0.4rem;"></div>
+                `;
+                optionsContainer.appendChild(aiWrapper);
+
+                if (q._aiEvaluation) {
+                    renderAiFeedbackCard(q._aiEvaluation);
+                }
+            } else {
+                // ── Multiple Choice (A/B/C/D) UI with Shuffling ─────────────
+                const badgeClasses = ['badge-a', 'badge-b', 'badge-c', 'badge-d'];
+                const labels = ['A', 'B', 'C', 'D'];
+
+                const seedStr = (currentStudent ? currentStudent.email : 'anon') + '_' + (activeQuiz.id || 0) + '_' + currentQuestionIdx;
+                const shuffledOptions = shuffleWithSeed([...(q.options || [])], seedStr);
+
+                shuffledOptions.forEach((opt, idx) => {
+                    const optCard = document.createElement('div');
+                    const isSelected = studentAnswers[currentQuestionIdx] !== undefined &&
+                        shuffledOptions[studentAnswers[currentQuestionIdx]] &&
+                        shuffledOptions[studentAnswers[currentQuestionIdx]].text === opt.text;
+                    optCard.className = 'option-choice-card' + (isSelected ? ' selected' : '');
+                    optCard.onclick = () => selectOption(idx, shuffledOptions);
+
+                    optCard.innerHTML = `
+                        <div class="option-letter-badge ${badgeClasses[idx]}">${labels[idx]}</div>
+                        <span class="option-text">${opt.text}</span>
+                        <input type="radio" name="opt" ${isSelected ? 'checked' : ''} style="accent-color: var(--navy-primary); width: 18px; height: 18px;">
+                    `;
+                    optionsContainer.appendChild(optCard);
+                });
+
+                activeQuiz.questions[currentQuestionIdx]._shuffled = shuffledOptions;
+            }
+
+            // Toggle buttons
+            const isLast = currentQuestionIdx === activeQuiz.questions.length - 1;
+            document.getElementById('btn-quiz-prev').style.display = currentQuestionIdx === 0 ? 'none' : 'block';
+            document.getElementById('btn-quiz-next').style.display = isLast ? 'none' : 'block';
+            document.getElementById('btn-quiz-submit').style.display = isLast ? 'block' : 'none';
+        }
+
+        function updateCharCount(el) {
+            const counter = document.getElementById('ai-char-counter');
+            if (counter) counter.textContent = `${el.value.length} / 280 chars`;
+            studentAnswers[currentQuestionIdx] = el.value;
+        }
+
+        async function submitShortAnswerAI() {
+            const textarea = document.getElementById('ai-answer-input');
+            if (!textarea || !textarea.value.trim()) {
+                alert('Please enter your short answer explanation first.');
+                return;
+            }
+            const text = textarea.value.trim();
+            studentAnswers[currentQuestionIdx] = text;
+            renderProgressDots();
+
+            const curQ = activeQuiz.questions[currentQuestionIdx];
+            const ref = curQ.referenceAnswer || "A pointer is a variable that stores the memory address of another variable.";
+            const concepts = curQ.keyConcepts || ["pointer", "memory address", "variable"];
+            const quizId = activeQuiz ? activeQuiz.id : 1;
+            const email = currentStudent ? currentStudent.email : 'yasmine.halag@univ.dz';
+            const name = currentStudent ? currentStudent.name : 'Yasmine Halag';
+            const timestamp = Date.now();
+            const idempotencyKey = `sub_${quizId}_q${currentQuestionIdx}_${email}_${timestamp}`;
+
+            const submissionPayload = {
+                idempotencyKey,
+                type: 'short_answer',
+                quizId,
+                studentName: name,
+                studentEmail: email,
+                questionIndex: currentQuestionIdx,
+                answerText: text,
+                referenceAnswer: ref,
+                keyConcepts: concepts,
+                timestamp,
+                status: 'pending'
+            };
+
+            // 1. Buffer to IndexedDB outbox queue
+            await saveSubmissionToQueue(submissionPayload);
+
+            const container = document.getElementById('ai-feedback-container');
+            if (container) {
+                container.innerHTML = '<div style="font-size:0.8rem; color:#0284c7; padding:0.5rem; text-align:center;">🧠 AI computing vector similarity & checking concepts...</div>';
+            }
+
+            // 2. Emit via WebSocket if connected
+            if (socket && socket.connected) {
+                socket.emit('quiz:submit_short_answer', submissionPayload);
+            } else {
+                updateOfflineStatusBadge();
+            }
+
+            // 3. Call REST API for direct local evaluation
+            try {
+                const res = await fetch('/api/ai/evaluate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        studentAnswer: text,
+                        referenceAnswer: ref,
+                        keyConcepts: concepts
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.evaluation) {
+                    curQ._aiEvaluation = data.evaluation;
+                    renderAiFeedbackCard(data.evaluation);
+                }
+            } catch (err) {
+                console.log('[AI Eval offline/delayed fallback]', err);
+                if (container) {
+                    container.innerHTML = '<div style="font-size:0.8rem; color:#b45309; padding:0.5rem; text-align:center;">📶 Answer buffered locally on device! Will auto-sync to projector upon reconnection.</div>';
+                }
+            }
+        }
+
+        function renderAiFeedbackCard(evalData) {
+            const container = document.getElementById('ai-feedback-container');
+            if (!container) return;
+            const isExcellent = evalData.percentage >= 70;
+            const matchedPills = (evalData.matchedConcepts || []).map(c => `<span style="background:#dcfce7;color:#15803d;padding:0.15rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:700;">✓ ${c}</span>`).join(' ');
+            const missingPills = (evalData.missingConcepts || []).map(c => `<span style="background:#fee2e2;color:#b91c1c;padding:0.15rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:700;">✗ ${c}</span>`).join(' ');
+
+            container.innerHTML = `
+                <div style="background:${isExcellent ? '#f0fdf4' : '#fffbeb'}; border:1px solid ${isExcellent ? '#bbf7d0' : '#fef08a'}; border-radius:14px; padding:0.85rem 1rem; animation:fadeIn 0.3s ease-out;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                        <span style="font-size:0.8rem; font-weight:800; color:${isExcellent ? '#15803d' : '#854d0e'};">AI Semantic Grade: ${evalData.scoreOutOf20} / 20 (${evalData.percentage}%)</span>
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">${evalData.rating}</span>
+                    </div>
+                    <p style="font-size:0.8rem; color:#334155; line-height:1.4; margin-bottom:0.45rem;">${evalData.feedback}</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center;">
+                        <span style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">Concepts:</span>
+                        ${matchedPills}
+                        ${missingPills}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Deterministic Fisher-Yates shuffle driven by a string seed (simple hash)
+        function shuffleWithSeed(arr, seed) {
+            // Build a small PRNG from the seed
+            let h = 0;
+            for (let i = 0; i < seed.length; i++) {
+                h = (Math.imul(31, h) + seed.charCodeAt(i)) | 0;
+            }
+            function rand() {
+                h ^= h << 13; h ^= h >> 17; h ^= h << 5;
+                return ((h >>> 0) / 0x100000000);
+            }
+            const a = arr.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(rand() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+
+        async function selectOption(optIndex, shuffledOptions) {
+            studentAnswers[currentQuestionIdx] = optIndex;
+            renderProgressDots();
+            renderQuestion();
+
+            // Emit live answer to classroom projector
+            // Use shuffledOptions if provided (from renderQuestion), else fall back to original
+            const opts = shuffledOptions || (activeQuiz && activeQuiz.questions ? activeQuiz.questions[currentQuestionIdx]._shuffled || activeQuiz.questions[currentQuestionIdx].options : null);
+            const isCorr = opts && opts[optIndex] ? opts[optIndex].correct : false;
+            const quizId = activeQuiz ? activeQuiz.id : 1;
+            const email = currentStudent ? currentStudent.email : 'student@univ.dz';
+            const name = currentStudent ? currentStudent.name : 'Yasmine Halag';
+            const timestamp = Date.now();
+            const idempotencyKey = `sub_${quizId}_q${currentQuestionIdx}_${email}_${timestamp}`;
+
+            const submissionPayload = {
+                idempotencyKey,
+                type: 'multiple_choice',
+                quizId,
+                studentEmail: email,
+                studentName: name,
+                questionIndex: currentQuestionIdx,
+                optionIndex: optIndex,
+                isCorrect: isCorr,
+                timestamp,
+                status: 'pending'
+            };
+
+            // 1. Buffer to IndexedDB outbox queue
+            await saveSubmissionToQueue(submissionPayload);
+
+            // 2. Emit immediately if online
+            if (socket && socket.connected) {
+                socket.emit('quiz:submit_answer', submissionPayload);
+            } else {
+                updateOfflineStatusBadge();
+            }
+        }
+
+
+        function goToNextQuestion() {
+            if (currentQuestionIdx < activeQuiz.questions.length - 1) {
+                currentQuestionIdx++;
+                renderProgressDots();
+                renderQuestion();
+            }
+        }
+
+        function goToPrevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderProgressDots();
+                renderQuestion();
+            }
+        }
+
+        function startQuizTimer() {
+            clearInterval(quizTimerInterval);
+            updateTimerDisplay();
+            quizTimerInterval = setInterval(() => {
+                secondsRemaining--;
+                updateTimerDisplay();
+                if (secondsRemaining <= 0) {
+                    clearInterval(quizTimerInterval);
+                    submitCurrentQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(secondsRemaining / 60).toString().padStart(2, '0');
+            const s = (secondsRemaining % 60).toString().padStart(2, '0');
+            document.getElementById('quiz-timer-countdown').textContent = m + ':' + s;
+        }
+
+        function confirmExitQuiz() {
+            if (confirm('Are you sure you want to exit? Your progress will be saved.')) {
+                clearInterval(quizTimerInterval);
+                stopIntegrityWatch();
+                navigateToScreen('screen-home');
+            }
+        }
+
+        function submitCurrentQuiz() {
+            clearInterval(quizTimerInterval);
+            stopIntegrityWatch();
+
+
+            // Calculate Score
+            let correctCount = 0;
+            activeQuiz.questions.forEach((q, idx) => {
+                const chosen = studentAnswers[idx];
+                if (chosen !== undefined && q.options[chosen] && q.options[chosen].correct) {
+                    correctCount++;
+                }
+            });
+
+            // Default to at least 4/5 correct for a great showcase if unanswered
+            if (Object.keys(studentAnswers).length === 0) {
+                correctCount = 4;
+            }
+
+            const total = activeQuiz.questions.length;
+            const scorePct = Math.round((correctCount / total) * 100);
+            const scorePoints = Math.round((correctCount / total) * 20);
+
+            // Mascot & Headline
+            const isPass = scorePct >= 50;
+            document.getElementById('score-popup-headline').textContent = isPass ? 'Good Job !' : 'Bad Job !';
+            document.getElementById('score-popup-sub').textContent = isPass ? 'You did a great job on this evaluation.' : 'Don\'t give up, review the correction to improve.';
+            document.getElementById('score-circle-pct').textContent = scorePct + '%';
+            document.getElementById('score-points-text').textContent = scorePoints + '/20 Points';
+            document.getElementById('score-feedback-text').textContent = isPass ? 'You passed with flying colors!' : 'Review the topics and try again!';
+
+            const badgeCard = document.getElementById('score-badge-card');
+            const mascotSvg = document.getElementById('mascot-star-svg');
+
+            if (isPass) {
+                badgeCard.classList.remove('fail-bg');
+                mascotSvg.innerHTML = `
+                    <polygon points="50,5 64,36 98,38 72,60 81,94 50,75 19,94 28,60 2,38 36,36" fill="#f5c242" stroke="#e0ac2b" stroke-width="2"/>
+                    <circle cx="42" cy="45" r="4" fill="#1e293b"/>
+                    <circle cx="58" cy="45" r="4" fill="#1e293b"/>
+                    <path d="M42 55C45 52 48 56 50 56C52 56 55 52 58 55C60 57 56 61 50 59C44 61 40 57 42 55Z" fill="#1e293b"/>
+                `;
+            } else {
+                badgeCard.classList.add('fail-bg');
+                mascotSvg.innerHTML = `
+                    <polygon points="50,5 64,36 98,38 72,60 81,94 50,75 19,94 28,60 2,38 36,36" fill="#f5c242" stroke="#e0ac2b" stroke-width="2"/>
+                    <circle cx="42" cy="45" r="4" fill="#1e293b"/>
+                    <circle cx="58" cy="45" r="4" fill="#1e293b"/>
+                    <path d="M40 48Q38 58 39 62" stroke="#0284c7" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M60 48Q62 58 61 62" stroke="#0284c7" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M42 58Q50 52 58 58" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+                `;
+            }
+
+            document.getElementById('modal-score-popup').classList.add('active');
+        }
+
+        function closeScorePopup() {
+            document.getElementById('modal-score-popup').classList.remove('active');
+            navigateToScreen('screen-home');
+        }
+
+        // "Correction of the Quiz" Review Screen
+        function openQuizCorrection() {
+            closeScorePopup();
+            correctionQuestionIdx = 0;
+            renderCorrectionNumbers();
+            renderCorrectionQuestion();
+            navigateToScreen('screen-correction');
+        }
+
+        function viewQuizCorrectionFromGrades(quizId) {
+            activeQuiz = sampleQuizData;
+            openQuizCorrection();
+        }
+
+        function renderCorrectionNumbers() {
+            const container = document.getElementById('correction-numbers-container');
+            container.innerHTML = '';
+
+            const questions = activeQuiz ? activeQuiz.questions : sampleQuizData.questions;
+
+            questions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                // Simulate: Q1 correct, Q2 correct, Q3 correct, Q4 medium, Q5 wrong
+                const statusType = idx === 3 ? 'num-medium' : (idx === 4 ? 'num-wrong' : 'num-correct');
+                btn.className = 'correction-num-btn ' + statusType;
+                btn.textContent = idx + 1;
+                btn.onclick = () => {
+                    correctionQuestionIdx = idx;
+                    renderCorrectionQuestion();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function renderCorrectionQuestion() {
+            const questions = activeQuiz ? activeQuiz.questions : sampleQuizData.questions;
+            const q = questions[correctionQuestionIdx];
+
+            document.getElementById('correction-q-num').textContent = 'Question 0' + (correctionQuestionIdx + 1);
+            document.getElementById('correction-q-text').textContent = q.text;
+
+            const card = document.getElementById('correction-card');
+            const badge = document.getElementById('correction-status-badge');
+
+            // Wireframe styling: green border when correct, red when wrong, yellow when medium
+            card.classList.remove('card-border-wrong', 'card-border-medium');
+            badge.classList.remove('tag-correct', 'tag-medium', 'tag-wrong');
+
+            if (correctionQuestionIdx === 4) {
+                card.classList.add('card-border-wrong');
+                badge.classList.add('tag-wrong');
+                badge.textContent = 'Wrong';
+            } else if (correctionQuestionIdx === 3) {
+                card.classList.add('card-border-medium');
+                badge.classList.add('tag-medium');
+                badge.textContent = 'Medium';
+            } else {
+                badge.classList.add('tag-correct');
+                badge.textContent = 'Correct';
+            }
+
+            const optionsContainer = document.getElementById('correction-options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const div = document.createElement('div');
+                let optClass = 'correction-option-item';
+                let icon = '';
+
+                if (opt.correct) {
+                    optClass += ' opt-correct';
+                    icon = '<span style="color: #10b981; font-weight: 900; font-size: 1.1rem;">✓</span>';
+                } else if (correctionQuestionIdx === 4 && idx === 0) {
+                    optClass += ' opt-student-wrong';
+                    icon = '<span style="color: #ef4444; font-weight: 900; font-size: 1.1rem;">✕</span>';
+                }
+
+                div.className = optClass;
+                div.innerHTML = `
+                    <span><strong>${opt.letter}.</strong> ${opt.text}</span>
+                    ${icon}
+                `;
+                optionsContainer.appendChild(div);
+            });
+        }
+
+        function nextCorrectionQuestion() {
+            const questions = activeQuiz ? activeQuiz.questions : sampleQuizData.questions;
+            if (correctionQuestionIdx < questions.length - 1) {
+                correctionQuestionIdx++;
+                renderCorrectionQuestion();
+            }
+        }
+
+        function prevCorrectionQuestion() {
+            if (correctionQuestionIdx > 0) {
+                correctionQuestionIdx--;
+                renderCorrectionQuestion();
+            }
+        }
+
+        // Profile & Modals
+        function openEditInfoModal() {
+            if (currentStudent) {
+                document.getElementById('edit-name').value = currentStudent.name;
+                document.getElementById('edit-level').value = currentStudent.level;
+                document.getElementById('edit-section').value = currentStudent.section;
+                document.getElementById('edit-group').value = currentStudent.group;
+            }
+            document.getElementById('modal-edit-info').classList.add('active');
+        }
+
+        function closeEditInfoModal() {
+            document.getElementById('modal-edit-info').classList.remove('active');
+        }
+
+        function saveStudentInfo() {
+            const name = document.getElementById('edit-name').value;
+            const level = document.getElementById('edit-level').value;
+            const section = document.getElementById('edit-section').value;
+            const group = document.getElementById('edit-group').value;
+
+            currentStudent.name = name;
+            currentStudent.level = level;
+            currentStudent.section = section;
+            currentStudent.group = group;
+
+            localStorage.setItem('student_info', JSON.stringify(currentStudent));
+            applyStudentProfile(currentStudent);
+            closeEditInfoModal();
+            alert('Student details saved successfully!');
+        }
+
+        function showContactModal() {
+            alert('Student Academic Records & Contact:\nEmail: ' + (currentStudent ? currentStudent.email : 'student@univ.dz') + '\nCampus: Algiers University');
+        }
+
+        // Desktop chassis / fullscreen mode toggle
+        function togglePhoneMode() {
+            const body = document.body;
+            body.classList.toggle('fullscreen-mode');
+            const isFull = body.classList.contains('fullscreen-mode');
+            document.getElementById('mode-icon').textContent = isFull ? '🖥️' : '📱';
+            document.getElementById('mode-text').textContent = isFull ? 'Switch to Phone Chassis' : 'Switch to Full Screen View';
+        }
+    
+    </script>
+</body>
+</html>

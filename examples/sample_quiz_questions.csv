@@ -1,0 +1,6 @@
+question,option1,option2,option3,option4,correct
+What is the primary function of an Operating System Kernel?,Manage hardware resources and process execution,Render 3D graphics inside web pages,Compile high-level source code to assembly,Provide power to USB peripheral devices,1
+Which scheduling algorithm may lead to starvation?,Shortest Job Next (SJN),Round Robin (RR),First-Come First-Served (FCFS),Earliest Deadline First (EDF),1
+Which layer of the OSI model does TCP operate on?,Transport Layer,Network Layer,Data Link Layer,Application Layer,1
+What is the purpose of an MMU (Memory Management Unit)?,Translate virtual addresses to physical addresses,Calculate floating-point arithmetic,Manage network packet queues,Store BIOS firmware instructions,1
+Which system call creates a new process in Unix?,fork(),exec(),wait(),exit(),1

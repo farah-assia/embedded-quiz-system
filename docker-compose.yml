@@ -1,0 +1,47 @@
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: embedded-quiz-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-quizquiz}
+      MYSQL_DATABASE: ${DB_NAME:-quiz_app}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-quizquiz}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Node.js Express & Socket.io Quiz Application
+  app:
+    build: .
+    container_name: embedded-quiz-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-7000}
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-quizquiz}
+      DB_NAME: ${DB_NAME:-quiz_app}
+      JWT_SECRET: ${JWT_SECRET:-embedded_quiz_jwt_access_secret_key_32bytes}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET:-embedded_quiz_jwt_refresh_secret_key_32bytes}
+      CORS_ORIGIN: "*"
+    ports:
+      - "${PORT:-7000}:7000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./exports:/app/exports
+
+volumes:
+  mysql_data:

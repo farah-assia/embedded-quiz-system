@@ -1,0 +1,40 @@
+{
+  "name": "embedded-quiz-system",
+  "version": "1.1.0",
+  "description": "An offline, edge-hosted interactive classroom quiz platform running on a Raspberry Pi Wi-Fi Access Point with real-time WebSocket synchronization.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "raspberry-pi",
+    "offline-first",
+    "quiz-system",
+    "education-tech",
+    "socket-io",
+    "express",
+    "mysql",
+    "embedded",
+    "classroom-evaluation"
+  ],
+  "author": "Imen Chouat",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "json2csv": "^6.0.0-alpha.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.13.0",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1"
+  }
+}
