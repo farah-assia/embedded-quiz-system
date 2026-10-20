@@ -2,58 +2,66 @@ import jwt from 'jsonwebtoken';
 import envConfig from '../config/envConfig.js';
 
 /**
- * Authenticate student requests and enforce student/teacher role claim
+ * Universal authentication & RBAC middleware.
+ * - Missing, invalid, or expired tokens return 401 Unauthorized.
+ * - Valid tokens with insufficient role claims return 403 Forbidden.
+ *
+ * @param {string[]|string} roles - Array or single string of permitted roles (e.g. ['teacher'], ['student', 'teacher'])
  */
-export const authenticateStudent = (req, res, next) => {
-    const authHeader = req.header("Authorization") || req.header("authorization");
-    if (!authHeader) {
-        return res.status(401).json({ message: "Access Denied. No token provided." });
-    }
-    const parts = authHeader.split(" ");
-    const token = parts.length === 2 ? parts[1] : parts[0];
-    if (!token) {
-        return res.status(401).json({ message: "Access Denied. Invalid token format." });
-    }
-    try {
-        const decoded = jwt.verify(token, envConfig.JWT_SECRET);
-        if (decoded.role && decoded.role !== 'student' && decoded.role !== 'teacher') {
-            return res.status(403).json({ message: "Access forbidden: Student role required." });
+export const requireAuth = (roles = []) => {
+    const allowedRoles = Array.isArray(roles) ? roles : [roles];
+
+    return (req, res, next) => {
+        const authHeader = req.header("Authorization") || req.header("authorization") || req.headers['authorization'];
+        if (!authHeader) {
+            return res.status(401).json({ message: "Access Denied. No token provided." });
         }
-        req.student = decoded;
-        next();
-    } catch (error) {
-        return res.status(401).json({ message: "Invalid or expired token." });
-    }
+
+        const parts = authHeader.trim().split(" ");
+        const token = parts.length === 2 ? parts[1] : parts[0];
+        if (!token) {
+            return res.status(401).json({ message: "Access Denied. Invalid token format." });
+        }
+
+        try {
+            const decoded = jwt.verify(token, envConfig.JWT_SECRET);
+
+            if (allowedRoles.length > 0 && (!decoded.role || !allowedRoles.includes(decoded.role))) {
+                return res.status(403).json({
+                    message: `Access forbidden: ${allowedRoles.join(' or ')} role required.`
+                });
+            }
+
+            req.user = decoded;
+            if (decoded.role === 'teacher') req.teacher = decoded;
+            if (decoded.role === 'student') req.student = decoded;
+
+            next();
+        } catch (error) {
+            return res.status(401).json({ message: "Invalid or expired token." });
+        }
+    };
 };
 
 /**
- * Authenticate teacher requests and enforce strict teacher role claim
+ * Strict teacher authentication middleware (rejects students and others with 403)
  */
-export const authTeacherMiddleware = (req, res, next) => {
-    try {
-        const authHeader = req.headers['authorization'] || req.headers['Authorization'];
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({ message: "No token provided or format incorrect." });
-        }
-        const token = authHeader.split(" ")[1];
-        if (!token) {
-            return res.status(401).json({ message: "No token attached." });
-        }
-        const decoded = jwt.verify(token, envConfig.JWT_SECRET);
-        
-        // Strict RBAC: Prevent student tokens from accessing teacher resources
-        if (decoded.role && decoded.role !== 'teacher') {
-            return res.status(403).json({ message: "Access forbidden: Teacher role required." });
-        }
+export const authTeacherMiddleware = requireAuth(['teacher']);
 
-        req.teacher = decoded;
-        next();
-    } catch (error) {
-        return res.status(403).json({ message: "Token not authorized or expired." });
-    }
-};
+/**
+ * Student-permitted authentication middleware (allows student or teacher)
+ */
+export const authenticateStudent = requireAuth(['student', 'teacher']);
+
+/**
+ * Any authenticated user
+ */
+export const authenticateAny = requireAuth(['teacher', 'student', 'projector']);
 
 export default {
+    requireAuth,
     authTeacherMiddleware,
-    authenticateStudent
+    authenticateStudent,
+    authenticateAny
 };
+
