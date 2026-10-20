@@ -1325,12 +1325,12 @@
                                     <div class="cockpit-tile-label">Direct-Mapped Cache</div>
                                 </div>
 
-                                <!-- Option B (Correct) -->
-                                <div class="cockpit-answer-tile revealed-correct" id="live-tile-1">
+                                <!-- Option B -->
+                                <div class="cockpit-answer-tile" id="live-tile-1">
                                     <div class="cockpit-tile-fill-bar" style="width: 71%;"></div>
                                     <div class="cockpit-tile-header">
-                                        <span class="cockpit-tile-key" style="border-color:var(--mint-success); color:var(--mint-success);">B</span>
-                                        <span class="cockpit-tile-percentage" style="color:var(--mint-success);">71% (27 votes)</span>
+                                        <span class="cockpit-tile-key">B</span>
+                                        <span class="cockpit-tile-percentage">71% (27 votes)</span>
                                     </div>
                                     <div class="cockpit-tile-label">Fully Associative Cache</div>
                                 </div>
@@ -1525,13 +1525,27 @@
         }
 
         function cockpitReveal() {
-            document.querySelectorAll('.cockpit-answer-tile').forEach(t => t.style.opacity = '0.5');
+            document.querySelectorAll('.cockpit-answer-tile').forEach(t => {
+                t.style.opacity = '0.45';
+                t.classList.remove('revealed-correct');
+            });
             const correctTile = document.getElementById('live-tile-1');
             if (correctTile) {
+                correctTile.classList.add('revealed-correct');
                 correctTile.style.opacity = '1';
                 correctTile.style.transform = 'scale(1.02)';
+                const key = correctTile.querySelector('.cockpit-tile-key');
+                if (key) {
+                    key.style.borderColor = 'var(--mint-success)';
+                    key.style.color = 'var(--mint-success)';
+                }
+                const pct = correctTile.querySelector('.cockpit-tile-percentage');
+                if (pct) {
+                    pct.style.color = 'var(--mint-success)';
+                    pct.textContent = '71% (27 votes) ✓ Correct';
+                }
             }
-            showToast('Correct answer revealed on amphitheater screen!');
+            showToast('Correct answer (B) revealed on amphitheater screen!');
             socket.emit('quiz:reveal', { questionId: 2, answer: 'B' });
         }
 
@@ -1542,9 +1556,22 @@
             document.getElementById('live-q-statement').textContent = 'In direct-mapped cache, what formula determines which cache line index a 32-bit physical address maps to?';
 
             document.querySelectorAll('.cockpit-answer-tile').forEach(t => {
+                t.classList.remove('revealed-correct');
                 t.style.opacity = '1';
                 t.style.transform = 'none';
+                const key = t.querySelector('.cockpit-tile-key');
+                if (key) {
+                    key.style.borderColor = 'var(--border-warm)';
+                    key.style.color = 'var(--text-heading)';
+                }
+                const pct = t.querySelector('.cockpit-tile-percentage');
+                if (pct) {
+                    pct.style.color = 'var(--text-heading)';
+                }
             });
+            const tile1Pct = document.getElementById('live-tile-1')?.querySelector('.cockpit-tile-percentage');
+            if (tile1Pct) tile1Pct.textContent = '71% (27 votes)';
+
             showToast('Advanced to Question 3.');
             socket.emit('quiz:question_change', { questionIndex: 3 });
         }
