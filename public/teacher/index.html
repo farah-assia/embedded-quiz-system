@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bloom Campus · Teacher Portal & Dashboard</title>
+    <title>κουίζυ · Teacher Portal & Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,25 +13,26 @@
             /* ========================================================
                THEME: Warm Nordic & Paper Pastel (Notion / Craft style)
                ======================================================== */
-            --bg-canvas: #FBFBFA;         /* Soft warm ivory / paper */
+            --bg-canvas: #FAF9F6;         /* Soft warm ivory / paper workspace */
+            --bg-sidebar: #F4F2ED;        /* Notion-style warm stone navigation */
             --bg-surface: #FFFFFF;        /* Pure crisp card surface */
-            --bg-subtle: #F4F3EF;         /* Warm neutral hover / tint */
-            --bg-muted: #ECEAE4;          /* Soft border & dividers */
+            --bg-subtle: #ECE9E2;         /* Warm neutral hover / tint */
+            --bg-muted: #E2DFD7;          /* Soft border & dividers */
             
-            --border-warm: #EAE8E3;       /* Delicate warm border */
-            --border-hover: #D7D4CC;      /* Slightly deeper on hover */
+            --border-warm: #E6E3DB;       /* Delicate warm border */
+            --border-hover: #D5D1C7;      /* Slightly deeper on hover */
 
             /* Typography: Warm charcoal (never harsh pitch black) */
-            --text-heading: #2F3437;      /* Warm dark slate/charcoal */
-            --text-body: #4B5156;         /* Comfortable reading slate */
-            --text-muted: #787D82;        /* Secondary captions */
-            --text-light: #9B9E9E;        /* Subtle timestamps / pills */
+            --text-heading: #2D3134;      /* Warm dark slate/charcoal */
+            --text-body: #4A5055;         /* Comfortable reading slate */
+            --text-muted: #7A8086;        /* Secondary captions */
+            --text-light: #9DA3A8;        /* Subtle timestamps / pills */
 
             /* Semantic Accents: Soft & Calming */
             --sage-primary: #3E6F58;      /* Warm Sage Green */
-            --sage-hover: #325B48;
-            --sage-light: #EDF4F0;        /* Pastel Sage Tint */
-            --sage-border: #C6DEC9;
+            --sage-hover: #315A47;
+            --sage-light: #EBF3EE;        /* Pastel Sage Tint */
+            --sage-border: #C4DEC8;
 
             --ai-lavender: #7C3AED;       /* Pastel AI Lilac */
             --ai-light: #F5F3FF;
@@ -50,10 +51,10 @@
             --rose-border: #FECDD3;
 
             /* Soft Paper Shadows */
-            --shadow-subtle: 0 1px 3px rgba(47, 52, 55, 0.04), 0 1px 2px rgba(47, 52, 55, 0.02);
-            --shadow-card: 0 2px 6px -1px rgba(47, 52, 55, 0.05), 0 1px 4px -1px rgba(47, 52, 55, 0.03);
-            --shadow-hover: 0 6px 12px -2px rgba(47, 52, 55, 0.08), 0 3px 6px -2px rgba(47, 52, 55, 0.04);
-            --shadow-modal: 0 16px 32px -4px rgba(47, 52, 55, 0.12), 0 6px 12px -4px rgba(47, 52, 55, 0.06);
+            --shadow-subtle: 0 1px 3px rgba(45, 49, 52, 0.04), 0 1px 2px rgba(45, 49, 52, 0.02);
+            --shadow-card: 0 2px 6px -1px rgba(45, 49, 52, 0.05), 0 1px 4px -1px rgba(45, 49, 52, 0.03);
+            --shadow-hover: 0 6px 12px -2px rgba(45, 49, 52, 0.08), 0 3px 6px -2px rgba(45, 49, 52, 0.04);
+            --shadow-modal: 0 16px 32px -4px rgba(45, 49, 52, 0.12), 0 6px 12px -4px rgba(45, 49, 52, 0.06);
 
             --radius-xs: 6px;
             --radius-sm: 8px;
@@ -82,11 +83,11 @@
         }
 
         /* ========================================================
-           PERSISTENT SIDEBAR (Fixed Desktop, Compact Mobile)
+           UPGRADED PROFESSIONAL SIDEBAR (Notion / Linear Craft)
            ======================================================== */
         aside.bloom-sidebar {
             width: 260px;
-            background: var(--bg-surface);
+            background: var(--bg-sidebar);
             border-right: 1px solid var(--border-warm);
             display: flex;
             flex-direction: column;
@@ -98,39 +99,36 @@
             transition: all 0.2s ease;
         }
 
+        /* Clean Brand Header with κουίζυ Logo */
         .sidebar-brand-box {
-            padding: 1.35rem 1.5rem;
+            padding: 1.25rem 1.4rem 1.15rem;
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            flex-direction: column;
+            gap: 0.4rem;
             border-bottom: 1px solid var(--border-warm);
+            background: #F1EFEA;
         }
 
-        .brand-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--sage-primary) 0%, #4D7C5F 100%);
-            border-radius: var(--radius-sm);
+        .brand-logo-wrap {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-size: 1.25rem;
-            box-shadow: 0 2px 4px rgba(62, 111, 88, 0.2);
+            gap: 0.65rem;
         }
 
-        .brand-titles h1 {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: var(--text-heading);
-            letter-spacing: -0.015em;
-            line-height: 1.15;
+        .brand-logo-img {
+            height: 32px;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
         }
 
-        .brand-titles span {
-            font-size: 0.7rem;
-            font-weight: 500;
+        .brand-workspace-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
             color: var(--text-muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
         }
 
         .sidebar-menu-scroll {
@@ -139,7 +137,7 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.4rem;
         }
 
         .menu-group-header {
@@ -163,9 +161,9 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.6rem 0.75rem;
+            padding: 0.55rem 0.75rem;
             border-radius: var(--radius-sm);
-            border: none;
+            border: 1px solid transparent;
             background: transparent;
             color: var(--text-body);
             font-family: var(--font-sans);
@@ -174,6 +172,7 @@
             cursor: pointer;
             text-align: left;
             transition: all 0.15s ease;
+            position: relative;
         }
 
         .menu-nav-button:hover {
@@ -182,22 +181,45 @@
         }
 
         .menu-nav-button.active {
-            background: var(--sage-light);
+            background: var(--bg-surface);
             color: var(--sage-primary);
             font-weight: 600;
+            border-color: var(--border-warm);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
         }
 
-        .menu-item-icon {
-            font-size: 1.05rem;
-            width: 22px;
+        .menu-nav-button.active::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 6px;
+            bottom: 6px;
+            width: 3px;
+            border-radius: 2px;
+            background: var(--sage-primary);
+        }
+
+        .menu-svg-icon {
+            width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-muted);
+            stroke: var(--text-muted);
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.15s ease;
+            flex-shrink: 0;
         }
 
-        .menu-nav-button.active .menu-item-icon {
-            color: var(--sage-primary);
+        .menu-nav-button:hover .menu-svg-icon {
+            stroke: var(--text-heading);
+        }
+
+        .menu-nav-button.active .menu-svg-icon {
+            stroke: var(--sage-primary);
         }
 
         .badge-live-pulse {
@@ -206,12 +228,13 @@
             color: var(--rose-danger);
             font-size: 0.65rem;
             font-weight: 700;
-            padding: 0.15rem 0.45rem;
+            padding: 0.12rem 0.45rem;
             border-radius: var(--radius-pill);
             letter-spacing: 0.04em;
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
+            border: 1px solid var(--rose-border);
         }
 
         .badge-live-pulse::before {
@@ -231,20 +254,21 @@
 
         .badge-count {
             margin-left: auto;
-            background: var(--bg-subtle);
+            background: rgba(0, 0, 0, 0.04);
             color: var(--text-muted);
             font-size: 0.72rem;
             font-weight: 600;
             padding: 0.1rem 0.5rem;
             border-radius: var(--radius-pill);
             font-family: var(--font-mono);
+            border: 1px solid var(--border-warm);
         }
 
         /* Teacher Profile Bottom Footer */
         .sidebar-user-footer {
-            padding: 1rem 1.25rem;
+            padding: 0.95rem 1.25rem;
             border-top: 1px solid var(--border-warm);
-            background: #FAF9F6;
+            background: #EFECE6;
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -254,6 +278,10 @@
 
         .sidebar-user-footer:hover {
             background: var(--bg-subtle);
+        }
+
+        .user-avatar-wrap {
+            position: relative;
         }
 
         .user-avatar-circle {
@@ -270,6 +298,17 @@
             border: 1px solid var(--sage-border);
         }
 
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--sage-primary);
+            border-radius: 50%;
+            border: 2px solid #EFECE6;
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+        }
+
         .user-meta-info h4 {
             font-size: 0.825rem;
             font-weight: 700;
@@ -283,7 +322,7 @@
         }
 
         /* ========================================================
-           MAIN VIEWPORT & TOPBAR
+           MAIN WORKSPACE & TOPBAR
            ======================================================== */
         main.bloom-main-workspace {
             margin-left: 260px;
@@ -376,16 +415,6 @@
             background: var(--bg-subtle);
             color: var(--text-heading);
             border-color: var(--border-hover);
-        }
-
-        .btn-ai {
-            background: var(--ai-light);
-            color: var(--ai-lavender);
-            border-color: var(--ai-border);
-        }
-
-        .btn-ai:hover {
-            background: #ede9fe;
         }
 
         .btn-sm {
@@ -579,12 +608,6 @@
             border: 1px solid var(--border-warm);
         }
 
-        .pill-ongoing {
-            background: var(--sage-light);
-            color: var(--sage-primary);
-            border: 1px solid var(--sage-border);
-        }
-
         .recent-quiz-specs {
             font-size: 0.76rem;
             color: var(--text-muted);
@@ -652,7 +675,7 @@
         .modal-shade {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(47, 52, 55, 0.4);
+            background: rgba(45, 49, 52, 0.4);
             backdrop-filter: blur(4px);
             z-index: 100;
             display: none;
@@ -688,7 +711,7 @@
         }
 
         .toast-card {
-            background: #2F3437;
+            background: #2D3134;
             color: #FFFFFF;
             padding: 0.75rem 1.25rem;
             border-radius: var(--radius-sm);
@@ -709,14 +732,14 @@
 </head>
 <body>
 
-    <!-- Persistent Fixed Sidebar -->
+    <!-- Persistent Fixed Sidebar (Notion-Craft Upgraded) -->
     <aside class="bloom-sidebar">
+        <!-- Official κουίζυ Logo Header -->
         <div class="sidebar-brand-box">
-            <div class="brand-icon">🌿</div>
-            <div class="brand-titles">
-                <h1>Bloom Campus</h1>
-                <span>Teacher workspace · Teacher Portal & Dashboard</span>
+            <div class="brand-logo-wrap">
+                <img src="/images/quizy-logo-sage.png" alt="κουίζυ Logo" class="brand-logo-img">
             </div>
+            <div class="brand-workspace-tag">Teacher Portal & Dashboard</div>
         </div>
 
         <nav class="sidebar-menu-scroll">
@@ -725,34 +748,34 @@
                 <ul class="menu-list">
                     <li>
                         <button class="menu-nav-button active" onclick="activateSection('welcome', this)">
-                            <span class="menu-item-icon">🏠</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                             <span>Welcome Home</span>
                         </button>
                     </li>
                     <li>
                         <button class="menu-nav-button" onclick="notifyUpcomingPage('Live Cockpit')">
-                            <span class="menu-item-icon">⚡</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
                             <span>Live Cockpit</span>
                             <span class="badge-live-pulse">LIVE</span>
                         </button>
                     </li>
                     <li>
                         <button class="menu-nav-button" onclick="notifyUpcomingPage('Classes & Students')">
-                            <span class="menu-item-icon">👥</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <span>Classes & Students</span>
                             <span class="badge-count">3</span>
                         </button>
                     </li>
                     <li>
                         <button class="menu-nav-button" onclick="notifyUpcomingPage('Quizzes & Bank')">
-                            <span class="menu-item-icon">📝</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                             <span>Quizzes & Bank</span>
                             <span class="badge-count">4</span>
                         </button>
                     </li>
                     <li>
                         <button class="menu-nav-button" onclick="notifyUpcomingPage('Results & Analytics')">
-                            <span class="menu-item-icon">📊</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                             <span>Results & Analytics</span>
                         </button>
                     </li>
@@ -764,13 +787,13 @@
                 <ul class="menu-list">
                     <li>
                         <button class="menu-nav-button" onclick="notifyUpcomingPage('Settings')">
-                            <span class="menu-item-icon">⚙️</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             <span>Settings</span>
                         </button>
                     </li>
                     <li>
                         <button class="menu-nav-button" onclick="notifyUpcomingPage('Teacher Profile')">
-                            <span class="menu-item-icon">👤</span>
+                            <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             <span>Teacher Profile</span>
                         </button>
                     </li>
@@ -779,10 +802,13 @@
         </nav>
 
         <div class="sidebar-user-footer" onclick="notifyUpcomingPage('Teacher Profile')">
-            <div class="user-avatar-circle">AB</div>
+            <div class="user-avatar-wrap">
+                <div class="user-avatar-circle">AB</div>
+                <div class="online-dot"></div>
+            </div>
             <div class="user-meta-info">
                 <h4>Dr. Amina Benali</h4>
-                <p>Computer Architecture</p>
+                <p>Computer Architecture · ESI</p>
             </div>
         </div>
     </aside>
