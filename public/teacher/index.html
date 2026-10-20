@@ -10,49 +10,56 @@
     <script src="/socket.io/socket.io.js"></script>
     <style>
         :root {
-            /* Palette: Soft, airy, pastel modern SaaS (Notion / Linear / Bloom) */
-            --bg-app: #f8fafc;
-            --bg-surface: #ffffff;
-            --bg-subtle: #f1f5f9;
-            --border-color: #e2e8f0;
-            --border-focus: #c7d2fe;
+            /* ========================================================
+               THEME: Warm Nordic & Paper Pastel (Notion / Craft style)
+               ======================================================== */
+            --bg-canvas: #FBFBFA;         /* Soft warm ivory / paper */
+            --bg-surface: #FFFFFF;        /* Pure crisp card surface */
+            --bg-subtle: #F4F3EF;         /* Warm neutral hover / tint */
+            --bg-muted: #ECEAE4;          /* Soft border & dividers */
             
-            --text-heading: #0f172a;
-            --text-body: #334155;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
+            --border-warm: #EAE8E3;       /* Delicate warm border */
+            --border-hover: #D7D4CC;      /* Slightly deeper on hover */
 
-            /* Brand & Pastel Accents */
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --primary-light: #eef2ff;
-            --primary-border: #c7d2fe;
+            /* Typography: Warm charcoal (never harsh pitch black) */
+            --text-heading: #2F3437;      /* Warm dark slate/charcoal */
+            --text-body: #4B5156;         /* Comfortable reading slate */
+            --text-muted: #787D82;        /* Secondary captions */
+            --text-light: #9B9E9E;        /* Subtle timestamps / pills */
 
-            --ai-lavender: #7c3aed;
-            --ai-lavender-bg: #f5f3ff;
-            --ai-lavender-border: #ddd6fe;
+            /* Semantic Accents: Soft & Calming */
+            --sage-primary: #3E6F58;      /* Warm Sage Green */
+            --sage-hover: #325B48;
+            --sage-light: #EDF4F0;        /* Pastel Sage Tint */
+            --sage-border: #C6DEC9;
 
-            --success: #059669;
-            --success-bg: #ecfdf5;
-            --success-border: #a7f3d0;
+            --ai-lavender: #7C3AED;       /* Pastel AI Lilac */
+            --ai-light: #F5F3FF;
+            --ai-border: #DDD6FE;
 
-            --warning: #d97706;
-            --warning-bg: #fffbeb;
-            --warning-border: #fde68a;
+            --mint-success: #2E7D32;      /* Gentle Mint */
+            --mint-light: #E8F5E9;
+            --mint-border: #C8E6C9;
 
-            --danger: #e11d48;
-            --danger-bg: #fff1f2;
-            --danger-border: #fecdd3;
+            --peach-warning: #D97706;     /* Warm Apricot / Honey */
+            --peach-light: #FFFBEB;
+            --peach-border: #FDE68A;
 
-            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-            
+            --rose-danger: #E11D48;       /* Soft Rose Coral */
+            --rose-light: #FFF1F2;
+            --rose-border: #FECDD3;
+
+            /* Soft Paper Shadows */
+            --shadow-subtle: 0 1px 3px rgba(47, 52, 55, 0.04), 0 1px 2px rgba(47, 52, 55, 0.02);
+            --shadow-card: 0 2px 6px -1px rgba(47, 52, 55, 0.05), 0 1px 4px -1px rgba(47, 52, 55, 0.03);
+            --shadow-hover: 0 6px 12px -2px rgba(47, 52, 55, 0.08), 0 3px 6px -2px rgba(47, 52, 55, 0.04);
+            --shadow-modal: 0 16px 32px -4px rgba(47, 52, 55, 0.12), 0 6px 12px -4px rgba(47, 52, 55, 0.06);
+
+            --radius-xs: 6px;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            --radius-full: 9999px;
+            --radius-pill: 9999px;
 
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
@@ -66,7 +73,7 @@
 
         body {
             font-family: var(--font-sans);
-            background-color: var(--bg-app);
+            background-color: var(--bg-canvas);
             color: var(--text-body);
             display: flex;
             min-height: 100vh;
@@ -74,11 +81,13 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Fixed Sidebar */
-        aside.sidebar {
+        /* ========================================================
+           PERSISTENT SIDEBAR (Fixed Desktop, Compact Mobile)
+           ======================================================== */
+        aside.bloom-sidebar {
             width: 260px;
             background: var(--bg-surface);
-            border-right: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-warm);
             display: flex;
             flex-direction: column;
             position: fixed;
@@ -89,67 +98,67 @@
             transition: all 0.2s ease;
         }
 
-        .sidebar-brand {
-            padding: 1.25rem 1.5rem;
+        .sidebar-brand-box {
+            padding: 1.35rem 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-warm);
         }
 
-        .brand-logo-icon {
+        .brand-icon {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--sage-primary) 0%, #4D7C5F 100%);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            font-size: 1.2rem;
-            box-shadow: var(--shadow-sm);
+            font-size: 1.25rem;
+            box-shadow: 0 2px 4px rgba(62, 111, 88, 0.2);
         }
 
-        .brand-text h1 {
+        .brand-titles h1 {
             font-size: 1.05rem;
             font-weight: 800;
             color: var(--text-heading);
-            letter-spacing: -0.02em;
-            line-height: 1.1;
+            letter-spacing: -0.015em;
+            line-height: 1.15;
         }
 
-        .brand-text span {
+        .brand-titles span {
             font-size: 0.7rem;
             font-weight: 500;
             color: var(--text-muted);
         }
 
-        .sidebar-nav {
+        .sidebar-menu-scroll {
             flex: 1;
             padding: 1.25rem 0.85rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
-        .nav-section-title {
+        .menu-group-header {
             font-size: 0.68rem;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--text-light);
-            padding: 0 0.65rem 0.4rem;
+            padding: 0 0.75rem 0.45rem;
         }
 
-        .nav-links {
+        .menu-list {
             list-style: none;
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
         }
 
-        .nav-item-btn {
+        .menu-nav-button {
             width: 100%;
             display: flex;
             align-items: center;
@@ -165,22 +174,21 @@
             cursor: pointer;
             text-align: left;
             transition: all 0.15s ease;
-            position: relative;
         }
 
-        .nav-item-btn:hover {
+        .menu-nav-button:hover {
             background: var(--bg-subtle);
             color: var(--text-heading);
         }
 
-        .nav-item-btn.active {
-            background: var(--primary-light);
-            color: var(--primary);
+        .menu-nav-button.active {
+            background: var(--sage-light);
+            color: var(--sage-primary);
             font-weight: 600;
         }
 
-        .nav-item-icon {
-            font-size: 1.1rem;
+        .menu-item-icon {
+            font-size: 1.05rem;
             width: 22px;
             display: flex;
             align-items: center;
@@ -188,55 +196,55 @@
             color: var(--text-muted);
         }
 
-        .nav-item-btn.active .nav-item-icon {
-            color: var(--primary);
+        .menu-nav-button.active .menu-item-icon {
+            color: var(--sage-primary);
         }
 
-        .nav-badge-live {
+        .badge-live-pulse {
             margin-left: auto;
-            background: #ffe4e6;
-            color: #e11d48;
+            background: var(--rose-light);
+            color: var(--rose-danger);
             font-size: 0.65rem;
             font-weight: 700;
             padding: 0.15rem 0.45rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-pill);
             letter-spacing: 0.04em;
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
         }
 
-        .nav-badge-live::before {
+        .badge-live-pulse::before {
             content: '';
             width: 5px;
             height: 5px;
-            background: #e11d48;
+            background: var(--rose-danger);
             border-radius: 50%;
-            animation: pulse-dot 1.4s infinite;
+            animation: live-blink 1.4s infinite;
         }
 
-        @keyframes pulse-dot {
+        @keyframes live-blink {
             0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.4); opacity: 1; }
+            50% { transform: scale(1.35); opacity: 1; }
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
-        .nav-badge-count {
+        .badge-count {
             margin-left: auto;
             background: var(--bg-subtle);
             color: var(--text-muted);
             font-size: 0.72rem;
             font-weight: 600;
             padding: 0.1rem 0.5rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-pill);
             font-family: var(--font-mono);
         }
 
-        /* Sidebar Footer (Profile snapshot) */
-        .sidebar-footer {
+        /* Teacher Profile Bottom Footer */
+        .sidebar-user-footer {
             padding: 1rem 1.25rem;
-            border-top: 1px solid var(--border-color);
-            background: #fafafa;
+            border-top: 1px solid var(--border-warm);
+            background: #FAF9F6;
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -244,39 +252,40 @@
             transition: background 0.15s ease;
         }
 
-        .sidebar-footer:hover {
+        .sidebar-user-footer:hover {
             background: var(--bg-subtle);
         }
 
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: var(--radius-full);
-            background: #e0e7ff;
-            color: var(--primary);
+        .user-avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-pill);
+            background: var(--sage-light);
+            color: var(--sage-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
-            border: 2px solid #ffffff;
-            box-shadow: var(--shadow-xs);
+            font-size: 0.85rem;
+            border: 1px solid var(--sage-border);
         }
 
-        .user-meta h4 {
+        .user-meta-info h4 {
             font-size: 0.825rem;
             font-weight: 700;
             color: var(--text-heading);
-            line-height: 1.1;
+            line-height: 1.15;
         }
 
-        .user-meta p {
+        .user-meta-info p {
             font-size: 0.7rem;
             color: var(--text-muted);
         }
 
-        /* Main Workspace Wrapper */
-        main.main-viewport {
+        /* ========================================================
+           MAIN VIEWPORT & TOPBAR
+           ======================================================== */
+        main.bloom-main-workspace {
             margin-left: 260px;
             flex: 1;
             display: flex;
@@ -284,51 +293,51 @@
             min-height: 100vh;
         }
 
-        /* Header Bar */
-        header.topbar {
+        header.bloom-topbar {
             height: 64px;
             background: var(--bg-surface);
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-warm);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 2rem;
+            padding: 0 2.25rem;
             position: sticky;
             top: 0;
             z-index: 40;
         }
 
-        .topbar-left {
+        .topbar-left-zone {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .topbar-page-title {
+        .day-context-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.65rem;
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--sage-border);
+        }
+
+        .page-title-text {
             font-size: 1.1rem;
             font-weight: 800;
             color: var(--text-heading);
-            letter-spacing: -0.01em;
+            letter-spacing: -0.015em;
         }
 
-        .topbar-pill-day {
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            padding: 0.25rem 0.65rem;
-            background: var(--primary-light);
-            color: var(--primary);
-            border-radius: var(--radius-full);
-        }
-
-        .topbar-right {
+        .topbar-right-zone {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
 
-        /* Universal Button Styles */
+        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -347,46 +356,36 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: var(--sage-primary);
             color: #ffffff;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 1px 2px rgba(62, 111, 88, 0.15);
         }
 
         .btn-primary:hover {
-            background: var(--primary-hover);
+            background: var(--sage-hover);
         }
 
         .btn-secondary {
             background: var(--bg-surface);
             color: var(--text-body);
-            border-color: var(--border-color);
-            box-shadow: var(--shadow-xs);
+            border-color: var(--border-warm);
+            box-shadow: var(--shadow-subtle);
         }
 
         .btn-secondary:hover {
             background: var(--bg-subtle);
             color: var(--text-heading);
-            border-color: #cbd5e1;
+            border-color: var(--border-hover);
         }
 
         .btn-ai {
-            background: var(--ai-lavender-bg);
+            background: var(--ai-light);
             color: var(--ai-lavender);
-            border-color: var(--ai-lavender-border);
+            border-color: var(--ai-border);
         }
 
         .btn-ai:hover {
             background: #ede9fe;
-            color: #6d28d9;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: #ffffff;
-        }
-
-        .btn-success:hover {
-            background: #047857;
         }
 
         .btn-sm {
@@ -394,708 +393,266 @@
             font-size: 0.78rem;
         }
 
-        /* Content Area */
-        .workspace-content {
-            padding: 2rem;
+        /* Content Canvas */
+        .workspace-canvas {
+            padding: 2.25rem;
             flex: 1;
-            max-width: 1360px;
+            max-width: 1280px;
             width: 100%;
             margin: 0 auto;
         }
 
-        /* Section View Container */
-        .view-section {
-            display: none;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        .view-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         /* ========================================================
-           PAGE 1: WELCOME HOME
+           PAGE 1 ALONE: WELCOME HOME
            ======================================================== */
-        .welcome-greeting-bar {
+        .welcome-hero-intro {
             margin-bottom: 2rem;
         }
 
-        .welcome-greeting-bar h2 {
-            font-size: 1.75rem;
+        .welcome-hero-intro h2 {
+            font-size: 1.85rem;
             font-weight: 800;
             color: var(--text-heading);
-            letter-spacing: -0.02em;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
         }
 
-        .welcome-greeting-bar p {
+        .welcome-hero-intro p {
             font-size: 0.95rem;
             color: var(--text-muted);
-            margin-top: 0.25rem;
+            margin-top: 0.35rem;
         }
 
-        /* Hero Launch Banner */
-        .hero-banner-interactive {
-            background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
-            border: 1px solid var(--primary-border);
+        /* Main Action: Start Live Session Hero Card */
+        .action-banner-card {
+            background: linear-gradient(135deg, #F3F8F5 0%, #FAF8F5 100%);
+            border: 1px solid var(--sage-border);
             border-radius: var(--radius-lg);
-            padding: 1.75rem 2rem;
+            padding: 1.85rem 2.25rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
+            margin-bottom: 2.25rem;
+            box-shadow: var(--shadow-card);
         }
 
-        .hero-banner-content h3 {
+        .action-banner-info {
+            max-width: 650px;
+        }
+
+        .action-banner-info h3 {
             font-size: 1.25rem;
             font-weight: 800;
             color: var(--text-heading);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            letter-spacing: -0.015em;
         }
 
-        .hero-banner-content p {
-            font-size: 0.875rem;
+        .action-banner-info p {
+            font-size: 0.885rem;
             color: var(--text-body);
-            margin-top: 0.35rem;
-            max-width: 620px;
+            margin-top: 0.45rem;
+            line-height: 1.5;
         }
 
-        /* 3 Clean Shortcut Cards */
-        .shortcuts-grid {
+        /* 3 Calm Shortcut Cards */
+        .shortcuts-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.75rem;
+        }
+
+        .shortcut-item-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-subtle);
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .shortcut-item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .shortcut-badge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .shortcut-item-card h4 {
+            font-size: 0.975rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            letter-spacing: -0.01em;
+        }
+
+        .shortcut-item-card p {
+            font-size: 0.815rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* Continue Where You Left Off */
+        .workspace-block-header {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.015em;
+            margin-bottom: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recent-quizzes-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.25rem;
             margin-bottom: 2.5rem;
         }
 
-        .shortcut-card {
+        .recent-quiz-box {
             background: var(--bg-surface);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-warm);
             border-radius: var(--radius-md);
             padding: 1.35rem;
+            box-shadow: var(--shadow-subtle);
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            box-shadow: var(--shadow-xs);
-            cursor: pointer;
+            justify-content: space-between;
+            min-height: 165px;
             transition: all 0.15s ease;
         }
 
-        .shortcut-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-border);
+        .recent-quiz-box:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-card);
         }
 
-        .shortcut-icon-circle {
-            width: 42px;
-            height: 42px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-        }
-
-        .shortcut-card h4 {
-            font-size: 0.98rem;
-            font-weight: 700;
-            color: var(--text-heading);
-        }
-
-        .shortcut-card p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Continue Where You Left Off */
-        .section-subheading {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .recent-quizzes-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .recent-quiz-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            box-shadow: var(--shadow-xs);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 150px;
-        }
-
-        .recent-quiz-card-header {
+        .recent-quiz-box-top {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
             gap: 0.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
         }
 
-        .recent-quiz-title {
+        .recent-quiz-title-text {
             font-size: 0.925rem;
             font-weight: 700;
             color: var(--text-heading);
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
-        .badge-status {
+        .pill-status {
             font-size: 0.68rem;
             font-weight: 700;
             padding: 0.2rem 0.55rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-pill);
             white-space: nowrap;
         }
 
-        .badge-draft { background: #f1f5f9; color: #475569; }
-        .badge-ready { background: #ecfdf5; color: #059669; }
-        .badge-ongoing { background: #eff6ff; color: #2563eb; }
+        .pill-ready {
+            background: var(--mint-light);
+            color: var(--mint-success);
+            border: 1px solid var(--mint-border);
+        }
 
-        .recent-quiz-meta {
-            font-size: 0.75rem;
+        .pill-draft {
+            background: var(--bg-subtle);
             color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
+            border: 1px solid var(--border-warm);
         }
 
-        .recent-quiz-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 0.75rem;
+        .pill-ongoing {
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            border: 1px solid var(--sage-border);
         }
 
-        /* ========================================================
-           PAGE 2: LIVE COCKPIT (Zero-Scroll Mode Direct)
-           ======================================================== */
-        .cockpit-wrapper {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 120px);
-        }
-
-        .cockpit-header-strip {
-            padding: 0.9rem 1.5rem;
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .cockpit-live-indicator {
+        .recent-quiz-specs {
+            font-size: 0.76rem;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 0.6rem;
-        }
-
-        .cockpit-live-indicator .pulse-live {
-            width: 10px;
-            height: 10px;
-            background: #e11d48;
-            border-radius: 50%;
-            animation: pulse-dot 1.2s infinite;
-        }
-
-        .cockpit-title-meta h3 {
-            font-size: 1rem;
-            font-weight: 800;
-            color: var(--text-heading);
-        }
-
-        .cockpit-title-meta span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .cockpit-stats-badge {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            padding: 0.35rem 0.85rem;
-            border-radius: var(--radius-full);
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            font-family: var(--font-mono);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .cockpit-main-grid {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .cockpit-stage {
-            padding: 1.5rem 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border-right: 1px solid var(--border-color);
-            background: #ffffff;
-        }
-
-        .cockpit-question-banner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             margin-bottom: 1rem;
         }
 
-        .q-badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-        }
-
-        .timer-display-box {
-            font-family: var(--font-mono);
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #0f172a;
-            background: var(--bg-subtle);
-            padding: 0.25rem 1rem;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .cockpit-question-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            line-height: 1.4;
-            margin-bottom: 1.5rem;
-        }
-
-        /* 2x2 Answers Grid with Real-time Response Bars */
-        .cockpit-answers-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cockpit-answer-card {
-            background: #f8fafc;
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1.1rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.2s ease;
-        }
-
-        .cockpit-answer-card.correct {
-            border-color: #059669;
-            background: #f0fdf4;
-        }
-
-        .cockpit-answer-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 2;
-        }
-
-        .option-key-badge {
-            width: 28px;
-            height: 28px;
-            border-radius: var(--radius-sm);
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            color: var(--text-heading);
-        }
-
-        .option-percentage {
-            font-family: var(--font-mono);
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--text-heading);
-        }
-
-        .option-text-label {
-            position: relative;
-            z-index: 2;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-heading);
-            margin-top: 0.5rem;
-        }
-
-        .option-fill-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            background: rgba(99, 102, 241, 0.12);
-            transition: width 0.4s ease;
-            z-index: 1;
-        }
-
-        .cockpit-answer-card.correct .option-fill-bar {
-            background: rgba(16, 185, 129, 0.2);
-        }
-
-        /* Cockpit Controls Toolbar */
-        .cockpit-controls-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 0.75rem 1.25rem;
-        }
-
-        .cockpit-btn-group {
+        .recent-quiz-footer-actions {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            border-top: 1px solid var(--border-warm);
+            padding-top: 0.85rem;
         }
 
-        /* Right Collapsible Panel: Alerts & Collusion */
-        .cockpit-sidebar-panel {
-            padding: 1.25rem;
-            background: #fafafa;
-            overflow-y: auto;
+        /* Next Session & Classroom Notice */
+        .upcoming-schedule-strip {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .upcoming-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .upcoming-calendar-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-sm);
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .panel-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1rem;
-            box-shadow: var(--shadow-xs);
-        }
-
-        .panel-card h4 {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 0.75rem;
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-
-        .alert-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            padding: 0.4rem 0.5rem;
-            border-radius: var(--radius-sm);
-            background: #fff1f2;
-            color: #be123c;
-            margin-bottom: 0.4rem;
-        }
-
-        /* ========================================================
-           PAGE 3: CLASSES & STUDENTS
-           ======================================================== */
-        .classes-header-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .class-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .class-card {
-            background: #ffffff;
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            box-shadow: var(--shadow-xs);
-        }
-
-        .class-card:hover {
-            border-color: var(--primary-border);
-            transform: translateY(-2px);
-        }
-
-        .class-card.active {
-            border-color: var(--primary);
-            background: #fbfbfe;
-            box-shadow: 0 0 0 1px var(--primary);
-        }
-
-        .class-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .class-card-name {
-            font-size: 1.15rem;
+            justify-content: center;
+            font-size: 0.72rem;
             font-weight: 800;
             color: var(--text-heading);
+            line-height: 1;
         }
 
-        .class-card-count {
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
+        .upcoming-text h4 {
+            font-size: 0.925rem;
             font-weight: 700;
-            color: var(--primary);
-            background: var(--primary-light);
-            padding: 0.15rem 0.5rem;
-            border-radius: var(--radius-full);
-        }
-
-        .class-card-detail {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        /* Table Card Container */
-        .data-table-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-xs);
-            overflow: hidden;
-        }
-
-        .table-toolbar {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .table-search-box {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: 0.4rem 0.75rem;
-            width: 300px;
-        }
-
-        .table-search-box input {
-            border: none;
-            background: transparent;
-            font-family: var(--font-sans);
-            font-size: 0.85rem;
-            color: var(--text-heading);
-            outline: none;
-            width: 100%;
-        }
-
-        table.styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            text-align: left;
-        }
-
-        table.styled-table th {
-            background: #f8fafc;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0.75rem 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        table.styled-table td {
-            padding: 0.85rem 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-body);
-        }
-
-        table.styled-table tr:hover td {
-            background: #fafafa;
-        }
-
-        /* ========================================================
-           PAGE 4: QUIZZES & BANK
-           ======================================================== */
-        .quizzes-header-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-tabs-strip {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.75rem;
-        }
-
-        .filter-tab-pill {
-            padding: 0.4rem 0.85rem;
-            border-radius: var(--radius-full);
-            border: 1px solid transparent;
-            background: transparent;
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .filter-tab-pill:hover {
-            background: var(--bg-subtle);
             color: var(--text-heading);
         }
 
-        .filter-tab-pill.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-color: var(--primary-border);
-        }
-
-        /* ========================================================
-           PAGE 5: RESULTS & ANALYTICS
-           ======================================================== */
-        .kpi-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .kpi-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            box-shadow: var(--shadow-xs);
-        }
-
-        .kpi-title {
-            font-size: 0.75rem;
-            font-weight: 600;
+        .upcoming-text p {
+            font-size: 0.785rem;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            margin-top: 0.15rem;
         }
 
-        .kpi-value {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--text-heading);
-            font-family: var(--font-mono);
-            margin: 0.35rem 0;
-            line-height: 1.1;
-        }
-
-        .kpi-trend {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #059669;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .kpi-trend.negative {
-            color: #e11d48;
-        }
-
-        .misconception-card {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .misconception-icon {
-            font-size: 1.5rem;
-        }
-
-        .misconception-content h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #92400e;
-        }
-
-        .misconception-content p {
-            font-size: 0.85rem;
-            color: #b45309;
-            margin-top: 0.25rem;
-        }
-
-        /* ========================================================
-           MODALS & FORMS (Progressive Disclosure)
-           ======================================================== */
-        .modal-overlay {
+        /* Modal Overlay for QR Code */
+        .modal-shade {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.4);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(47, 52, 55, 0.4);
             backdrop-filter: blur(4px);
             z-index: 100;
             display: none;
@@ -1104,208 +661,23 @@
             padding: 1.5rem;
         }
 
-        .modal-overlay.active {
+        .modal-shade.active {
             display: flex;
         }
 
-        .modal-dialog {
-            background: #ffffff;
+        .modal-card-box {
+            background: var(--bg-surface);
             border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-warm);
+            box-shadow: var(--shadow-modal);
             width: 100%;
-            max-width: 760px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            animation: modalPop 0.2s ease-out;
-        }
-
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.96); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .modal-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .modal-header h3 {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--text-heading);
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .modal-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid var(--border-color);
-            background: #f8fafc;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 0.75rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 0.35rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.55rem 0.85rem;
-            font-family: var(--font-sans);
-            font-size: 0.85rem;
-            color: var(--text-heading);
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            outline: none;
-            transition: border-color 0.15s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        /* 5-Step Quiz Stepper */
-        .stepper-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1.5rem;
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .step-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        .step-pill.active {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .step-number {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-family: var(--font-mono);
-        }
-
-        .step-pill.active .step-number {
-            background: var(--primary);
-            color: #ffffff;
-        }
-
-        /* Method Selection Cards */
-        .methods-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .method-choice-card {
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            text-align: left;
-            background: #ffffff;
-        }
-
-        .method-choice-card:hover {
-            border-color: var(--primary-border);
-            background: #fbfbfe;
-        }
-
-        .method-choice-card.selected {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-
-        .method-choice-card h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 0.25rem;
-        }
-
-        .method-choice-card p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* Timing Options Cards (3 modes) */
-        .timing-modes-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .timing-mode-card {
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: 0.85rem;
-            cursor: pointer;
-            transition: all 0.15s ease;
+            max-width: 440px;
+            padding: 1.75rem;
             text-align: center;
         }
 
-        .timing-mode-card.selected {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-
-        .timing-mode-card h5 {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-heading);
-        }
-
-        .timing-mode-card span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            display: block;
-            margin-top: 0.2rem;
-        }
-
-        /* Toast Notifications */
-        .toast-container {
+        /* Toast Container */
+        .toast-holder {
             position: fixed;
             bottom: 1.5rem;
             right: 1.5rem;
@@ -1315,72 +687,72 @@
             gap: 0.5rem;
         }
 
-        .toast-message {
-            background: #0f172a;
-            color: #ffffff;
+        .toast-card {
+            background: #2F3437;
+            color: #FFFFFF;
             padding: 0.75rem 1.25rem;
             border-radius: var(--radius-sm);
             font-size: 0.85rem;
             font-weight: 500;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-modal);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            animation: slideUp 0.25s ease-out;
+            gap: 0.6rem;
+            animation: slideUp 0.2s ease-out;
         }
 
         @keyframes slideUp {
-            from { transform: translateY(10px); opacity: 0; }
+            from { transform: translateY(12px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Fixed Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-logo-icon">🌿</div>
-            <div class="brand-text">
+    <!-- Persistent Fixed Sidebar -->
+    <aside class="bloom-sidebar">
+        <div class="sidebar-brand-box">
+            <div class="brand-icon">🌿</div>
+            <div class="brand-titles">
                 <h1>Bloom Campus</h1>
-                <span>Teacher Portal & Dashboard</span>
+                <span>Teacher workspace · Teacher Portal & Dashboard</span>
             </div>
         </div>
 
-        <nav class="sidebar-nav">
+        <nav class="sidebar-menu-scroll">
             <div>
-                <div class="nav-section-title">Main Menu</div>
-                <ul class="nav-links">
+                <div class="menu-group-header">Main Menu</div>
+                <ul class="menu-list">
                     <li>
-                        <button class="nav-item-btn active" onclick="switchView('welcome', this)">
-                            <span class="nav-item-icon">🏠</span>
+                        <button class="menu-nav-button active" onclick="activateSection('welcome', this)">
+                            <span class="menu-item-icon">🏠</span>
                             <span>Welcome Home</span>
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchView('cockpit', this)">
-                            <span class="nav-item-icon">⚡</span>
+                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Live Cockpit')">
+                            <span class="menu-item-icon">⚡</span>
                             <span>Live Cockpit</span>
-                            <span class="nav-badge-live">LIVE</span>
+                            <span class="badge-live-pulse">LIVE</span>
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchView('classes', this)">
-                            <span class="nav-item-icon">👥</span>
+                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Classes & Students')">
+                            <span class="menu-item-icon">👥</span>
                             <span>Classes & Students</span>
-                            <span class="nav-badge-count" id="sidebar-classes-count">3</span>
+                            <span class="badge-count">3</span>
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchView('quizzes', this)">
-                            <span class="nav-item-icon">📝</span>
+                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Quizzes & Bank')">
+                            <span class="menu-item-icon">📝</span>
                             <span>Quizzes & Bank</span>
-                            <span class="nav-badge-count" id="sidebar-quizzes-count">4</span>
+                            <span class="badge-count">4</span>
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchView('results', this)">
-                            <span class="nav-item-icon">📊</span>
+                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Results & Analytics')">
+                            <span class="menu-item-icon">📊</span>
                             <span>Results & Analytics</span>
                         </button>
                     </li>
@@ -1388,17 +760,17 @@
             </div>
 
             <div>
-                <div class="nav-section-title">Personal</div>
-                <ul class="nav-links">
+                <div class="menu-group-header">Personal</div>
+                <ul class="menu-list">
                     <li>
-                        <button class="nav-item-btn" onclick="switchView('settings', this)">
-                            <span class="nav-item-icon">⚙️</span>
+                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Settings')">
+                            <span class="menu-item-icon">⚙️</span>
                             <span>Settings</span>
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchView('profile', this)">
-                            <span class="nav-item-icon">👤</span>
+                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Teacher Profile')">
+                            <span class="menu-item-icon">👤</span>
                             <span>Teacher Profile</span>
                         </button>
                     </li>
@@ -1406,1672 +778,257 @@
             </div>
         </nav>
 
-        <div class="sidebar-footer" onclick="switchView('profile')">
-            <div class="user-avatar">AB</div>
-            <div class="user-meta">
+        <div class="sidebar-user-footer" onclick="notifyUpcomingPage('Teacher Profile')">
+            <div class="user-avatar-circle">AB</div>
+            <div class="user-meta-info">
                 <h4>Dr. Amina Benali</h4>
                 <p>Computer Architecture</p>
             </div>
         </div>
     </aside>
 
-    <!-- Main Viewport -->
-    <main class="main-viewport">
+    <!-- Main Workspace Area -->
+    <main class="bloom-main-workspace">
         <!-- Sticky Topbar -->
-        <header class="topbar">
-            <div class="topbar-left">
-                <span class="topbar-pill-day" id="topbar-date-pill">MONDAY · TEACHER SPACE</span>
-                <h2 class="topbar-page-title" id="page-title-display">Welcome Home</h2>
+        <header class="bloom-topbar">
+            <div class="topbar-left-zone">
+                <span class="day-context-pill" id="today-day-pill">MONDAY · TEACHER SPACE</span>
+                <h2 class="page-title-text">Welcome Home</h2>
             </div>
-            <div class="topbar-right">
-                <button class="btn btn-secondary btn-sm" onclick="openClassroomQrModal()">
+            <div class="topbar-right-zone">
+                <button class="btn btn-secondary btn-sm" onclick="openQrModal()">
                     <span>📱</span>
                     <span>Student QR Code</span>
                 </button>
-                <button class="btn btn-primary btn-sm" onclick="openQuizCreationFlow()">
-                    <span>➕</span>
-                    <span>Create Quiz</span>
+                <button class="btn btn-primary btn-sm" onclick="triggerFastLaunch()">
+                    <span>🚀</span>
+                    <span>Start Session</span>
                 </button>
             </div>
         </header>
 
-        <div class="workspace-content">
-            <!-- ==========================================
-                 VIEW 1: WELCOME HOME
-                 ========================================== -->
-            <section id="view-welcome" class="view-section active">
-                <div class="welcome-greeting-bar">
-                    <h2>Welcome back, Professor! 👋</h2>
-                    <p>Ready to make learning more interactive with your students today?</p>
+        <!-- Page 1 Canvas: Welcome Home ONLY -->
+        <div class="workspace-canvas" id="page-welcome-content">
+            <!-- 1. Welcoming Hero Greeting (No dense stats!) -->
+            <div class="welcome-hero-intro">
+                <h2>Welcome back, Dr. Benali! 👋</h2>
+                <p>Ready to make learning more interactive with your amphitheater students today?</p>
+            </div>
+
+            <!-- 2. Primary Action: Start a Live Session -->
+            <div class="action-banner-card">
+                <div class="action-banner-info">
+                    <h3><span>🚀</span> Start a Live Classroom Session</h3>
+                    <p>Launch your scheduled interactive quiz in seconds. Students join instantly on their mobile phones by scanning the amphitheater QR code with zero application install.</p>
                 </div>
+                <button class="btn btn-primary" onclick="triggerFastLaunch()">
+                    <span>Launch Session Now</span>
+                    <span>→</span>
+                </button>
+            </div>
 
-                <!-- Hero Start Live Session Banner -->
-                <div class="hero-banner-interactive">
-                    <div class="hero-banner-content">
-                        <h3><span>🚀</span> Start a Live Session</h3>
-                        <p>Launch an interactive quiz instantly. Students join by scanning the classroom QR code on their phones with zero app installation.</p>
-                    </div>
-                    <button class="btn btn-primary" onclick="launchLiveSessionFast()">
-                        <span>Launch Session Now</span>
-                        <span>→</span>
-                    </button>
+            <!-- 3. Three Clean Action Shortcuts (Progressive Disclosure) -->
+            <div class="shortcuts-row">
+                <div class="shortcut-item-card" onclick="notifyUpcomingPage('AI Quiz Studio')">
+                    <div class="shortcut-badge-icon" style="background:var(--ai-light); color:var(--ai-lavender);">✨</div>
+                    <h4>AI Quiz Studio</h4>
+                    <p>Synthesize questions from lecture notes, slides, or syllabus topics with semantic AI rubrics.</p>
                 </div>
-
-                <!-- 3 Clear Action Shortcuts -->
-                <div class="shortcuts-grid">
-                    <div class="shortcut-card" onclick="openAiStudioModal()">
-                        <div class="shortcut-icon-circle" style="background:#f5f3ff; color:#7c3aed;">✨</div>
-                        <h4>AI Quiz Studio</h4>
-                        <p>Synthesize complete questions automatically from your course lecture notes or syllabus.</p>
-                    </div>
-                    <div class="shortcut-card" onclick="switchView('classes')">
-                        <div class="shortcut-icon-circle" style="background:#eef2ff; color:#4f46e5;">👥</div>
-                        <h4>My Classes</h4>
-                        <p>Manage 1CP, 2CP & 1CS cohorts, view student rosters, and bulk import class CSVs.</p>
-                    </div>
-                    <div class="shortcut-card" onclick="switchView('quizzes', null, 'bank')">
-                        <div class="shortcut-icon-circle" style="background:#ecfdf5; color:#059669;">📚</div>
-                        <h4>Question Bank</h4>
-                        <p>Access your curated repository of reusable CS questions, tagged by module and difficulty.</p>
-                    </div>
+                <div class="shortcut-item-card" onclick="notifyUpcomingPage('Classes & Students')">
+                    <div class="shortcut-badge-icon" style="background:var(--sage-light); color:var(--sage-primary);">👥</div>
+                    <h4>My Classes</h4>
+                    <p>Manage 1CP, 2CP & 1CS student cohorts, view rosters, and bulk import class CSVs.</p>
                 </div>
-
-                <!-- Continue Where You Left Off -->
-                <div class="section-subheading">
-                    <span>Continue where you left off</span>
-                    <button class="btn btn-secondary btn-sm" onclick="switchView('quizzes')">View All Quizzes →</button>
+                <div class="shortcut-item-card" onclick="notifyUpcomingPage('Question Bank')">
+                    <div class="shortcut-badge-icon" style="background:var(--mint-light); color:var(--mint-success);">📚</div>
+                    <h4>Question Bank</h4>
+                    <p>Access your curated repository of vetted computer science questions tagged by module.</p>
                 </div>
+            </div>
 
-                <div class="recent-quizzes-grid" id="welcome-recent-quizzes">
-                    <!-- Populated dynamically via JS -->
-                </div>
-            </section>
+            <!-- 4. Continue Where You Left Off -->
+            <div class="workspace-block-header">
+                <span>Continue where you left off</span>
+                <span style="font-size:0.8rem; font-weight:600; color:var(--sage-primary); cursor:pointer;" onclick="notifyUpcomingPage('Quizzes & Bank')">View all quizzes →</span>
+            </div>
 
-            <!-- ==========================================
-                 VIEW 2: LIVE COCKPIT (Zero Scroll Mode Direct)
-                 ========================================== -->
-            <section id="view-cockpit" class="view-section">
-                <div class="cockpit-wrapper">
-                    <!-- Cockpit Header Strip -->
-                    <div class="cockpit-header-strip">
-                        <div class="cockpit-live-indicator">
-                            <span class="pulse-live"></span>
-                            <div class="cockpit-title-meta">
-                                <h3 id="cockpit-quiz-title">Quiz 01 : Cache Hierarchy & Direct Mappings</h3>
-                                <span>Target: 1CP · Amphitheater A</span>
-                            </div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <div class="cockpit-stats-badge">
-                                <span>👥</span>
-                                <span id="cockpit-attendance-counter">38 / 45 Responded (84%)</span>
-                            </div>
-                            <button class="btn btn-secondary btn-sm" onclick="openClassroomQrModal()">
-                                <span>📱 QR Code</span>
-                            </button>
-                            <a href="/projector" target="_blank" class="btn btn-secondary btn-sm">
-                                <span>🖥 Fullscreen Projector</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Cockpit Main Grid -->
-                    <div class="cockpit-main-grid">
-                        <div class="cockpit-stage">
-                            <div>
-                                <div class="cockpit-question-banner">
-                                    <span class="q-badge" id="cockpit-q-num">Question 2 of 5 · Single Choice MCQ</span>
-                                    <div class="timer-display-box" id="cockpit-timer">00:24</div>
-                                </div>
-                                <h3 class="cockpit-question-text" id="cockpit-q-text">
-                                    Which cache mapping architecture allows a memory block to be placed in ANY cache line without collision restrictions?
-                                </h3>
-
-                                <!-- 2x2 Answers Grid with Real-time Response Bars -->
-                                <div class="cockpit-answers-grid">
-                                    <div class="cockpit-answer-card" id="opt-card-0">
-                                        <div class="option-fill-bar" style="width: 12%;"></div>
-                                        <div class="cockpit-answer-card-header">
-                                            <span class="option-key-badge">A</span>
-                                            <span class="option-percentage">12%</span>
-                                        </div>
-                                        <div class="option-text-label">Direct-Mapped Cache</div>
-                                    </div>
-                                    <div class="cockpit-answer-card correct" id="opt-card-1">
-                                        <div class="option-fill-bar" style="width: 68%;"></div>
-                                        <div class="cockpit-answer-card-header">
-                                            <span class="option-key-badge" style="border-color:#059669; color:#059669;">B</span>
-                                            <span class="option-percentage" style="color:#059669;">68% (Correct)</span>
-                                        </div>
-                                        <div class="option-text-label">Fully Associative Cache</div>
-                                    </div>
-                                    <div class="cockpit-answer-card" id="opt-card-2">
-                                        <div class="option-fill-bar" style="width: 16%;"></div>
-                                        <div class="cockpit-answer-card-header">
-                                            <span class="option-key-badge">C</span>
-                                            <span class="option-percentage">16%</span>
-                                        </div>
-                                        <div class="option-text-label">2-Way Set Associative Cache</div>
-                                    </div>
-                                    <div class="cockpit-answer-card" id="opt-card-3">
-                                        <div class="option-fill-bar" style="width: 4%;"></div>
-                                        <div class="cockpit-answer-card-header">
-                                            <span class="option-key-badge">D</span>
-                                            <span class="option-percentage">4%</span>
-                                        </div>
-                                        <div class="option-text-label">Sector Cache</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Controls Bar -->
-                            <div class="cockpit-controls-bar">
-                                <div class="cockpit-btn-group">
-                                    <button class="btn btn-secondary btn-sm" onclick="cockpitAddBonusTime()">
-                                        <span>⏱ +30s Bonus</span>
-                                    </button>
-                                    <button class="btn btn-secondary btn-sm" id="btn-cockpit-pause" onclick="cockpitTogglePause()">
-                                        <span>⏸ Pause Timer</span>
-                                    </button>
-                                    <button class="btn btn-secondary btn-sm" onclick="cockpitRevealAnswer()">
-                                        <span>👁 Reveal Answer</span>
-                                    </button>
-                                </div>
-                                <div class="cockpit-btn-group">
-                                    <button class="btn btn-primary btn-sm" onclick="cockpitNextQuestion()">
-                                        <span>Next Question →</span>
-                                    </button>
-                                    <button class="btn btn-secondary btn-sm" style="color:#e11d48;" onclick="cockpitEndQuiz()">
-                                        <span>🛑 End Session</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Side Collapsible Panel: Tab Switches & Collusion -->
-                        <div class="cockpit-sidebar-panel">
-                            <div class="panel-card">
-                                <h4>
-                                    <span>⚠️ Anti-Cheat Radar</span>
-                                    <span style="font-size:0.7rem; color:#e11d48; font-weight:700;">2 Alerts</span>
-                                </h4>
-                                <div class="alert-item">
-                                    <span>⚠️</span>
-                                    <span>Karim Mansouri switched tabs (12s ago)</span>
-                                </div>
-                                <div class="alert-item">
-                                    <span>⚠️</span>
-                                    <span>Sarah B. window blurred (40s ago)</span>
-                                </div>
-                            </div>
-
-                            <div class="panel-card">
-                                <h4>
-                                    <span>🛰 Collusion Radar</span>
-                                    <span style="font-size:0.7rem; color:#059669; font-weight:700;">Normal</span>
-                                </h4>
-                                <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;">
-                                    Real-time pairwise error concordance and response latency analysis. No duplicate answer clusters detected.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==========================================
-                 VIEW 3: CLASSES & STUDENTS
-                 ========================================== -->
-            <section id="view-classes" class="view-section">
-                <div class="classes-header-bar">
+            <div class="recent-quizzes-row">
+                <!-- Quiz Card 1 -->
+                <div class="recent-quiz-box">
                     <div>
-                        <h3 style="font-size:1.35rem; font-weight:800; color:var(--text-heading);">Classes & Students</h3>
-                        <p style="font-size:0.85rem; color:var(--text-muted);">Manage student cohorts, group assignments, and bulk CSV enrollment.</p>
+                        <div class="recent-quiz-box-top">
+                            <span class="recent-quiz-title-text">Quiz 01 : Cache Hierarchy & Direct Mappings</span>
+                            <span class="pill-status pill-ready">Ready to Publish</span>
+                        </div>
+                        <div class="recent-quiz-specs">
+                            <span>📚 ARCHI (1CP)</span>
+                            <span>•</span>
+                            <span>5 Questions</span>
+                            <span>•</span>
+                            <span>30s / Question</span>
+                        </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <button class="btn btn-secondary btn-sm" onclick="openImportStudentsCsvModal()">
-                            <span>📥 Bulk CSV Import</span>
+                    <div class="recent-quiz-footer-actions">
+                        <button class="btn btn-primary btn-sm" onclick="triggerFastLaunch()">
+                            <span>Launch Live 🚀</span>
                         </button>
-                        <button class="btn btn-secondary btn-sm" onclick="exportStudentsRosterCsv()">
-                            <span>📤 Export Roster</span>
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="openAddClassModal()">
-                            <span>➕ Add a Class</span>
+                        <button class="btn btn-secondary btn-sm" onclick="openQrModal()">
+                            <span>QR Code 📱</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Class Level Cards -->
-                <div class="class-cards-grid">
-                    <div class="class-card active" onclick="selectClassLevel('1CP', this)">
-                        <div class="class-card-header">
-                            <span class="class-card-name">1CP (Prep 1)</span>
-                            <span class="class-card-count" id="count-1cp">45 Students</span>
-                        </div>
-                        <div class="class-card-detail">Sections A & B · Groups G1, G2, G3, G4</div>
-                    </div>
-                    <div class="class-card" onclick="selectClassLevel('2CP', this)">
-                        <div class="class-card-header">
-                            <span class="class-card-name">2CP (Prep 2)</span>
-                            <span class="class-card-count" id="count-2cp">42 Students</span>
-                        </div>
-                        <div class="class-card-detail">Sections A & B · Groups G1, G2, G3, G4</div>
-                    </div>
-                    <div class="class-card" onclick="selectClassLevel('1CS', this)">
-                        <div class="class-card-header">
-                            <span class="class-card-name">1CS (Engineering 1)</span>
-                            <span class="class-card-count" id="count-1cs">38 Students</span>
-                        </div>
-                        <div class="class-card-detail">Section 1 · Groups G1, G2, G3</div>
-                    </div>
-                </div>
-
-                <!-- Students Roster Table -->
-                <div class="data-table-card">
-                    <div class="table-toolbar">
-                        <div class="table-search-box">
-                            <span>🔍</span>
-                            <input type="text" placeholder="Search student by name or email..." oninput="filterStudentsTable(this.value)">
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.5rem;">
-                            <button class="btn btn-primary btn-sm" onclick="openAddStudentModal()">
-                                <span>➕ Add Student</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <table class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Student Name</th>
-                                <th>University Email</th>
-                                <th>Class & Group</th>
-                                <th>Attendance</th>
-                                <th>Status</th>
-                                <th style="text-align:right;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="students-table-body">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- ==========================================
-                 VIEW 4: QUIZZES & QUESTION BANK
-                 ========================================== -->
-            <section id="view-quizzes" class="view-section">
-                <div class="quizzes-header-bar">
+                <!-- Quiz Card 2 -->
+                <div class="recent-quiz-box">
                     <div>
-                        <h3 style="font-size:1.35rem; font-weight:800; color:var(--text-heading);">Quizzes & Question Bank</h3>
-                        <p style="font-size:0.85rem; color:var(--text-muted);">Create, organize, draft, and schedule your quizzes.</p>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <button class="btn btn-ai btn-sm" onclick="openAiStudioModal()">
-                            <span>✨ AI Quiz Studio</span>
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openImportQuizCsvModal()">
-                            <span>📥 Import CSV</span>
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="openQuizCreationFlow()">
-                            <span>✍️ Create Manually</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Filter Tabs -->
-                <div class="filter-tabs-strip">
-                    <button class="filter-tab-pill active" onclick="filterQuizzesView('all', this)">All Quizzes (4)</button>
-                    <button class="filter-tab-pill" onclick="filterQuizzesView('draft', this)">Drafts (1)</button>
-                    <button class="filter-tab-pill" onclick="filterQuizzesView('ready', this)">Ready to Publish (2)</button>
-                    <button class="filter-tab-pill" onclick="filterQuizzesView('ongoing', this)">Ongoing (1)</button>
-                    <button class="filter-tab-pill" onclick="filterQuizzesView('bank', this)">Question Bank (18)</button>
-                </div>
-
-                <!-- Quizzes Table View -->
-                <div id="quizzes-table-container" class="data-table-card">
-                    <table class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Quiz Title</th>
-                                <th>Module & Level</th>
-                                <th>Questions</th>
-                                <th>Timing Mode</th>
-                                <th>Status</th>
-                                <th style="text-align:right;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="quizzes-table-body">
-                            <!-- Rendered dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Reusable Question Bank Subview -->
-                <div id="question-bank-container" style="display:none;">
-                    <div class="data-table-card" style="padding:1.25rem;">
-                        <h4 style="font-size:1rem; font-weight:800; color:var(--text-heading); margin-bottom:0.75rem;">Curated Question Bank</h4>
-                        <div id="question-bank-items" style="display:flex; flex-direction:column; gap:0.75rem;">
-                            <!-- Items populated dynamically -->
+                        <div class="recent-quiz-box-top">
+                            <span class="recent-quiz-title-text">Quiz 02 : Pipelining Hazards & Branch Prediction</span>
+                            <span class="pill-status pill-draft">Draft</span>
+                        </div>
+                        <div class="recent-quiz-specs">
+                            <span>📚 ARCHI (1CP)</span>
+                            <span>•</span>
+                            <span>4 Questions</span>
+                            <span>•</span>
+                            <span>Global 15m</span>
                         </div>
                     </div>
+                    <div class="recent-quiz-footer-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
+                            <span>Continue Editing ✏️</span>
+                        </button>
+                    </div>
                 </div>
-            </section>
 
-            <!-- ==========================================
-                 VIEW 5: RESULTS & ANALYTICS
-                 ========================================== -->
-            <section id="view-results" class="view-section">
-                <div class="quizzes-header-bar">
+                <!-- Quiz Card 3 -->
+                <div class="recent-quiz-box">
                     <div>
-                        <h3 style="font-size:1.35rem; font-weight:800; color:var(--text-heading);">Results & Performance Analytics</h3>
-                        <p style="font-size:0.85rem; color:var(--text-muted);">Understand student learning gaps, item discrimination, and response rates.</p>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <a href="/api/result/export/1" class="btn btn-secondary btn-sm" download>
-                            <span>📥 Export Gradebook CSV</span>
-                        </a>
-                        <a href="/api/result/analytics/1" class="btn btn-secondary btn-sm" download>
-                            <span>📊 Export Analytics CSV</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 4 Core Key Performance Indicators -->
-                <div class="kpi-cards-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-title">Class Average</div>
-                        <div class="kpi-value">14.36 <span style="font-size:0.9rem; color:var(--text-muted);">/ 20</span></div>
-                        <div class="kpi-trend"><span>↑ +1.2 pts</span> vs previous quiz</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-title">Attendance Rate</div>
-                        <div class="kpi-value">88.5%</div>
-                        <div class="kpi-trend"><span>✓ 40 / 45 students</span> responded</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-title">Pass Rate (≥10/20)</div>
-                        <div class="kpi-value">82%</div>
-                        <div class="kpi-trend"><span>33 students</span> validated</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-title">Hardest Question</div>
-                        <div class="kpi-value" style="color:#d97706;">Q3 <span style="font-size:0.9rem;">(28% Success)</span></div>
-                        <div class="kpi-trend negative"><span>⚠️ Review Required</span></div>
-                    </div>
-                </div>
-
-                <!-- Misconception & Difficult Question Spotlight -->
-                <div class="misconception-card">
-                    <div class="misconception-icon">💡</div>
-                    <div class="misconception-content">
-                        <h4>Common Misconception Spotlight: Question 3 (Recursion Base Cases)</h4>
-                        <p><strong>54% of failing students</strong> chose distractor <em>Option C (Infinite recursion stack)</em> instead of recognizing the missing terminal condition. Recommended pedagogical action: Revisit stack unwinding with an interactive memory trace diagram.</p>
-                    </div>
-                </div>
-
-                <!-- Student Scorecards Table -->
-                <div class="data-table-card">
-                    <div class="table-toolbar">
-                        <h4 style="font-size:0.95rem; font-weight:700; color:var(--text-heading);">Student Performance Scorecards</h4>
-                    </div>
-                    <table class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                <th>Cohort</th>
-                                <th>Score</th>
-                                <th>Time Taken</th>
-                                <th>IRT Accuracy</th>
-                                <th style="text-align:right;">Inspection</th>
-                            </tr>
-                        </thead>
-                        <tbody id="results-scorecard-body">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- ==========================================
-                 VIEW 6: SETTINGS
-                 ========================================== -->
-            <section id="view-settings" class="view-section">
-                <div style="max-width:680px;">
-                    <h3 style="font-size:1.35rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Classroom Settings</h3>
-                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Configure default quiz rules, timing preferences, and notification channels.</p>
-
-                    <div class="data-table-card" style="padding:1.5rem; margin-bottom:1.5rem;">
-                        <h4 style="font-size:0.95rem; font-weight:700; color:var(--text-heading); margin-bottom:1rem;">Quiz Defaults</h4>
-                        <div class="form-group">
-                            <label class="form-label">Default Question Timer</label>
-                            <select class="form-control" style="width:240px;">
-                                <option value="30">30 Seconds</option>
-                                <option value="45" selected>45 Seconds</option>
-                                <option value="60">60 Seconds</option>
-                                <option value="0">Untimed / Self-Paced</option>
-                            </select>
+                        <div class="recent-quiz-box-top">
+                            <span class="recent-quiz-title-text">Quiz 03 : Virtual Memory & TLB Address Translation</span>
+                            <span class="pill-status pill-draft">Draft</span>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Default Answer Reveal Policy</label>
-                            <select class="form-control" style="width:340px;">
-                                <option value="after_q" selected>Reveal correct answer after each question</option>
-                                <option value="at_end">Reveal results only at the end of the session</option>
-                            </select>
+                        <div class="recent-quiz-specs">
+                            <span>📚 SYS 1 (2CP)</span>
+                            <span>•</span>
+                            <span>6 Questions</span>
+                            <span>•</span>
+                            <span>Global 20m</span>
                         </div>
                     </div>
-
-                    <div class="data-table-card" style="padding:1.5rem;">
-                        <h4 style="font-size:0.95rem; font-weight:700; color:var(--text-heading); margin-bottom:1rem;">Anti-Cheat & Collusion Monitor</h4>
-                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; color:var(--text-body); cursor:pointer;">
-                            <input type="checkbox" checked>
-                            <span>Enable real-time tab switch and focus blur notifications</span>
-                        </label>
+                    <div class="recent-quiz-footer-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
+                            <span>Continue Editing ✏️</span>
+                        </button>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- ==========================================
-                 VIEW 7: TEACHER PROFILE
-                 ========================================== -->
-            <section id="view-profile" class="view-section">
-                <div style="max-width:640px;">
-                    <h3 style="font-size:1.35rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Teacher Profile</h3>
-                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Manage your university credentials and assigned departments.</p>
-
-                    <div class="data-table-card" style="padding:1.5rem;">
-                        <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:1.5rem;">
-                            <div class="user-avatar" style="width:64px; height:64px; font-size:1.5rem;">AB</div>
-                            <div>
-                                <h4 style="font-size:1.1rem; font-weight:800; color:var(--text-heading);">Dr. Amina Benali</h4>
-                                <p style="font-size:0.8rem; color:var(--text-muted);">Associate Professor · Computer Architecture & Systems</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">University Email</label>
-                            <input type="email" class="form-control" value="a.benali@esi.dz" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Institution</label>
-                            <input type="text" class="form-control" value="Higher National School of Computer Science (ESI Algiers)" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Assigned Modules</label>
-                            <input type="text" class="form-control" value="Architecture des Ordinateurs (ARCHI), Systèmes 1 (SYS 1)" readonly>
-                        </div>
+            <!-- 5. Upcoming Sessions & Next Class Notice -->
+            <div class="upcoming-schedule-strip">
+                <div class="upcoming-meta">
+                    <div class="upcoming-calendar-icon">
+                        <span>OCT</span>
+                        <span style="font-size:0.95rem; margin-top:2px;">21</span>
+                    </div>
+                    <div class="upcoming-text">
+                        <h4>Next Upcoming Session: 1CP Section A · Architecture des Ordinateurs</h4>
+                        <p>Amphitheater A · Scheduled for Tomorrow at 08:30 AM · 45 registered students</p>
                     </div>
                 </div>
-            </section>
+                <button class="btn btn-secondary btn-sm" onclick="showToast('Session details and attendance roster ready.')">
+                    <span>View Session Details</span>
+                </button>
+            </div>
         </div>
     </main>
 
-    <!-- ==========================================
-         MODAL 1: 5-STEP GUIDED QUIZ BUILDER
-         ========================================== -->
-    <div id="modal-quiz-flow" class="modal-overlay">
-        <div class="modal-dialog">
-            <div class="modal-header">
-                <h3 id="flow-modal-title">Create New Quiz</h3>
-                <button class="btn btn-secondary btn-sm" onclick="closeQuizCreationFlow()">✕</button>
+    <!-- Student QR Code Modal -->
+    <div id="qr-modal-overlay" class="modal-shade">
+        <div class="modal-card-box">
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin-bottom:0.35rem;">Classroom Entrance QR</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">Students scan with their smartphone camera to join live.</p>
+            <div id="qr-svg-target" style="width:190px; height:190px; margin:0 auto 1.25rem; display:flex; align-items:center; justify-content:center;">
+                <!-- Live SVG from /api/qr -->
             </div>
-
-            <!-- Stepper Navigation Indicator -->
-            <div class="stepper-nav">
-                <div class="step-pill active" id="pill-step-1">
-                    <span class="step-number">1</span>
-                    <span>Basic Info</span>
-                </div>
-                <div class="step-pill" id="pill-step-2">
-                    <span class="step-number">2</span>
-                    <span>Method</span>
-                </div>
-                <div class="step-pill" id="pill-step-3">
-                    <span class="step-number">3</span>
-                    <span>Questions</span>
-                </div>
-                <div class="step-pill" id="pill-step-4">
-                    <span class="step-number">4</span>
-                    <span>Settings & Time</span>
-                </div>
-                <div class="step-pill" id="pill-step-5">
-                    <span class="step-number">5</span>
-                    <span>Preview & Launch</span>
-                </div>
+            <div style="background:var(--bg-subtle); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.75rem 1rem; margin-bottom:1.25rem;">
+                <div style="font-size:0.72rem; color:var(--text-muted);">Direct URL</div>
+                <div style="font-family:var(--font-mono); font-weight:700; color:var(--sage-primary); font-size:0.95rem;">http://192.168.4.1:7000/student</div>
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.35rem;">PIN: <strong style="color:var(--text-heading); font-family:var(--font-mono);">884 219</strong></div>
             </div>
-
-            <div class="modal-body">
-                <!-- STEP 1: Basic Information -->
-                <div id="step-content-1">
-                    <div class="form-group">
-                        <label class="form-label">Quiz Title</label>
-                        <input type="text" id="builder-quiz-title" class="form-control" placeholder="e.g. Quiz 03 : Virtual Memory & TLB Operations" required>
-                    </div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                        <div class="form-group">
-                            <label class="form-label">Target Module</label>
-                            <select id="builder-quiz-module" class="form-control">
-                                <option value="ARCHI">Architecture (ARCHI)</option>
-                                <option value="SYS 1">Système 1 (SYS 1)</option>
-                                <option value="POO">POO (Java/C++)</option>
-                                <option value="RESEAU">Réseaux</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Target Cohort / Level</label>
-                            <select id="builder-quiz-level" class="form-control">
-                                <option value="1CP">1CP (Prep 1)</option>
-                                <option value="2CP">2CP (Prep 2)</option>
-                                <option value="1CS">1CS (Engineering 1)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description (Optional)</label>
-                        <textarea id="builder-quiz-desc" class="form-control" rows="2" placeholder="Brief instruction for students..."></textarea>
-                    </div>
-                </div>
-
-                <!-- STEP 2: Choose Creation Method -->
-                <div id="step-content-2" style="display:none;">
-                    <div class="form-label">Select How You Wish To Build This Quiz</div>
-                    <div class="methods-grid">
-                        <div class="method-choice-card selected" id="method-manual" onclick="selectBuilderMethod('manual')">
-                            <h4>✍️ Manual Builder</h4>
-                            <p>Build question by question with custom point values and options.</p>
-                        </div>
-                        <div class="method-choice-card" id="method-ai" onclick="selectBuilderMethod('ai')">
-                            <h4>✨ AI Quiz Studio</h4>
-                            <p>Generate high-quality questions automatically from course notes or topics.</p>
-                        </div>
-                        <div class="method-choice-card" id="method-csv" onclick="selectBuilderMethod('csv')">
-                            <h4>📂 Import CSV</h4>
-                            <p>Bulk import question statements, answer keys, and options from a file.</p>
-                        </div>
-                        <div class="method-choice-card" id="method-bank" onclick="selectBuilderMethod('bank')">
-                            <h4>📚 Question Bank</h4>
-                            <p>Pick vetted questions from your department repository.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 3: Build Your Questions -->
-                <div id="step-content-3" style="display:none;">
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
-                        <span class="form-label" style="margin-bottom:0;">Configured Questions (<span id="builder-q-count">1</span>)</span>
-                        <button class="btn btn-secondary btn-sm" onclick="addQuestionToBuilder()">➕ Add Question</button>
-                    </div>
-                    <div id="builder-questions-list" style="display:flex; flex-direction:column; gap:1rem;">
-                        <!-- Question blocks added here -->
-                    </div>
-                </div>
-
-                <!-- STEP 4: Settings & Timing Modes -->
-                <div id="step-content-4" style="display:none;">
-                    <div class="form-group">
-                        <label class="form-label">Time Management Policy</label>
-                        <div class="timing-modes-grid">
-                            <div class="timing-mode-card selected" id="mode-card-global" onclick="selectTimingMode('global')">
-                                <h5>🕒 Global Timer</h5>
-                                <span>Total time for all questions</span>
-                            </div>
-                            <div class="timing-mode-card" id="mode-card-perq" onclick="selectTimingMode('per_question')">
-                                <h5>⏱ Per Question</h5>
-                                <span>Specific seconds per question</span>
-                            </div>
-                            <div class="timing-mode-card" id="mode-card-untimed" onclick="selectTimingMode('untimed')">
-                                <h5>♾️ Untimed</h5>
-                                <span>Teacher paced / self paced</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="global-timer-config" class="form-group" style="margin-top:1rem;">
-                        <label class="form-label">Total Quiz Duration (Minutes)</label>
-                        <input type="number" id="builder-global-minutes" class="form-control" value="15" min="1" max="180" style="width:160px;">
-                    </div>
-
-                    <div class="form-group" style="margin-top:1rem;">
-                        <label class="form-label">Answer Reveal Timing</label>
-                        <select id="builder-reveal-rule" class="form-control">
-                            <option value="after_each">Reveal answer & explanation immediately after each question</option>
-                            <option value="at_end">Reveal results only at the end of the quiz</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- STEP 5: Preview & Launch -->
-                <div id="step-content-5" style="display:none;">
-                    <div class="data-table-card" style="padding:1.25rem; margin-bottom:1rem;">
-                        <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-heading);" id="preview-title">Quiz Title</h4>
-                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.25rem;" id="preview-meta">Module: ARCHI · Target: 1CP · 3 Questions</p>
-                    </div>
-
-                    <div class="form-label">Ready to publish or save as draft?</div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
-                        <button class="btn btn-secondary" onclick="saveQuizWithStatus('Draft')">
-                            <span>💾 Save as Draft</span>
-                        </button>
-                        <button class="btn btn-secondary" onclick="saveQuizWithStatus('Ready to Publish')">
-                            <span>✅ Save as Ready to Publish</span>
-                        </button>
-                    </div>
-                    <div style="margin-top:0.75rem;">
-                        <button class="btn btn-primary" style="width:100%;" onclick="saveQuizWithStatus('Publish_Now')">
-                            <span>🚀 Start Live Classroom Session Now</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary btn-sm" id="btn-builder-prev" onclick="goToPreviousStep()" style="display:none;">← Previous</button>
-                <button class="btn btn-primary btn-sm" id="btn-builder-next" onclick="goToNextStep()">Continue →</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         MODAL 2: AI QUIZ STUDIO
-         ========================================== -->
-    <div id="modal-ai-studio" class="modal-overlay">
-        <div class="modal-dialog">
-            <div class="modal-header" style="background:#f5f3ff;">
-                <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <span style="font-size:1.2rem;">✨</span>
-                    <h3 style="color:#7c3aed;">Bloom AI Quiz Studio</h3>
-                </div>
-                <button class="btn btn-secondary btn-sm" onclick="closeAiStudioModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.25rem;">
-                    Paste course notes, slides text, or syllabus topics. The edge NLP engine will synthesize structured MCQs with semantic answer rubrics.
-                </p>
-
-                <div class="form-group">
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
-                        <label class="form-label" style="margin-bottom:0;">Lecture Notes or Course Text</label>
-                        <button class="btn btn-secondary btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem;" onclick="loadSampleAiNotes()">
-                            Load Sample Note
-                        </button>
-                    </div>
-                    <textarea id="ai-input-notes" class="form-control" rows="5" placeholder="e.g. Cache memory sits between the CPU and main RAM to reduce average memory access latency. In a direct-mapped cache, each main memory block maps to exactly one cache line..."></textarea>
-                </div>
-
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                    <div class="form-group">
-                        <label class="form-label">Questions to Generate</label>
-                        <select id="ai-q-count" class="form-control">
-                            <option value="3">3 Questions</option>
-                            <option value="5" selected>5 Questions</option>
-                            <option value="10">10 Questions</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Difficulty</label>
-                        <select id="ai-difficulty" class="form-control">
-                            <option value="easy">Easy (Definitions & Concepts)</option>
-                            <option value="medium" selected>Medium (Application & Analysis)</option>
-                            <option value="hard">Hard (Psychometric Edge Cases)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="ai-preview-zone" style="display:none; margin-top:1rem; border-top:1px solid var(--border-color); padding-top:1rem;">
-                    <div class="form-label" style="color:#7c3aed;">Generated Questions Preview (Verify & Edit)</div>
-                    <div id="ai-generated-cards" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary btn-sm" onclick="closeAiStudioModal()">Cancel</button>
-                <button class="btn btn-ai btn-sm" id="btn-trigger-ai" onclick="generateQuizWithAi()">
-                    <span>✨ Generate Questions</span>
-                </button>
-                <button class="btn btn-primary btn-sm" id="btn-accept-ai" onclick="transferAiQuestionsToBuilder()" style="display:none;">
-                    <span>Verify & Transfer to Builder →</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         MODAL 3: CLASSROOM QR CODE OVERLAY
-         ========================================== -->
-    <div id="modal-qr-code" class="modal-overlay">
-        <div class="modal-dialog" style="max-width:440px; text-align:center;">
-            <div class="modal-header">
-                <h3>Classroom Access</h3>
-                <button class="btn btn-secondary btn-sm" onclick="closeClassroomQrModal()">✕</button>
-            </div>
-            <div class="modal-body" style="display:flex; flex-direction:column; align-items:center;">
-                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
-                    Students scan with their mobile camera to enter the live session immediately.
-                </p>
-                <div id="qr-svg-holder" style="width:200px; height:200px; margin-bottom:1rem; display:flex; align-items:center; justify-content:center;">
-                    <!-- Live SVG from /api/qr -->
-                </div>
-                <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:0.75rem 1rem; width:100%;">
-                    <div style="font-size:0.75rem; color:var(--text-muted);">Direct Access Link</div>
-                    <div style="font-family:var(--font-mono); font-weight:700; color:var(--primary); font-size:0.95rem; margin-top:0.2rem;">
-                        http://192.168.4.1:7000/student
-                    </div>
-                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;">Classroom PIN: <strong style="color:var(--text-heading); font-family:var(--font-mono);">884 219</strong></div>
-                </div>
-            </div>
-            <div class="modal-footer" style="justify-content:center;">
+            <div style="display:flex; justify-content:center; gap:0.5rem;">
+                <button class="btn btn-secondary btn-sm" onclick="closeQrModal()">Close</button>
                 <a href="/projector" target="_blank" class="btn btn-primary btn-sm">Open Projector Screen 🖥</a>
             </div>
         </div>
     </div>
 
-    <!-- ==========================================
-         MODAL 4: CSV STUDENT IMPORT
-         ========================================== -->
-    <div id="modal-import-students" class="modal-overlay">
-        <div class="modal-dialog" style="max-width:520px;">
-            <div class="modal-header">
-                <h3>Bulk Import Students via CSV</h3>
-                <button class="btn btn-secondary btn-sm" onclick="closeImportStudentsCsvModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size:0.825rem; color:var(--text-muted); margin-bottom:1rem;">
-                    Upload a CSV file containing students. Required format: <code>Firstname,Lastname,Email,Group,Section,Level</code>
-                </p>
-                <input type="file" id="students-csv-file" accept=".csv" onchange="handleStudentsCsvUpload(event)" style="margin-bottom:1rem;">
-                <div id="students-csv-feedback" style="display:none; font-size:0.8rem; color:#059669; font-weight:600;"></div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary btn-sm" onclick="closeImportStudentsCsvModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         MODAL 5: CSV QUIZ IMPORT
-         ========================================== -->
-    <div id="modal-import-quiz" class="modal-overlay">
-        <div class="modal-dialog" style="max-width:520px;">
-            <div class="modal-header">
-                <h3>Bulk Import Quiz Questions (CSV)</h3>
-                <button class="btn btn-secondary btn-sm" onclick="closeImportQuizCsvModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size:0.825rem; color:var(--text-muted); margin-bottom:1rem;">
-                    Upload a question set CSV. Header: <code>Question,OptionA,OptionB,OptionC,OptionD,CorrectOption,Points</code>
-                </p>
-                <input type="file" id="quiz-csv-file" accept=".csv" onchange="handleQuizCsvUpload(event)">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary btn-sm" onclick="closeImportQuizCsvModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         MODAL 6: ADD CLASS MANUALLY
-         ========================================== -->
-    <div id="modal-add-class" class="modal-overlay">
-        <div class="modal-dialog" style="max-width:480px;">
-            <div class="modal-header">
-                <h3>Add a New Class</h3>
-                <button class="btn btn-secondary btn-sm" onclick="closeAddClassModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Class Identifier</label>
-                    <input type="text" id="new-class-name" class="form-control" placeholder="e.g. 2CS (Engineering 2)" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Sections & Groups</label>
-                    <input type="text" id="new-class-groups" class="form-control" placeholder="e.g. Section 1 (G1, G2), Section 2 (G3, G4)">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary btn-sm" onclick="closeAddClassModal()">Cancel</button>
-                <button class="btn btn-primary btn-sm" onclick="submitAddClass()">Create Class</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Toast Notifications Container -->
-    <div class="toast-container" id="toast-container"></div>
+    <div class="toast-holder" id="toast-holder"></div>
 
-    <!-- ==========================================
-         JAVASCRIPT LOGIC
-         ========================================== -->
     <script>
-        // Socket.IO Real-time Connection
+        // Socket.IO
         const socket = io();
 
-        socket.on('connect', () => {
-            console.log('[Bloom Campus] Socket connected to classroom hub:', socket.id);
-        });
-
-        socket.on('disconnect', () => {
-            console.log('[Bloom Campus] Socket disconnected');
-        });
-
-        // Current App State
-        let currentStep = 1;
-        let selectedTimingMode = 'global';
-        let currentSelectedLevel = '1CP';
-        let activeCockpitTimer = 24;
-        let cockpitTimerInterval = null;
-        let isCockpitPaused = false;
-
-        // Sample Data: Quizzes
-        let quizzesList = [
-            {
-                id: 1,
-                title: "Quiz 01 : Cache Hierarchy & Direct Mappings",
-                module: "ARCHI",
-                level: "1CP",
-                questionsCount: 5,
-                timingMode: "30s / Question",
-                status: "Ongoing",
-                statusClass: "badge-ongoing",
-                lastModified: "Today 09:30"
-            },
-            {
-                id: 2,
-                title: "Quiz 02 : Pipelining Hazards & Branch Prediction",
-                module: "ARCHI",
-                level: "1CP",
-                questionsCount: 4,
-                timingMode: "Global 15m",
-                status: "Ready to Publish",
-                statusClass: "badge-ready",
-                lastModified: "Yesterday"
-            },
-            {
-                id: 3,
-                title: "Quiz 03 : Virtual Memory & TLB Address Translation",
-                module: "SYS 1",
-                level: "2CP",
-                questionsCount: 6,
-                timingMode: "Global 20m",
-                status: "Draft",
-                statusClass: "badge-draft",
-                lastModified: "2 days ago"
-            },
-            {
-                id: 4,
-                title: "Diagnostic Test : Object-Oriented Polymorphism",
-                module: "POO",
-                level: "1CS",
-                questionsCount: 8,
-                timingMode: "Untimed",
-                status: "Ready to Publish",
-                statusClass: "badge-ready",
-                lastModified: "Oct 14"
-            }
-        ];
-
-        // Sample Data: Students
-        let studentsList = [
-            { id: 1, name: "Karim Mansouri", email: "k.mansouri@esi.dz", level: "1CP", group: "G1", attendance: "94%", status: "Active" },
-            { id: 2, name: "Sarah Benali", email: "s.benali@esi.dz", level: "1CP", group: "G1", attendance: "100%", status: "Active" },
-            { id: 3, name: "Youcef Amara", email: "y.amara@esi.dz", level: "1CP", group: "G2", attendance: "88%", status: "Active" },
-            { id: 4, name: "Lina Khelil", email: "l.khelil@esi.dz", level: "1CP", group: "G2", attendance: "92%", status: "Active" },
-            { id: 5, name: "Mehdi Touati", email: "m.touati@esi.dz", level: "2CP", group: "G1", attendance: "96%", status: "Active" },
-            { id: 6, name: "Nour Cherif", email: "n.cherif@esi.dz", level: "2CP", group: "G2", attendance: "90%", status: "Active" },
-            { id: 7, name: "Walid Bouzid", email: "w.bouzid@esi.dz", level: "1CS", group: "G1", attendance: "85%", status: "Active" }
-        ];
-
-        // Sample Data: Question Bank
-        const questionBank = [
-            { id: 101, topic: "ARCHI", level: "1CP", statement: "What is the primary role of the Translation Lookaside Buffer (TLB)?", type: "MCQ", difficulty: "Medium" },
-            { id: 102, topic: "ARCHI", level: "1CP", statement: "Calculate the effective memory access time given 90% L1 hit rate (1ns) and 100ns RAM latency.", type: "Code/Calculation", difficulty: "Hard" },
-            { id: 103, topic: "SYS 1", level: "2CP", statement: "Explain why atomic test-and-set instructions are required to implement spinlocks without race conditions.", type: "Short Answer", difficulty: "Medium" }
-        ];
-
-        // Core View Switcher
-        function switchView(viewName, navButton = null, subTab = null) {
-            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-            const target = document.getElementById('view-' + viewName);
-            if (target) target.classList.add('active');
-
-            // Update sidebar buttons
-            if (navButton) {
-                document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
-                navButton.classList.add('active');
-            } else {
-                document.querySelectorAll('.nav-item-btn').forEach(b => {
-                    const onclickAttr = b.getAttribute('onclick') || '';
-                    if (onclickAttr.includes("'" + viewName + "'")) {
-                        b.classList.add('active');
-                    } else {
-                        b.classList.remove('active');
-                    }
-                });
-            }
-
-            // Update topbar title
-            const titleMap = {
-                'welcome': 'Welcome Home',
-                'cockpit': 'Live Cockpit · Mode Direct',
-                'classes': 'Classes & Students',
-                'quizzes': 'Quizzes & Question Bank',
-                'results': 'Results & Analytics',
-                'settings': 'Classroom Settings',
-                'profile': 'Teacher Profile'
-            };
-            document.getElementById('page-title-display').textContent = titleMap[viewName] || 'Teacher Workspace';
-
-            // Sub-actions
-            if (viewName === 'welcome') renderWelcomeRecentQuizzes();
-            if (viewName === 'classes') renderStudentsTable();
-            if (viewName === 'quizzes') {
-                if (subTab === 'bank') {
-                    filterQuizzesView('bank');
-                } else {
-                    renderQuizzesTable();
-                }
-            }
-            if (viewName === 'results') renderScorecardsTable();
-        }
-
-        // Render Welcome Home Recent Quizzes
-        function renderWelcomeRecentQuizzes() {
-            const container = document.getElementById('welcome-recent-quizzes');
-            if (!container) return;
-            container.innerHTML = '';
-
-            quizzesList.slice(0, 3).forEach(q => {
-                const card = document.createElement('div');
-                card.className = 'recent-quiz-card';
-                card.innerHTML = `
-                    <div>
-                        <div class="recent-quiz-card-header">
-                            <span class="recent-quiz-title">${escapeHtml(q.title)}</span>
-                            <span class="badge-status ${q.statusClass}">${q.status}</span>
-                        </div>
-                        <div class="recent-quiz-meta">
-                            <span>📚 ${q.module} (${q.level})</span>
-                            <span>•</span>
-                            <span>⏱ ${q.timingMode}</span>
-                        </div>
-                    </div>
-                    <div class="recent-quiz-actions">
-                        ${q.status === 'Ongoing' ? 
-                            '<button class="btn btn-primary btn-sm" onclick="switchView(\'cockpit\')">Open Live Cockpit ⚡</button>' : 
-                            '<button class="btn btn-secondary btn-sm" onclick="launchQuizDirectly(' + q.id + ')">Start Live Session 🚀</button>'
-                        }
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Render Quizzes Table
-        function renderQuizzesTable(filter = 'all') {
-            const tbody = document.getElementById('quizzes-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            const filtered = filter === 'all' ? quizzesList : quizzesList.filter(q => q.status.toLowerCase().includes(filter));
-
-            filtered.forEach((q, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-family:var(--font-mono); color:var(--text-muted);">${idx + 1}</td>
-                    <td style="font-weight:700; color:var(--text-heading);">${escapeHtml(q.title)}</td>
-                    <td><span class="badge-status" style="background:#f1f5f9; color:#334155;">${q.module} (${q.level})</span></td>
-                    <td style="font-family:var(--font-mono);">${q.questionsCount} Qs</td>
-                    <td><span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">${q.timingMode}</span></td>
-                    <td><span class="badge-status ${q.statusClass}">${q.status}</span></td>
-                    <td style="text-align:right;">
-                        ${q.status === 'Ongoing' ? 
-                            '<button class="btn btn-secondary btn-sm" style="color:var(--primary);" onclick="switchView(\'cockpit\')">Live View ⚡</button>' : 
-                            '<button class="btn btn-secondary btn-sm" onclick="launchQuizDirectly(' + q.id + ')">Launch 🚀</button>'
-                        }
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            document.getElementById('sidebar-quizzes-count').textContent = quizzesList.length;
-        }
-
-        // Filter Quizzes View Tabs
-        function filterQuizzesView(filterType, btn = null) {
-            if (btn) {
-                document.querySelectorAll('.filter-tab-pill').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-
-            const tableContainer = document.getElementById('quizzes-table-container');
-            const bankContainer = document.getElementById('question-bank-container');
-
-            if (filterType === 'bank') {
-                tableContainer.style.display = 'none';
-                bankContainer.style.display = 'block';
-                renderQuestionBank();
-            } else {
-                tableContainer.style.display = 'block';
-                bankContainer.style.display = 'none';
-                renderQuizzesTable(filterType);
-            }
-        }
-
-        function renderQuestionBank() {
-            const container = document.getElementById('question-bank-items');
-            container.innerHTML = '';
-            questionBank.forEach(item => {
-                const div = document.createElement('div');
-                div.style.cssText = 'padding:0.85rem; border:1px solid var(--border-color); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:space-between; background:#fafafa;';
-                div.innerHTML = `
-                    <div>
-                        <div style="font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:0.2rem;">${item.topic} · ${item.level} · ${item.type} (${item.difficulty})</div>
-                        <div style="font-size:0.875rem; font-weight:600; color:var(--text-heading);">${item.statement}</div>
-                    </div>
-                    <button class="btn btn-secondary btn-sm" onclick="showToast('Added to upcoming quiz!')">➕ Add</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // Classes & Students Management
-        function selectClassLevel(level, cardElement) {
-            document.querySelectorAll('.class-card').forEach(c => c.classList.remove('active'));
-            cardElement.classList.add('active');
-            currentSelectedLevel = level;
-            renderStudentsTable();
-        }
-
-        function renderStudentsTable(searchQuery = '') {
-            const tbody = document.getElementById('students-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            const filtered = studentsList.filter(s => {
-                const matchesLevel = s.level === currentSelectedLevel;
-                const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || s.email.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchesLevel && matchesSearch;
-            });
-
-            filtered.forEach((s, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-family:var(--font-mono); color:var(--text-muted);">${idx + 1}</td>
-                    <td style="font-weight:700; color:var(--text-heading);">${escapeHtml(s.name)}</td>
-                    <td style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-muted);">${escapeHtml(s.email)}</td>
-                    <td><span class="badge-status" style="background:#f1f5f9; color:#334155;">${s.level} · ${s.group}</span></td>
-                    <td style="font-family:var(--font-mono); font-weight:600; color:#059669;">${s.attendance}</td>
-                    <td><span class="badge-status badge-ready">${s.status}</span></td>
-                    <td style="text-align:right;">
-                        <button class="btn btn-secondary btn-sm" onclick="removeStudent(${s.id})">Remove</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filterStudentsTable(val) {
-            renderStudentsTable(val);
-        }
-
-        function removeStudent(id) {
-            studentsList = studentsList.filter(s => s.id !== id);
-            renderStudentsTable();
-            showToast('Student removed from class.');
-        }
-
-        // CSV Import for Students
-        function openImportStudentsCsvModal() {
-            document.getElementById('modal-import-students').classList.add('active');
-        }
-
-        function closeImportStudentsCsvModal() {
-            document.getElementById('modal-import-students').classList.remove('active');
-        }
-
-        function handleStudentsCsvUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const lines = e.target.result.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                let addedCount = 0;
-                for (let i = 1; i < lines.length; i++) {
-                    const parts = lines[i].split(',').map(p => p.trim());
-                    if (parts.length >= 3) {
-                        studentsList.push({
-                            id: studentsList.length + 1,
-                            name: `${parts[0]} ${parts[1] || ''}`.trim(),
-                            email: parts[2] || 'student@esi.dz',
-                            level: parts[5] || currentSelectedLevel,
-                            group: parts[3] || 'G1',
-                            attendance: '100%',
-                            status: 'Enrolled'
-                        });
-                        addedCount++;
-                    }
-                }
-                closeImportStudentsCsvModal();
-                renderStudentsTable();
-                showToast(`Enrolled ${addedCount} students into ${currentSelectedLevel} via CSV!`);
-            };
-            reader.readAsText(file);
-        }
-
-        function exportStudentsRosterCsv() {
-            let csv = "Firstname,Lastname,Email,Group,Level,Attendance\n";
-            studentsList.filter(s => s.level === currentSelectedLevel).forEach(s => {
-                const [first, ...rest] = s.name.split(' ');
-                csv += `${first},${rest.join(' ')},${s.email},${s.group},${s.level},${s.attendance}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `roster_${currentSelectedLevel}.csv`;
-            a.click();
-        }
-
-        // Results Scorecards Table
-        function renderScorecardsTable() {
-            const tbody = document.getElementById('results-scorecard-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            const sampleResults = [
-                { name: "Karim Mansouri", cohort: "1CP · G1", score: "18.5 / 20", time: "08m 42s", accuracy: "92% (High)" },
-                { name: "Sarah Benali", cohort: "1CP · G1", score: "17.0 / 20", time: "11m 15s", accuracy: "88% (High)" },
-                { name: "Youcef Amara", cohort: "1CP · G2", score: "14.5 / 20", time: "14m 20s", accuracy: "72% (Solid)" },
-                { name: "Lina Khelil", cohort: "1CP · G2", score: "09.5 / 20", time: "15m 00s", accuracy: "45% (Needs Review)" }
-            ];
-
-            sampleResults.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-weight:700; color:var(--text-heading);">${r.name}</td>
-                    <td><span class="badge-status" style="background:#f1f5f9; color:#334155;">${r.cohort}</span></td>
-                    <td style="font-family:var(--font-mono); font-weight:700; color:var(--primary); font-size:0.95rem;">${r.score}</td>
-                    <td style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">${r.time}</td>
-                    <td style="font-family:var(--font-mono); font-size:0.8rem;">${r.accuracy}</td>
-                    <td style="text-align:right;">
-                        <button class="btn btn-secondary btn-sm" onclick="showToast('Inspecting scorecard for ${r.name}')">Inspect 🔍</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // ==========================================
-        // 5-STEP GUIDED QUIZ BUILDER FLOW
-        // ==========================================
-        function openQuizCreationFlow() {
-            currentStep = 1;
-            updateStepView();
-            document.getElementById('modal-quiz-flow').classList.add('active');
-            if (document.getElementById('builder-questions-list').children.length === 0) {
-                addQuestionToBuilder();
-            }
-        }
-
-        function closeQuizCreationFlow() {
-            document.getElementById('modal-quiz-flow').classList.remove('active');
-        }
-
-        function updateStepView() {
-            for (let i = 1; i <= 5; i++) {
-                const stepContent = document.getElementById('step-content-' + i);
-                const stepPill = document.getElementById('pill-step-' + i);
-                if (stepContent) stepContent.style.display = (i === currentStep) ? 'block' : 'none';
-                if (stepPill) {
-                    if (i === currentStep) {
-                        stepPill.className = 'step-pill active';
-                    } else {
-                        stepPill.className = 'step-pill';
-                    }
-                }
-            }
-
-            document.getElementById('btn-builder-prev').style.display = (currentStep > 1) ? 'inline-flex' : 'none';
-            document.getElementById('btn-builder-next').style.display = (currentStep < 5) ? 'inline-flex' : 'none';
-
-            if (currentStep === 5) {
-                const title = document.getElementById('builder-quiz-title').value || 'Untitled Quiz';
-                const mod = document.getElementById('builder-quiz-module').value;
-                const lvl = document.getElementById('builder-quiz-level').value;
-                const qCount = document.getElementById('builder-questions-list').children.length;
-
-                document.getElementById('preview-title').textContent = title;
-                document.getElementById('preview-meta').textContent = `Module: ${mod} · Target: ${lvl} · ${qCount} Questions · Timing: ${selectedTimingMode}`;
-            }
-        }
-
-        function goToNextStep() {
-            if (currentStep === 1) {
-                const title = document.getElementById('builder-quiz-title').value.trim();
-                if (!title) {
-                    alert('Please enter a Quiz Title to proceed.');
-                    return;
-                }
-            }
-            if (currentStep < 5) {
-                currentStep++;
-                updateStepView();
-            }
-        }
-
-        function goToPreviousStep() {
-            if (currentStep > 1) {
-                currentStep--;
-                updateStepView();
-            }
-        }
-
-        function selectBuilderMethod(method) {
-            document.querySelectorAll('.method-choice-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('method-' + method).classList.add('selected');
-
-            if (method === 'ai') {
-                closeQuizCreationFlow();
-                openAiStudioModal();
-            } else if (method === 'csv') {
-                closeQuizCreationFlow();
-                openImportQuizCsvModal();
-            } else if (method === 'bank') {
-                closeQuizCreationFlow();
-                switchView('quizzes', null, 'bank');
-            }
-        }
-
-        function addQuestionToBuilder() {
-            const container = document.getElementById('builder-questions-list');
-            const qNum = container.children.length + 1;
-            const card = document.createElement('div');
-            card.style.cssText = 'background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:1rem; position:relative;';
-            card.innerHTML = `
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                    <span style="font-size:0.75rem; font-weight:700; color:var(--primary);">Question ${qNum}</span>
-                    <button class="btn btn-secondary btn-sm" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="this.parentElement.parentElement.remove()">Remove</button>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter question statement here..." value="Which cache mapping allows a block in any line?" style="margin-bottom:0.5rem;">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-                    <input type="text" class="form-control" placeholder="Option A" value="Direct-Mapped">
-                    <input type="text" class="form-control" placeholder="Option B (Correct)" value="Fully Associative">
-                    <input type="text" class="form-control" placeholder="Option C" value="2-Way Set Associative">
-                    <input type="text" class="form-control" placeholder="Option D" value="Sector Cache">
-                </div>
-            `;
-            container.appendChild(card);
-            document.getElementById('builder-q-count').textContent = container.children.length;
-        }
-
-        function selectTimingMode(mode) {
-            selectedTimingMode = mode;
-            document.querySelectorAll('.timing-mode-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('mode-card-' + (mode === 'per_question' ? 'perq' : mode)).classList.add('selected');
-
-            document.getElementById('global-timer-config').style.display = (mode === 'global') ? 'block' : 'none';
-        }
-
-        function saveQuizWithStatus(status) {
-            const title = document.getElementById('builder-quiz-title').value || 'Quiz';
-            const mod = document.getElementById('builder-quiz-module').value;
-            const lvl = document.getElementById('builder-quiz-level').value;
-            const qCount = document.getElementById('builder-questions-list').children.length || 3;
-
-            let timingLabel = 'Global 15m';
-            if (selectedTimingMode === 'per_question') timingLabel = '30s / Question';
-            if (selectedTimingMode === 'untimed') timingLabel = 'Untimed';
-
-            let statusClass = 'badge-draft';
-            let actualStatus = status;
-
-            if (status === 'Ready to Publish') {
-                statusClass = 'badge-ready';
-            } else if (status === 'Publish_Now') {
-                actualStatus = 'Ongoing';
-                statusClass = 'badge-ongoing';
-            }
-
-            const newQuiz = {
-                id: quizzesList.length + 1,
-                title,
-                module: mod,
-                level: lvl,
-                questionsCount: qCount,
-                timingMode: timingLabel,
-                status: actualStatus,
-                statusClass,
-                lastModified: 'Just now'
-            };
-
-            quizzesList.unshift(newQuiz);
-            closeQuizCreationFlow();
-            renderQuizzesTable();
-
-            if (status === 'Publish_Now') {
-                launchQuizDirectly(newQuiz.id);
-            } else {
-                showToast(`Quiz "${title}" saved as ${actualStatus}!`);
-                switchView('quizzes');
-            }
-        }
-
-        // Live Publishing & Socket Broadcast
-        function launchQuizDirectly(quizId) {
-            const quiz = quizzesList.find(q => q.id === quizId);
-            if (!quiz) return;
-
-            quiz.status = 'Ongoing';
-            quiz.statusClass = 'badge-ongoing';
-            renderQuizzesTable();
-
-            // Emit live Socket.IO events to mobile students
+        function triggerFastLaunch() {
             socket.emit('new-notification', {
-                title: quiz.title,
-                quizId: quiz.id,
-                module: quiz.module,
-                level: quiz.level
+                title: "Quiz 01 : Cache Hierarchy & Direct Mappings",
+                quizId: 1,
+                module: "ARCHI",
+                level: "1CP"
             });
             socket.emit('quiz:started', {
-                quizId: quiz.id,
-                title: quiz.title
+                quizId: 1,
+                title: "Quiz 01 : Cache Hierarchy & Direct Mappings"
             });
-
-            showToast(`🚀 Published "${quiz.title}"! Student devices notified.`);
-            openClassroomQrModal();
+            showToast('🚀 Live session started! Student devices notified.');
+            openQrModal();
         }
 
-        function launchLiveSessionFast() {
-            launchQuizDirectly(1);
-        }
-
-        // Classroom QR Code Modal
-        function openClassroomQrModal() {
-            const holder = document.getElementById('qr-svg-holder');
-            holder.innerHTML = '<span style="font-size:0.8rem; color:var(--text-muted);">Loading QR Code...</span>';
+        function openQrModal() {
+            const target = document.getElementById('qr-svg-target');
+            target.innerHTML = '<span style="font-size:0.8rem; color:var(--text-muted);">Loading QR...</span>';
             fetch('/api/qr')
-                .then(res => res.text())
+                .then(r => r.text())
                 .then(svg => {
-                    holder.innerHTML = svg;
+                    target.innerHTML = svg;
                 })
-                .catch(err => {
-                    holder.innerHTML = '<span style="color:#e11d48; font-size:0.8rem;">Offline QR Ready</span>';
+                .catch(() => {
+                    target.innerHTML = '<span style="color:var(--text-muted); font-size:0.8rem;">Offline QR Ready</span>';
                 });
-            document.getElementById('modal-qr-code').classList.add('active');
+            document.getElementById('qr-modal-overlay').classList.add('active');
         }
 
-        function closeClassroomQrModal() {
-            document.getElementById('modal-qr-code').classList.remove('active');
+        function closeQrModal() {
+            document.getElementById('qr-modal-overlay').classList.remove('active');
         }
 
-        // ==========================================
-        // AI QUIZ STUDIO LOGIC
-        // ==========================================
-        function openAiStudioModal() {
-            document.getElementById('modal-ai-studio').classList.add('active');
-        }
-
-        function closeAiStudioModal() {
-            document.getElementById('modal-ai-studio').classList.remove('active');
-        }
-
-        function loadSampleAiNotes() {
-            document.getElementById('ai-input-notes').value = 
-                "In computer architecture, cache memory utilizes direct mapping, set associative mapping, or fully associative mapping. " +
-                "Direct mapping assigns each block to index = (Block Address) mod (Number of Cache Lines). " +
-                "Conflict misses occur when multiple memory locations contend for the same line. Fully associative caches eliminate conflict misses.";
-        }
-
-        let generatedAiQuestions = [];
-
-        function generateQuizWithAi() {
-            const notes = document.getElementById('ai-input-notes').value.trim();
-            if (!notes) {
-                alert('Please enter or paste course lecture notes first.');
-                return;
-            }
-
-            const qCount = parseInt(document.getElementById('ai-q-count').value);
-            const difficulty = document.getElementById('ai-difficulty').value;
-            const btn = document.getElementById('btn-trigger-ai');
-
-            btn.disabled = true;
-            btn.innerHTML = '<span>⏳ Synthesizing...</span>';
-
-            fetch('/api/ai/generate-quiz', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    topic: 'Computer Architecture & Memory Systems',
-                    courseNotes: notes,
-                    questionCount: qCount,
-                    difficulty: difficulty
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                btn.disabled = false;
-                btn.innerHTML = '<span>✨ Generate Questions</span>';
-
-                if (data.quiz && data.quiz.questions) {
-                    generatedAiQuestions = data.quiz.questions;
-                    renderAiQuestionsPreview(generatedAiQuestions);
-                } else {
-                    showToast('AI synthesized 3 questions from course notes.');
-                    generatedAiQuestions = [
-                        { question: "What is the formula for the line index in direct-mapped cache?", options: ["Block Address mod Lines", "Block Address * Lines", "Tag + Offset", "Line / Tag"], answer: "Block Address mod Lines" },
-                        { question: "Which miss category is eliminated in fully associative cache?", options: ["Compulsory miss", "Conflict miss", "Capacity miss", "Coherence miss"], answer: "Conflict miss" }
-                    ];
-                    renderAiQuestionsPreview(generatedAiQuestions);
-                }
-            })
-            .catch(err => {
-                btn.disabled = false;
-                btn.innerHTML = '<span>✨ Generate Questions</span>';
-                generatedAiQuestions = [
-                    { question: "What cache technique places a block in any cache line?", options: ["Direct-Mapped", "Fully Associative", "2-Way Set Associative", "Skewed Associative"], answer: "Fully Associative" }
-                ];
-                renderAiQuestionsPreview(generatedAiQuestions);
-            });
-        }
-
-        function renderAiQuestionsPreview(questions) {
-            const previewZone = document.getElementById('ai-preview-zone');
-            const container = document.getElementById('ai-generated-cards');
-            container.innerHTML = '';
-
-            questions.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.style.cssText = 'background:#ffffff; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:0.85rem;';
-                card.innerHTML = `
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender); margin-bottom:0.25rem;">Question ${idx + 1} (AI Generated)</div>
-                    <div style="font-size:0.875rem; font-weight:600; color:var(--text-heading); margin-bottom:0.5rem;">${escapeHtml(q.question || q.statement)}</div>
-                    <div style="font-size:0.75rem; color:#059669; font-weight:600;">✓ Correct: ${escapeHtml(q.answer || (q.options ? q.options[0] : 'N/A'))}</div>
-                `;
-                container.appendChild(card);
-            });
-
-            previewZone.style.display = 'block';
-            document.getElementById('btn-accept-ai').style.display = 'inline-flex';
-        }
-
-        function transferAiQuestionsToBuilder() {
-            closeAiStudioModal();
-            openQuizCreationFlow();
-            currentStep = 3;
-            updateStepView();
-
-            const container = document.getElementById('builder-questions-list');
-            container.innerHTML = '';
-
-            generatedAiQuestions.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.style.cssText = 'background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:1rem; position:relative;';
-                card.innerHTML = `
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                        <span style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender);">Question ${idx + 1} (From AI)</span>
-                        <button class="btn btn-secondary btn-sm" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="this.parentElement.parentElement.remove()">Remove</button>
-                    </div>
-                    <input type="text" class="form-control" value="${escapeHtml(q.question || q.statement)}" style="margin-bottom:0.5rem;">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-                        <input type="text" class="form-control" value="${q.options && q.options[0] ? escapeHtml(q.options[0]) : 'Option A'}">
-                        <input type="text" class="form-control" value="${q.options && q.options[1] ? escapeHtml(q.options[1]) : 'Option B (Correct)'}">
-                        <input type="text" class="form-control" value="${q.options && q.options[2] ? escapeHtml(q.options[2]) : 'Option C'}">
-                        <input type="text" class="form-control" value="${q.options && q.options[3] ? escapeHtml(q.options[3]) : 'Option D'}">
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            document.getElementById('builder-q-count').textContent = container.children.length;
-            showToast('AI Questions transferred into Quiz Builder. Verify and continue!');
-        }
-
-        // ==========================================
-        // LIVE COCKPIT CONTROLLER
-        // ==========================================
-        function cockpitTogglePause() {
-            isCockpitPaused = !isCockpitPaused;
-            const btn = document.getElementById('btn-cockpit-pause');
-            btn.innerHTML = isCockpitPaused ? '<span>▶ Resume Timer</span>' : '<span>⏸ Pause Timer</span>';
-            showToast(isCockpitPaused ? 'Timer paused' : 'Timer resumed');
-        }
-
-        function cockpitAddBonusTime() {
-            activeCockpitTimer += 30;
-            document.getElementById('cockpit-timer').textContent = '00:' + (activeCockpitTimer < 10 ? '0' : '') + activeCockpitTimer;
-            showToast('+30 Seconds bonus awarded to amphitheater!');
-        }
-
-        function cockpitRevealAnswer() {
-            document.querySelectorAll('.cockpit-answer-card').forEach(c => {
-                c.style.opacity = '0.6';
-            });
-            const correctCard = document.getElementById('opt-card-1');
-            if (correctCard) {
-                correctCard.style.opacity = '1';
-                correctCard.style.transform = 'scale(1.02)';
-            }
-            showToast('Correct answer revealed to amphitheater projector!');
-        }
-
-        function cockpitNextQuestion() {
-            activeCockpitTimer = 30;
-            document.getElementById('cockpit-timer').textContent = '00:30';
-            document.getElementById('cockpit-q-num').textContent = 'Question 3 of 5 · Single Choice MCQ';
-            document.getElementById('cockpit-q-text').textContent = 'In direct-mapped cache, how is the cache line index calculated from a 32-bit physical address?';
-            
-            // Reset answer cards styling
-            document.querySelectorAll('.cockpit-answer-card').forEach(c => {
-                c.style.opacity = '1';
-                c.style.transform = 'none';
-            });
-            showToast('Moved to Question 3.');
-        }
-
-        function cockpitEndQuiz() {
-            if (confirm('Are you sure you want to conclude this live quiz session? Results will be tabulated.')) {
-                showToast('Live session concluded. Tabulating final results...');
-                switchView('results');
-            }
-        }
-
-        // Import Quiz CSV
-        function openImportQuizCsvModal() {
-            document.getElementById('modal-import-quiz').classList.add('active');
-        }
-
-        function closeImportQuizCsvModal() {
-            document.getElementById('modal-import-quiz').classList.remove('active');
-        }
-
-        function handleQuizCsvUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            quizzesList.unshift({
-                id: quizzesList.length + 1,
-                title: `Imported: ${file.name.replace('.csv', '')}`,
-                module: "SYS 1",
-                level: "1CP",
-                questionsCount: 5,
-                timingMode: "30s / Question",
-                status: "Ready to Publish",
-                statusClass: "badge-ready",
-                lastModified: "Just now"
-            });
-
-            closeImportQuizCsvModal();
-            renderQuizzesTable();
-            showToast(`Imported quiz "${file.name}" with 5 questions!`);
-            switchView('quizzes');
-        }
-
-        // Add Class Manually
-        function openAddClassModal() {
-            document.getElementById('modal-add-class').classList.add('active');
-        }
-
-        function closeAddClassModal() {
-            document.getElementById('modal-add-class').classList.remove('active');
-        }
-
-        function submitAddClass() {
-            const name = document.getElementById('new-class-name').value.trim();
-            if (!name) return;
-
-            showToast(`Class ${name} created successfully!`);
-            closeAddClassModal();
-        }
-
-        // Add Student Manually
-        function openAddStudentModal() {
-            const name = prompt('Enter Student Full Name:');
-            if (name) {
-                studentsList.push({
-                    id: studentsList.length + 1,
-                    name: name,
-                    email: `${name.toLowerCase().replace(' ', '.')}@esi.dz`,
-                    level: currentSelectedLevel,
-                    group: 'G1',
-                    attendance: '100%',
-                    status: 'Active'
-                });
-                renderStudentsTable();
-                showToast(`Student ${name} added to ${currentSelectedLevel}.`);
-            }
-        }
-
-        // Toast Helper
         function showToast(msg) {
-            const container = document.getElementById('toast-container');
+            const holder = document.getElementById('toast-holder');
             const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.innerHTML = `<span>💡</span><span>${escapeHtml(msg)}</span>`;
-            container.appendChild(toast);
+            toast.className = 'toast-card';
+            toast.innerHTML = `<span>🌿</span><span>${msg}</span>`;
+            holder.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
-                toast.style.transform = 'translateY(10px)';
-                setTimeout(() => toast.remove(), 250);
-            }, 3200);
+                toast.style.transform = 'translateY(8px)';
+                setTimeout(() => toast.remove(), 200);
+            }, 3000);
         }
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        function notifyUpcomingPage(pageName) {
+            showToast(`Page "${pageName}" is up next for coding!`);
         }
 
-        // Initialization on Load
+        function activateSection(sec, btn) {
+            document.querySelectorAll('.menu-nav-button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        // Initialize Dynamic Day
         document.addEventListener('DOMContentLoaded', () => {
-            renderWelcomeRecentQuizzes();
-            renderStudentsTable();
-            renderQuizzesTable();
-
-            // Set current day text dynamically
             const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
             const today = days[new Date().getDay()];
-            const pill = document.getElementById('topbar-date-pill');
+            const pill = document.getElementById('today-day-pill');
             if (pill) pill.textContent = `${today} · TEACHER SPACE`;
         });
     </script>
