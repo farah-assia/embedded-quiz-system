@@ -970,6 +970,276 @@
             line-height: 1.4;
         }
 
+        
+        /* ========================================================
+           PAGE 3: CLASSES & STUDENTS
+           ======================================================== */
+        .cohort-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .cohort-title-area h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+        }
+
+        .cohort-title-area p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .cohort-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .cohort-card {
+            background: var(--bg-surface);
+            border: 1.5px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.35rem;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            box-shadow: var(--shadow-subtle);
+            position: relative;
+        }
+
+        .cohort-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .cohort-card.selected {
+            border-color: var(--sage-primary);
+            background: #F7FAF8;
+            box-shadow: 0 0 0 1px var(--sage-primary);
+        }
+
+        .cohort-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .cohort-card-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.015em;
+        }
+
+        .cohort-count-badge {
+            font-size: 0.78rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--sage-primary);
+            background: var(--sage-light);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--sage-border);
+        }
+
+        .cohort-card-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .cohort-card-active-pill {
+            display: none;
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.85rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--sage-primary);
+        }
+
+        .cohort-card.selected .cohort-card-active-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Detail Roster Section */
+        .roster-workspace-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-subtle);
+            overflow: hidden;
+        }
+
+        .roster-top-strip {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-warm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            background: #FAF9F6;
+        }
+
+        .group-filter-pills {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .group-pill-btn {
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .group-pill-btn:hover {
+            background: var(--bg-subtle);
+            color: var(--text-heading);
+        }
+
+        .group-pill-btn.active {
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            border-color: var(--sage-border);
+        }
+
+        .roster-search-bar {
+            padding: 0.85rem 1.5rem;
+            border-bottom: 1px solid var(--border-warm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .search-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-sm);
+            padding: 0.45rem 0.85rem;
+            width: 340px;
+        }
+
+        .search-input-wrap input {
+            border: none;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--text-heading);
+            outline: none;
+            width: 100%;
+        }
+
+        table.roster-styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        table.roster-styled-table th {
+            background: #F7F6F3;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.8rem 1.25rem;
+            border-bottom: 1px solid var(--border-warm);
+        }
+
+        table.roster-styled-table td {
+            padding: 0.9rem 1.25rem;
+            border-bottom: 1px solid var(--border-warm);
+            color: var(--text-body);
+            vertical-align: middle;
+        }
+
+        table.roster-styled-table tr:hover td {
+            background: #FCFBF9;
+        }
+
+        .student-cell-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .student-initials-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-pill);
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--sage-border);
+            flex-shrink: 0;
+        }
+
+        .form-dialog {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-warm);
+            box-shadow: var(--shadow-modal);
+            width: 100%;
+            max-width: 520px;
+            padding: 1.75rem;
+        }
+
+        .form-group-item {
+            margin-bottom: 1.15rem;
+        }
+
+        .form-group-item label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 0.35rem;
+        }
+
+        .form-input-field {
+            width: 100%;
+            padding: 0.55rem 0.85rem;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--text-heading);
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .form-input-field:focus {
+            border-color: var(--sage-primary);
+            box-shadow: 0 0 0 3px rgba(62, 111, 88, 0.12);
+        }
+
         /* Modal Overlay for QR Code */
         .modal-shade {
             position: fixed;
@@ -1059,10 +1329,10 @@
                         </button>
                     </li>
                     <li>
-                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Classes & Students')">
+                        <button class="menu-nav-button" id="nav-btn-classes" onclick="switchMainPage('classes', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <span>Classes & Students</span>
-                            <span class="badge-count">3</span>
+                            <span class="badge-count" id="sidebar-classes-badge">3</span>
                         </button>
                     </li>
                     <li>
@@ -1418,6 +1688,116 @@
                 </div>
             </div>
         </div>
+
+        <!-- ========================================================
+             PAGE 3: CLASSES & STUDENTS
+             ======================================================== -->
+        <div class="page-view-container" id="view-page-classes">
+            <div class="workspace-canvas">
+                <!-- Top Header & Actions -->
+                <div class="cohort-header-bar">
+                    <div class="cohort-title-area">
+                        <h2>Classes & Student Cohorts</h2>
+                        <p>Manage enrolled academic cohorts, sections, groups, and bulk CSV enrollment.</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <button class="btn btn-secondary btn-sm" onclick="openImportStudentsCsvModal()">
+                            <span>📥 Bulk CSV Import</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportCohortCsv()">
+                            <span>📤 Export Roster (CSV)</span>
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="openAddClassModal()">
+                            <span>➕ Add a Class</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3 Cohort Cards Grid -->
+                <div class="cohort-cards-grid" id="cohort-cards-grid">
+                    <!-- 1CP Card -->
+                    <div class="cohort-card selected" id="card-cohort-1CP" onclick="selectClassCohort('1CP')">
+                        <div class="cohort-card-top">
+                            <span class="cohort-card-title">1CP (Prep 1)</span>
+                            <span class="cohort-count-badge" id="badge-count-1CP">45 Students</span>
+                        </div>
+                        <p class="cohort-card-desc">Architecture des Ordinateurs · Sections A & B · Groups G1, G2, G3, G4</p>
+                        <span class="cohort-card-active-pill">✓ Active View</span>
+                    </div>
+
+                    <!-- 2CP Card -->
+                    <div class="cohort-card" id="card-cohort-2CP" onclick="selectClassCohort('2CP')">
+                        <div class="cohort-card-top">
+                            <span class="cohort-card-title">2CP (Prep 2)</span>
+                            <span class="cohort-count-badge" id="badge-count-2CP">42 Students</span>
+                        </div>
+                        <p class="cohort-card-desc">Systèmes d'Exploitation 1 · Sections A & B · Groups G1, G2, G3, G4</p>
+                        <span class="cohort-card-active-pill">✓ Active View</span>
+                    </div>
+
+                    <!-- 1CS Card -->
+                    <div class="cohort-card" id="card-cohort-1CS" onclick="selectClassCohort('1CS')">
+                        <div class="cohort-card-top">
+                            <span class="cohort-card-title">1CS (Engineering 1)</span>
+                            <span class="cohort-count-badge" id="badge-count-1CS">38 Students</span>
+                        </div>
+                        <p class="cohort-card-desc">Programmation Orientée Objet & Algorithmique · Section 1 · Groups G1..G3</p>
+                        <span class="cohort-card-active-pill">✓ Active View</span>
+                    </div>
+                </div>
+
+                <!-- Cohort Roster Workspace Card -->
+                <div class="roster-workspace-card">
+                    <!-- Top Strip: Group Subdivisions -->
+                    <div class="roster-top-strip">
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-heading);" id="roster-header-title">1CP Students Roster</span>
+                            <span class="pill-status pill-ready" id="roster-header-count">45 Enrolled</span>
+                        </div>
+                        <div class="group-filter-pills">
+                            <button class="group-pill-btn active" onclick="filterCohortByGroup('all', this)">All Groups</button>
+                            <button class="group-pill-btn" onclick="filterCohortByGroup('G1', this)">Group G1</button>
+                            <button class="group-pill-btn" onclick="filterCohortByGroup('G2', this)">Group G2</button>
+                            <button class="group-pill-btn" onclick="filterCohortByGroup('G3', this)">Group G3</button>
+                            <button class="group-pill-btn" onclick="filterCohortByGroup('G4', this)">Group G4</button>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar & Action -->
+                    <div class="roster-search-bar">
+                        <div class="search-input-wrap">
+                            <span>🔍</span>
+                            <input type="text" placeholder="Search by student name, matricule or email..." oninput="searchStudents(this.value)">
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.5rem;">
+                            <button class="btn btn-primary btn-sm" onclick="openAddStudentModal()">
+                                <span>➕ Add Student</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <table class="roster-styled-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th>Student</th>
+                                <th>University Email</th>
+                                <th>Group & Section</th>
+                                <th>Attendance Rate</th>
+                                <th>Quizzes Taken</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roster-tbody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Student QR Code Modal -->
@@ -1441,6 +1821,107 @@
     </div>
 
     <!-- Toast Notifications Container -->
+    
+    <!-- Modal: Add Student Manually -->
+    <div id="modal-add-student" class="modal-shade">
+        <div class="form-dialog">
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Add Student to Cohort</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">Enter student university details to enroll into active class.</p>
+            
+            <form onsubmit="submitAddStudent(event)">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                    <div class="form-group-item">
+                        <label>First Name</label>
+                        <input type="text" id="new-student-first" class="form-input-field" placeholder="e.g. Mehdi" required>
+                    </div>
+                    <div class="form-group-item">
+                        <label>Last Name</label>
+                        <input type="text" id="new-student-last" class="form-input-field" placeholder="e.g. Touati" required>
+                    </div>
+                </div>
+                <div class="form-group-item">
+                    <label>University Email</label>
+                    <input type="email" id="new-student-email" class="form-input-field" placeholder="e.g. m.touati@esi.dz" required>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                    <div class="form-group-item">
+                        <label>Cohort Level</label>
+                        <select id="new-student-cohort" class="form-input-field">
+                            <option value="1CP">1CP (Prep 1)</option>
+                            <option value="2CP">2CP (Prep 2)</option>
+                            <option value="1CS">1CS (Engineering 1)</option>
+                        </select>
+                    </div>
+                    <div class="form-group-item">
+                        <label>Assigned Group</label>
+                        <select id="new-student-group" class="form-input-field">
+                            <option value="G1">Group G1</option>
+                            <option value="G2">Group G2</option>
+                            <option value="G3">Group G3</option>
+                            <option value="G4">Group G4</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.25rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeAddStudentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Enroll Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Class Manually -->
+    <div id="modal-add-class" class="modal-shade">
+        <div class="form-dialog">
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Create New Class</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">Add a new academic class cohort and configure its group subdivisions.</p>
+            
+            <form onsubmit="submitAddClass(event)">
+                <div class="form-group-item">
+                    <label>Class Identifier & Level</label>
+                    <input type="text" id="new-class-name" class="form-input-field" placeholder="e.g. 2CS (Engineering 2)" required>
+                </div>
+                <div class="form-group-item">
+                    <label>Assigned Course / Module</label>
+                    <input type="text" id="new-class-module" class="form-input-field" placeholder="e.g. Systèmes Distribués" required>
+                </div>
+                <div class="form-group-item">
+                    <label>Sections & Groups Subdivisions</label>
+                    <input type="text" id="new-class-groups" class="form-input-field" placeholder="e.g. Section 1 (G1, G2), Section 2 (G3, G4)" value="Section 1 (G1, G2)">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.25rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeAddClassModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Create Class</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Import Students CSV -->
+    <div id="modal-import-students-csv" class="modal-shade">
+        <div class="form-dialog">
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Bulk Import Students (CSV)</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">
+                Upload a university roster CSV. Required columns: <code>Firstname,Lastname,Email,Group,Section,Level</code>
+            </p>
+            
+            <div style="border:2px dashed var(--border-warm); border-radius:var(--radius-md); padding:1.75rem; text-align:center; background:var(--bg-canvas); margin-bottom:1rem;">
+                <input type="file" id="csv-roster-file" accept=".csv" onchange="handleStudentCsvFile(event)" style="display:none;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('csv-roster-file').click()">
+                    <span>📁 Choose CSV File</span>
+                </button>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;" id="csv-file-name-preview">No file selected yet</div>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="downloadSampleRosterCsv()" style="font-size:0.75rem;">
+                    <span>📥 Download Sample CSV</span>
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeImportStudentsCsvModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-holder" id="toast-holder"></div>
 
     <script>
@@ -1479,8 +1960,10 @@
 
             const titleMap = {
                 'welcome': 'Welcome Home',
-                'cockpit': 'Live Cockpit · Mode Direct'
+                'cockpit': 'Live Cockpit · Mode Direct',
+                'classes': 'Classes & Students'
             };
+            if (pageId === 'classes') renderStudentsRoster();
             const titleElem = document.getElementById('topbar-title-text');
             if (titleElem) titleElem.textContent = titleMap[pageId] || 'Workspace';
 
@@ -1624,6 +2107,273 @@
         function notifyUpcomingPage(pageName) {
             showToast(`Page "${pageName}" is up next for coding!`);
         }
+
+        
+        // ========================================================
+        // CLASSES & STUDENTS DATA & METHODS
+        // ========================================================
+        let activeCohort = '1CP';
+        let activeGroupFilter = 'all';
+        let currentSearchQuery = '';
+
+        let cohortsList = [
+            { id: '1CP', name: '1CP (Prep 1)', desc: 'Architecture des Ordinateurs · Sections A & B · Groups G1..G4' },
+            { id: '2CP', name: '2CP (Prep 2)', desc: 'Systèmes d\'Exploitation 1 · Sections A & B · Groups G1..G4' },
+            { id: '1CS', name: '1CS (Engineering 1)', desc: 'POO & Algorithmique · Section 1 · Groups G1..G3' }
+        ];
+
+        let studentsRoster = [
+            { id: 1, first: "Karim", last: "Mansouri", email: "k.mansouri@esi.dz", cohort: "1CP", group: "G1", section: "Section A", attendance: "96%", quizzesTaken: "4 / 4", status: "Active" },
+            { id: 2, first: "Sarah", last: "Benali", email: "s.benali@esi.dz", cohort: "1CP", group: "G1", section: "Section A", attendance: "100%", quizzesTaken: "4 / 4", status: "Active" },
+            { id: 3, first: "Youcef", last: "Amara", email: "y.amara@esi.dz", cohort: "1CP", group: "G2", section: "Section A", attendance: "92%", quizzesTaken: "4 / 4", status: "Active" },
+            { id: 4, first: "Lina", last: "Khelil", email: "l.khelil@esi.dz", cohort: "1CP", group: "G2", section: "Section B", attendance: "88%", quizzesTaken: "3 / 4", status: "Active" },
+            { id: 5, first: "Yacine", last: "Boussaid", email: "y.boussaid@esi.dz", cohort: "1CP", group: "G3", section: "Section B", attendance: "95%", quizzesTaken: "4 / 4", status: "Active" },
+            { id: 6, first: "Amina", last: "Dahmani", email: "a.dahmani@esi.dz", cohort: "1CP", group: "G4", section: "Section B", attendance: "100%", quizzesTaken: "4 / 4", status: "Active" },
+
+            { id: 7, first: "Mehdi", last: "Touati", email: "m.touati@esi.dz", cohort: "2CP", group: "G1", section: "Section A", attendance: "98%", quizzesTaken: "5 / 5", status: "Active" },
+            { id: 8, first: "Nour", last: "Cherif", email: "n.cherif@esi.dz", cohort: "2CP", group: "G2", section: "Section A", attendance: "90%", quizzesTaken: "5 / 5", status: "Active" },
+            { id: 9, first: "Sofiane", last: "Hadj", email: "s.hadj@esi.dz", cohort: "2CP", group: "G3", section: "Section B", attendance: "94%", quizzesTaken: "4 / 5", status: "Active" },
+
+            { id: 10, first: "Walid", last: "Bouzid", email: "w.bouzid@esi.dz", cohort: "1CS", group: "G1", section: "Section 1", attendance: "85%", quizzesTaken: "6 / 6", status: "Active" },
+            { id: 11, first: "Ines", last: "Mebarki", email: "i.mebarki@esi.dz", cohort: "1CS", group: "G2", section: "Section 1", attendance: "100%", quizzesTaken: "6 / 6", status: "Active" }
+        ];
+
+        function renderStudentsRoster() {
+            const tbody = document.getElementById('roster-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const filtered = studentsRoster.filter(s => {
+                const matchCohort = s.cohort === activeCohort;
+                const matchGroup = (activeGroupFilter === 'all') || (s.group === activeGroupFilter);
+                const query = currentSearchQuery.toLowerCase();
+                const fullName = (s.first + ' ' + s.last).toLowerCase();
+                const matchSearch = fullName.includes(query) || s.email.toLowerCase().includes(query);
+                return matchCohort && matchGroup && matchSearch;
+            });
+
+            const totalCohortStudents = studentsRoster.filter(s => s.cohort === activeCohort).length;
+            const headerTitle = document.getElementById('roster-header-title');
+            if (headerTitle) headerTitle.textContent = activeCohort + ' Students Roster';
+            const headerCount = document.getElementById('roster-header-count');
+            if (headerCount) headerCount.textContent = totalCohortStudents + ' Enrolled';
+
+            // Update badge counts on cards
+            cohortsList.forEach(c => {
+                const b = document.getElementById('badge-count-' + c.id);
+                if (b) {
+                    const count = studentsRoster.filter(s => s.cohort === c.id).length;
+                    b.textContent = count + ' Students';
+                }
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--text-muted);">No students found matching current filters.</td></tr>';
+                return;
+            }
+
+            filtered.forEach((s, idx) => {
+                const tr = document.createElement('tr');
+                const initials = (s.first[0] || '') + (s.last[0] || '');
+                tr.innerHTML = `
+                    <td style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">${idx + 1}</td>
+                    <td>
+                        <div class="student-cell-wrap">
+                            <div class="student-initials-avatar">${initials}</div>
+                            <span style="font-weight:700; color:var(--text-heading);">${s.first} ${s.last}</span>
+                        </div>
+                    </td>
+                    <td style="font-family:var(--font-mono); font-size:0.82rem; color:var(--text-muted);">${s.email}</td>
+                    <td><span class="pill-status" style="background:var(--bg-subtle); color:var(--text-heading);">${s.section} · ${s.group}</span></td>
+                    <td style="font-family:var(--font-mono); font-weight:700; color:var(--mint-success);">${s.attendance}</td>
+                    <td style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-muted);">${s.quizzesTaken}</td>
+                    <td><span class="pill-status pill-ready">${s.status}</span></td>
+                    <td style="text-align:right;">
+                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:0.25rem 0.5rem; color:var(--rose-danger);" onclick="removeStudentFromCohort(${s.id})">
+                            Remove
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function selectClassCohort(cohortId) {
+            activeCohort = cohortId;
+            document.querySelectorAll('.cohort-card').forEach(c => c.classList.remove('selected'));
+            const card = document.getElementById('card-cohort-' + cohortId);
+            if (card) card.classList.add('selected');
+            renderStudentsRoster();
+        }
+
+        function filterCohortByGroup(grp, btn) {
+            activeGroupFilter = grp;
+            if (btn) {
+                btn.parentElement.querySelectorAll('.group-pill-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            renderStudentsRoster();
+        }
+
+        function searchStudents(val) {
+            currentSearchQuery = val;
+            renderStudentsRoster();
+        }
+
+        function removeStudentFromCohort(id) {
+            const student = studentsRoster.find(s => s.id === id);
+            if (!student) return;
+            if (confirm('Remove ' + student.first + ' ' + student.last + ' from ' + activeCohort + '?')) {
+                studentsRoster = studentsRoster.filter(s => s.id !== id);
+                renderStudentsRoster();
+                showToast('Removed ' + student.first + ' from ' + activeCohort);
+            }
+        }
+
+        // Add Student Modal
+        function openAddStudentModal() {
+            document.getElementById('new-student-cohort').value = activeCohort;
+            document.getElementById('modal-add-student').classList.add('active');
+        }
+
+        function closeAddStudentModal() {
+            document.getElementById('modal-add-student').classList.remove('active');
+        }
+
+        function submitAddStudent(e) {
+            e.preventDefault();
+            const first = document.getElementById('new-student-first').value.trim();
+            const last = document.getElementById('new-student-last').value.trim();
+            const email = document.getElementById('new-student-email').value.trim();
+            const cohort = document.getElementById('new-student-cohort').value;
+            const group = document.getElementById('new-student-group').value;
+
+            studentsRoster.push({
+                id: studentsRoster.length + 1,
+                first,
+                last,
+                email,
+                cohort,
+                group,
+                section: "Section A",
+                attendance: "100%",
+                quizzesTaken: "0 / 0",
+                status: "Enrolled"
+            });
+
+            closeAddStudentModal();
+            renderStudentsRoster();
+            showToast('Student ' + first + ' ' + last + ' added to ' + cohort + ' (' + group + ')!');
+            e.target.reset();
+        }
+
+        // Add Class Modal
+        function openAddClassModal() {
+            document.getElementById('modal-add-class').classList.add('active');
+        }
+
+        function closeAddClassModal() {
+            document.getElementById('modal-add-class').classList.remove('active');
+        }
+
+        function submitAddClass(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-class-name').value.trim();
+            const mod = document.getElementById('new-class-module').value.trim();
+            const grps = document.getElementById('new-class-groups').value.trim();
+
+            const newId = name.replace(/\s+/g, '').toUpperCase();
+            cohortsList.push({ id: newId, name: name, desc: mod + ' · ' + grps });
+
+            const grid = document.getElementById('cohort-cards-grid');
+            const card = document.createElement('div');
+            card.className = 'cohort-card';
+            card.id = 'card-cohort-' + newId;
+            card.onclick = () => selectClassCohort(newId);
+            card.innerHTML = `
+                <div class="cohort-card-top">
+                    <span class="cohort-card-title">${name}</span>
+                    <span class="cohort-count-badge" id="badge-count-${newId}">0 Students</span>
+                </div>
+                <p class="cohort-card-desc">${mod} · ${grps}</p>
+                <span class="cohort-card-active-pill">✓ Active View</span>
+            `;
+            grid.appendChild(card);
+
+            closeAddClassModal();
+            selectClassCohort(newId);
+            showToast('Created new cohort: ' + name);
+            e.target.reset();
+        }
+
+        // CSV Import Modal
+        function openImportStudentsCsvModal() {
+            document.getElementById('modal-import-students-csv').classList.add('active');
+        }
+
+        function closeImportStudentsCsvModal() {
+            document.getElementById('modal-import-students-csv').classList.remove('active');
+        }
+
+        function handleStudentCsvFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('csv-file-name-preview').textContent = 'Loaded: ' + file.name;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const lines = evt.target.result.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                let count = 0;
+                for (let i = 1; i < lines.length; i++) {
+                    const parts = lines[i].split(',').map(p => p.trim());
+                    if (parts.length >= 3) {
+                        studentsRoster.push({
+                            id: studentsRoster.length + 1,
+                            first: parts[0] || 'Student',
+                            last: parts[1] || '',
+                            email: parts[2] || 'student@esi.dz',
+                            group: parts[3] || 'G1',
+                            section: parts[4] || 'Section A',
+                            cohort: parts[5] || activeCohort,
+                            attendance: '100%',
+                            quizzesTaken: '0 / 0',
+                            status: 'Enrolled'
+                        });
+                        count++;
+                    }
+                }
+                closeImportStudentsCsvModal();
+                renderStudentsRoster();
+                showToast('Successfully imported ' + count + ' students from CSV!');
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadSampleRosterCsv() {
+            const sample = "Firstname,Lastname,Email,Group,Section,Level\nAmina,Boukhalfa,a.boukhalfa@esi.dz,G1,Section A,1CP\nNassim,Saidi,n.saidi@esi.dz,G2,Section A,1CP\nRania,Benali,r.benali@esi.dz,G3,Section B,1CP\n";
+            const blob = new Blob([sample], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "sample_students_roster.csv";
+            a.click();
+        }
+
+        function exportCohortCsv() {
+            let csv = "Firstname,Lastname,Email,Group,Section,Cohort,Attendance\n";
+            studentsRoster.filter(s => s.cohort === activeCohort).forEach(s => {
+                csv += s.first + ',' + s.last + ',' + s.email + ',' + s.group + ',' + s.section + ',' + s.cohort + ',' + s.attendance + '\n';
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "roster_" + activeCohort + ".csv";
+            a.click();
+            showToast('Exported CSV roster for ' + activeCohort);
+        }
+
 
         // Initialize Dynamic Day
         document.addEventListener('DOMContentLoaded', () => {
