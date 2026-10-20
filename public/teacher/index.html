@@ -376,7 +376,7 @@
             gap: 0.75rem;
         }
 
-        /* Buttons */
+        /* Universal Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -422,18 +422,26 @@
             font-size: 0.78rem;
         }
 
-        /* Content Canvas */
+        /* View Switching Containers */
+        .page-view-container {
+            display: none;
+            flex: 1;
+        }
+
+        .page-view-container.active {
+            display: block;
+        }
+
+        /* ========================================================
+           PAGE 1: WELCOME HOME
+           ======================================================== */
         .workspace-canvas {
             padding: 2.25rem;
-            flex: 1;
             max-width: 1280px;
             width: 100%;
             margin: 0 auto;
         }
 
-        /* ========================================================
-           PAGE 1 ALONE: WELCOME HOME
-           ======================================================== */
         .welcome-hero-intro {
             margin-bottom: 2rem;
         }
@@ -671,6 +679,297 @@
             margin-top: 0.15rem;
         }
 
+        /* ========================================================
+           PAGE 2: LIVE COCKPIT (Zero-Scroll Mode Direct)
+           ======================================================== */
+        .cockpit-viewport-frame {
+            height: calc(100vh - 64px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg-canvas);
+        }
+
+        .cockpit-top-session-bar {
+            padding: 0.85rem 1.75rem;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-warm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .cockpit-session-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cockpit-pulse-badge {
+            width: 9px;
+            height: 9px;
+            background: var(--rose-danger);
+            border-radius: 50%;
+            animation: live-blink 1.2s infinite;
+        }
+
+        .cockpit-title-h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.015em;
+        }
+
+        .cockpit-sub-span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+        }
+
+        .cockpit-top-stats-strip {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cockpit-stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        /* Main Cockpit Split Grid */
+        .cockpit-split-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .cockpit-split-grid.panel-collapsed {
+            grid-template-columns: 1fr 0px;
+        }
+
+        /* Left/Center Stage */
+        .cockpit-stage-center {
+            padding: 1.5rem 2rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid var(--border-warm);
+            background: var(--bg-surface);
+            overflow: hidden;
+        }
+
+        .cockpit-q-meta-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
+        }
+
+        .cockpit-q-pill-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--sage-border);
+        }
+
+        .cockpit-timer-box {
+            font-family: var(--font-mono);
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            background: var(--bg-subtle);
+            padding: 0.25rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-warm);
+            letter-spacing: -0.02em;
+        }
+
+        .cockpit-q-title-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.35;
+            letter-spacing: -0.015em;
+            margin-bottom: 1.35rem;
+        }
+
+        /* 2x2 Answers Response Grid */
+        .cockpit-2x2-answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .cockpit-answer-tile {
+            background: var(--bg-canvas);
+            border: 2px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.15rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .cockpit-answer-tile.revealed-correct {
+            border-color: var(--mint-success);
+            background: #F0FDF4;
+        }
+
+        .cockpit-tile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cockpit-tile-key {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-xs);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--text-heading);
+        }
+
+        .cockpit-tile-percentage {
+            font-family: var(--font-mono);
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-heading);
+        }
+
+        .cockpit-tile-label {
+            position: relative;
+            z-index: 2;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 0.5rem;
+            line-height: 1.35;
+        }
+
+        .cockpit-tile-fill-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: rgba(62, 111, 88, 0.12);
+            transition: width 0.4s ease;
+            z-index: 1;
+        }
+
+        .cockpit-answer-tile.revealed-correct .cockpit-tile-fill-bar {
+            background: rgba(46, 125, 50, 0.18);
+        }
+
+        /* Fixed Bottom Controls Toolbar */
+        .cockpit-fixed-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .toolbar-group-left, .toolbar-group-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Side Collapsible Panel (Alerts & Collusion) */
+        .cockpit-side-panel {
+            padding: 1.25rem;
+            background: var(--bg-sidebar);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            border-left: 1px solid var(--border-warm);
+        }
+
+        .cockpit-card-widget {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.15rem;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .cockpit-widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .cockpit-widget-header h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            letter-spacing: -0.01em;
+        }
+
+        .alert-stream-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.76rem;
+            padding: 0.5rem 0.65rem;
+            border-radius: var(--radius-xs);
+            background: var(--rose-light);
+            color: #9F1239;
+            margin-bottom: 0.45rem;
+            border: 1px solid var(--rose-border);
+            line-height: 1.35;
+        }
+
+        .collusion-indicator-box {
+            background: var(--peach-light);
+            border: 1px solid var(--peach-border);
+            border-radius: var(--radius-xs);
+            padding: 0.75rem;
+        }
+
+        .collusion-indicator-box h5 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 0.25rem;
+        }
+
+        .collusion-indicator-box p {
+            font-size: 0.74rem;
+            color: #B45309;
+            line-height: 1.4;
+        }
+
         /* Modal Overlay for QR Code */
         .modal-shade {
             position: fixed;
@@ -747,13 +1046,13 @@
                 <div class="menu-group-header">Main Menu</div>
                 <ul class="menu-list">
                     <li>
-                        <button class="menu-nav-button active" onclick="activateSection('welcome', this)">
+                        <button class="menu-nav-button active" id="nav-btn-welcome" onclick="switchMainPage('welcome', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                             <span>Welcome Home</span>
                         </button>
                     </li>
                     <li>
-                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Live Cockpit')">
+                        <button class="menu-nav-button" id="nav-btn-cockpit" onclick="switchMainPage('cockpit', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
                             <span>Live Cockpit</span>
                             <span class="badge-live-pulse">LIVE</span>
@@ -819,151 +1118,304 @@
         <header class="bloom-topbar">
             <div class="topbar-left-zone">
                 <span class="day-context-pill" id="today-day-pill">MONDAY · TEACHER SPACE</span>
-                <h2 class="page-title-text">Welcome Home</h2>
+                <h2 class="page-title-text" id="topbar-title-text">Welcome Home</h2>
             </div>
             <div class="topbar-right-zone">
                 <button class="btn btn-secondary btn-sm" onclick="openQrModal()">
                     <span>📱</span>
                     <span>Student QR Code</span>
                 </button>
-                <button class="btn btn-primary btn-sm" onclick="triggerFastLaunch()">
+                <button class="btn btn-primary btn-sm" id="btn-topbar-action" onclick="triggerFastLaunch()">
                     <span>🚀</span>
                     <span>Start Session</span>
                 </button>
             </div>
         </header>
 
-        <!-- Page 1 Canvas: Welcome Home ONLY -->
-        <div class="workspace-canvas" id="page-welcome-content">
-            <!-- 1. Welcoming Hero Greeting (No dense stats!) -->
-            <div class="welcome-hero-intro">
-                <h2>Welcome back, Dr. Benali! 👋</h2>
-                <p>Ready to make learning more interactive with your amphitheater students today?</p>
-            </div>
-
-            <!-- 2. Primary Action: Start a Live Session -->
-            <div class="action-banner-card">
-                <div class="action-banner-info">
-                    <h3><span>🚀</span> Start a Live Classroom Session</h3>
-                    <p>Launch your scheduled interactive quiz in seconds. Students join instantly on their mobile phones by scanning the amphitheater QR code with zero application install.</p>
+        <!-- ========================================================
+             PAGE 1: WELCOME HOME
+             ======================================================== -->
+        <div class="page-view-container active" id="view-page-welcome">
+            <div class="workspace-canvas">
+                <!-- 1. Welcoming Hero Greeting (No dense stats!) -->
+                <div class="welcome-hero-intro">
+                    <h2>Welcome back, Dr. Benali! 👋</h2>
+                    <p>Ready to make learning more interactive with your amphitheater students today?</p>
                 </div>
-                <button class="btn btn-primary" onclick="triggerFastLaunch()">
-                    <span>Launch Session Now</span>
-                    <span>→</span>
-                </button>
-            </div>
 
-            <!-- 3. Three Clean Action Shortcuts (Progressive Disclosure) -->
-            <div class="shortcuts-row">
-                <div class="shortcut-item-card" onclick="notifyUpcomingPage('AI Quiz Studio')">
-                    <div class="shortcut-badge-icon" style="background:var(--ai-light); color:var(--ai-lavender);">✨</div>
-                    <h4>AI Quiz Studio</h4>
-                    <p>Synthesize questions from lecture notes, slides, or syllabus topics with semantic AI rubrics.</p>
+                <!-- 2. Primary Action: Start a Live Session -->
+                <div class="action-banner-card">
+                    <div class="action-banner-info">
+                        <h3><span>🚀</span> Start a Live Classroom Session</h3>
+                        <p>Launch your scheduled interactive quiz in seconds. Students join instantly on their mobile phones by scanning the amphitheater QR code with zero application install.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="triggerFastLaunch()">
+                        <span>Launch Session Now</span>
+                        <span>→</span>
+                    </button>
                 </div>
-                <div class="shortcut-item-card" onclick="notifyUpcomingPage('Classes & Students')">
-                    <div class="shortcut-badge-icon" style="background:var(--sage-light); color:var(--sage-primary);">👥</div>
-                    <h4>My Classes</h4>
-                    <p>Manage 1CP, 2CP & 1CS student cohorts, view rosters, and bulk import class CSVs.</p>
-                </div>
-                <div class="shortcut-item-card" onclick="notifyUpcomingPage('Question Bank')">
-                    <div class="shortcut-badge-icon" style="background:var(--mint-light); color:var(--mint-success);">📚</div>
-                    <h4>Question Bank</h4>
-                    <p>Access your curated repository of vetted computer science questions tagged by module.</p>
-                </div>
-            </div>
 
-            <!-- 4. Continue Where You Left Off -->
-            <div class="workspace-block-header">
-                <span>Continue where you left off</span>
-                <span style="font-size:0.8rem; font-weight:600; color:var(--sage-primary); cursor:pointer;" onclick="notifyUpcomingPage('Quizzes & Bank')">View all quizzes →</span>
-            </div>
+                <!-- 3. Three Clean Action Shortcuts (Progressive Disclosure) -->
+                <div class="shortcuts-row">
+                    <div class="shortcut-item-card" onclick="notifyUpcomingPage('AI Quiz Studio')">
+                        <div class="shortcut-badge-icon" style="background:var(--ai-light); color:var(--ai-lavender);">✨</div>
+                        <h4>AI Quiz Studio</h4>
+                        <p>Synthesize questions from lecture notes, slides, or syllabus topics with semantic AI rubrics.</p>
+                    </div>
+                    <div class="shortcut-item-card" onclick="notifyUpcomingPage('Classes & Students')">
+                        <div class="shortcut-badge-icon" style="background:var(--sage-light); color:var(--sage-primary);">👥</div>
+                        <h4>My Classes</h4>
+                        <p>Manage 1CP, 2CP & 1CS student cohorts, view rosters, and bulk import class CSVs.</p>
+                    </div>
+                    <div class="shortcut-item-card" onclick="notifyUpcomingPage('Question Bank')">
+                        <div class="shortcut-badge-icon" style="background:var(--mint-light); color:var(--mint-success);">📚</div>
+                        <h4>Question Bank</h4>
+                        <p>Access your curated repository of vetted computer science questions tagged by module.</p>
+                    </div>
+                </div>
 
-            <div class="recent-quizzes-row">
-                <!-- Quiz Card 1 -->
-                <div class="recent-quiz-box">
-                    <div>
-                        <div class="recent-quiz-box-top">
-                            <span class="recent-quiz-title-text">Quiz 01 : Cache Hierarchy & Direct Mappings</span>
-                            <span class="pill-status pill-ready">Ready to Publish</span>
+                <!-- 4. Continue Where You Left Off -->
+                <div class="workspace-block-header">
+                    <span>Continue where you left off</span>
+                    <span style="font-size:0.8rem; font-weight:600; color:var(--sage-primary); cursor:pointer;" onclick="notifyUpcomingPage('Quizzes & Bank')">View all quizzes →</span>
+                </div>
+
+                <div class="recent-quizzes-row">
+                    <!-- Quiz Card 1 -->
+                    <div class="recent-quiz-box">
+                        <div>
+                            <div class="recent-quiz-box-top">
+                                <span class="recent-quiz-title-text">Quiz 01 : Cache Hierarchy & Direct Mappings</span>
+                                <span class="pill-status pill-ready">Ready to Publish</span>
+                            </div>
+                            <div class="recent-quiz-specs">
+                                <span>📚 ARCHI (1CP)</span>
+                                <span>•</span>
+                                <span>5 Questions</span>
+                                <span>•</span>
+                                <span>30s / Question</span>
+                            </div>
                         </div>
-                        <div class="recent-quiz-specs">
-                            <span>📚 ARCHI (1CP)</span>
-                            <span>•</span>
-                            <span>5 Questions</span>
-                            <span>•</span>
-                            <span>30s / Question</span>
+                        <div class="recent-quiz-footer-actions">
+                            <button class="btn btn-primary btn-sm" onclick="triggerFastLaunch()">
+                                <span>Launch Live 🚀</span>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="openQrModal()">
+                                <span>QR Code 📱</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="recent-quiz-footer-actions">
-                        <button class="btn btn-primary btn-sm" onclick="triggerFastLaunch()">
-                            <span>Launch Live 🚀</span>
-                        </button>
+
+                    <!-- Quiz Card 2 -->
+                    <div class="recent-quiz-box">
+                        <div>
+                            <div class="recent-quiz-box-top">
+                                <span class="recent-quiz-title-text">Quiz 02 : Pipelining Hazards & Branch Prediction</span>
+                                <span class="pill-status pill-draft">Draft</span>
+                            </div>
+                            <div class="recent-quiz-specs">
+                                <span>📚 ARCHI (1CP)</span>
+                                <span>•</span>
+                                <span>4 Questions</span>
+                                <span>•</span>
+                                <span>Global 15m</span>
+                            </div>
+                        </div>
+                        <div class="recent-quiz-footer-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
+                                <span>Continue Editing ✏️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Card 3 -->
+                    <div class="recent-quiz-box">
+                        <div>
+                            <div class="recent-quiz-box-top">
+                                <span class="recent-quiz-title-text">Quiz 03 : Virtual Memory & TLB Address Translation</span>
+                                <span class="pill-status pill-draft">Draft</span>
+                            </div>
+                            <div class="recent-quiz-specs">
+                                <span>📚 SYS 1 (2CP)</span>
+                                <span>•</span>
+                                <span>6 Questions</span>
+                                <span>•</span>
+                                <span>Global 20m</span>
+                            </div>
+                        </div>
+                        <div class="recent-quiz-footer-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
+                                <span>Continue Editing ✏️</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Upcoming Sessions & Next Class Notice -->
+                <div class="upcoming-schedule-strip">
+                    <div class="upcoming-meta">
+                        <div class="upcoming-calendar-icon">
+                            <span>OCT</span>
+                            <span style="font-size:0.95rem; margin-top:2px;">21</span>
+                        </div>
+                        <div class="upcoming-text">
+                            <h4>Next Upcoming Session: 1CP Section A · Architecture des Ordinateurs</h4>
+                            <p>Amphitheater A · Scheduled for Tomorrow at 08:30 AM · 45 registered students</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="showToast('Session details and attendance roster ready.')">
+                        <span>View Session Details</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             PAGE 2: LIVE COCKPIT (Zero-Scroll Mode Direct)
+             ======================================================== -->
+        <div class="page-view-container" id="view-page-cockpit">
+            <div class="cockpit-viewport-frame">
+                <!-- Cockpit Top Bar -->
+                <div class="cockpit-top-session-bar">
+                    <div class="cockpit-session-brand">
+                        <span class="cockpit-pulse-badge"></span>
+                        <h3 class="cockpit-title-h3" id="live-quiz-title">Quiz 01 : Cache Hierarchy & Direct Mappings</h3>
+                        <span class="cockpit-sub-span">Target: 1CP · Amphitheater A</span>
+                    </div>
+                    <div class="cockpit-top-stats-strip">
+                        <div class="cockpit-stat-pill">
+                            <span>👥</span>
+                            <span id="live-participation-count">38 / 45 Responded (84%)</span>
+                        </div>
                         <button class="btn btn-secondary btn-sm" onclick="openQrModal()">
-                            <span>QR Code 📱</span>
+                            <span>📱 QR Code</span>
+                        </button>
+                        <a href="/projector" target="_blank" class="btn btn-secondary btn-sm">
+                            <span>🖥 Fullscreen Projector</span>
+                        </a>
+                        <button class="btn btn-secondary btn-sm" id="btn-toggle-panel" onclick="toggleSidePanel()">
+                            <span>Sidebar ◨</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Quiz Card 2 -->
-                <div class="recent-quiz-box">
-                    <div>
-                        <div class="recent-quiz-box-top">
-                            <span class="recent-quiz-title-text">Quiz 02 : Pipelining Hazards & Branch Prediction</span>
-                            <span class="pill-status pill-draft">Draft</span>
-                        </div>
-                        <div class="recent-quiz-specs">
-                            <span>📚 ARCHI (1CP)</span>
-                            <span>•</span>
-                            <span>4 Questions</span>
-                            <span>•</span>
-                            <span>Global 15m</span>
-                        </div>
-                    </div>
-                    <div class="recent-quiz-footer-actions">
-                        <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
-                            <span>Continue Editing ✏️</span>
-                        </button>
-                    </div>
-                </div>
+                <!-- Main Cockpit Split Grid (Stage Center + Collapsible Right Panel) -->
+                <div class="cockpit-split-grid" id="cockpit-split-grid">
+                    <!-- Left/Center Stage -->
+                    <div class="cockpit-stage-center">
+                        <div>
+                            <div class="cockpit-q-meta-line">
+                                <span class="cockpit-q-pill-badge" id="live-q-badge">Question 2 of 5 · Single Choice MCQ</span>
+                                <div class="cockpit-timer-box" id="live-timer-display">00:24</div>
+                            </div>
 
-                <!-- Quiz Card 3 -->
-                <div class="recent-quiz-box">
-                    <div>
-                        <div class="recent-quiz-box-top">
-                            <span class="recent-quiz-title-text">Quiz 03 : Virtual Memory & TLB Address Translation</span>
-                            <span class="pill-status pill-draft">Draft</span>
-                        </div>
-                        <div class="recent-quiz-specs">
-                            <span>📚 SYS 1 (2CP)</span>
-                            <span>•</span>
-                            <span>6 Questions</span>
-                            <span>•</span>
-                            <span>Global 20m</span>
-                        </div>
-                    </div>
-                    <div class="recent-quiz-footer-actions">
-                        <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
-                            <span>Continue Editing ✏️</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+                            <h3 class="cockpit-q-title-text" id="live-q-statement">
+                                Which cache mapping architecture allows a memory block to be placed in ANY cache line without collision restrictions?
+                            </h3>
 
-            <!-- 5. Upcoming Sessions & Next Class Notice -->
-            <div class="upcoming-schedule-strip">
-                <div class="upcoming-meta">
-                    <div class="upcoming-calendar-icon">
-                        <span>OCT</span>
-                        <span style="font-size:0.95rem; margin-top:2px;">21</span>
+                            <!-- 2x2 Answers Response Grid -->
+                            <div class="cockpit-2x2-answers-grid">
+                                <!-- Option A -->
+                                <div class="cockpit-answer-tile" id="live-tile-0">
+                                    <div class="cockpit-tile-fill-bar" style="width: 13%;"></div>
+                                    <div class="cockpit-tile-header">
+                                        <span class="cockpit-tile-key">A</span>
+                                        <span class="cockpit-tile-percentage">13% (5 votes)</span>
+                                    </div>
+                                    <div class="cockpit-tile-label">Direct-Mapped Cache</div>
+                                </div>
+
+                                <!-- Option B (Correct) -->
+                                <div class="cockpit-answer-tile revealed-correct" id="live-tile-1">
+                                    <div class="cockpit-tile-fill-bar" style="width: 71%;"></div>
+                                    <div class="cockpit-tile-header">
+                                        <span class="cockpit-tile-key" style="border-color:var(--mint-success); color:var(--mint-success);">B</span>
+                                        <span class="cockpit-tile-percentage" style="color:var(--mint-success);">71% (27 votes)</span>
+                                    </div>
+                                    <div class="cockpit-tile-label">Fully Associative Cache</div>
+                                </div>
+
+                                <!-- Option C -->
+                                <div class="cockpit-answer-tile" id="live-tile-2">
+                                    <div class="cockpit-tile-fill-bar" style="width: 13%;"></div>
+                                    <div class="cockpit-tile-header">
+                                        <span class="cockpit-tile-key">C</span>
+                                        <span class="cockpit-tile-percentage">13% (5 votes)</span>
+                                    </div>
+                                    <div class="cockpit-tile-label">2-Way Set Associative Cache</div>
+                                </div>
+
+                                <!-- Option D -->
+                                <div class="cockpit-answer-tile" id="live-tile-3">
+                                    <div class="cockpit-tile-fill-bar" style="width: 3%;"></div>
+                                    <div class="cockpit-tile-header">
+                                        <span class="cockpit-tile-key">D</span>
+                                        <span class="cockpit-tile-percentage">3% (1 vote)</span>
+                                    </div>
+                                    <div class="cockpit-tile-label">Sector Cache</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fixed Orchestration Controls Toolbar -->
+                        <div class="cockpit-fixed-toolbar">
+                            <div class="toolbar-group-left">
+                                <button class="btn btn-secondary btn-sm" onclick="cockpitAddBonus()">
+                                    <span>⏱ +30s Bonus</span>
+                                </button>
+                                <button class="btn btn-secondary btn-sm" id="btn-pause-cockpit" onclick="cockpitTogglePause()">
+                                    <span>⏸ Pause Timer</span>
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="cockpitReveal()">
+                                    <span>👁 Reveal Answer</span>
+                                </button>
+                            </div>
+                            <div class="toolbar-group-right">
+                                <button class="btn btn-primary btn-sm" onclick="cockpitAdvance()">
+                                    <span>Next Question →</span>
+                                </button>
+                                <button class="btn btn-secondary btn-sm" style="color:var(--rose-danger);" onclick="cockpitConclude()">
+                                    <span>🛑 End Session</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="upcoming-text">
-                        <h4>Next Upcoming Session: 1CP Section A · Architecture des Ordinateurs</h4>
-                        <p>Amphitheater A · Scheduled for Tomorrow at 08:30 AM · 45 registered students</p>
+
+                    <!-- Right Collapsible Panel: Tab Switches & Collusion -->
+                    <div class="cockpit-side-panel" id="cockpit-side-panel">
+                        <div class="cockpit-card-widget">
+                            <div class="cockpit-widget-header">
+                                <h4>⚠️ Anti-Cheat Radar</h4>
+                                <span class="pill-status pill-ready" style="font-size:0.65rem;">Active</span>
+                            </div>
+                            <div class="alert-stream-item">
+                                <span>⚠️</span>
+                                <div><strong>Karim Mansouri</strong>: Tab switch detected (14s ago)</div>
+                            </div>
+                            <div class="alert-stream-item">
+                                <span>⚠️</span>
+                                <div><strong>Sarah Benali</strong>: Window focus lost (42s ago)</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:var(--text-muted); text-align:center; margin-top:0.35rem;">
+                                Tab switch logging active across 45 devices
+                            </div>
+                        </div>
+
+                        <div class="cockpit-card-widget">
+                            <div class="cockpit-widget-header">
+                                <h4>🛰 Collusion Radar</h4>
+                                <span class="pill-status" style="background:var(--peach-light); color:var(--peach-warning); font-size:0.65rem;">1 Flagged</span>
+                            </div>
+                            <div class="collusion-indicator-box">
+                                <h5>Pair Suspicion: Seat 14 & Seat 15</h5>
+                                <p>100% distractor concordance on Q1 & Q2 with sub-second response delta (0.34s). Psychometric concordance: <strong>High (87%)</strong>.</p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" style="width:100%; margin-top:0.75rem; font-size:0.75rem;" onclick="showToast('Inspecting flagged pair logs...')">
+                                Inspect Pair Diagnostics
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button class="btn btn-secondary btn-sm" onclick="showToast('Session details and attendance roster ready.')">
-                    <span>View Session Details</span>
-                </button>
             </div>
         </div>
     </main>
@@ -995,6 +1447,54 @@
         // Socket.IO
         const socket = io();
 
+        let isCockpitPaused = false;
+        let cockpitSecondsRemaining = 24;
+        let cockpitTimerId = null;
+
+        function startCockpitTimer() {
+            if (cockpitTimerId) clearInterval(cockpitTimerId);
+            cockpitTimerId = setInterval(() => {
+                if (!isCockpitPaused && cockpitSecondsRemaining > 0) {
+                    cockpitSecondsRemaining--;
+                    const s = cockpitSecondsRemaining < 10 ? '0' + cockpitSecondsRemaining : cockpitSecondsRemaining;
+                    const el = document.getElementById('live-timer-display');
+                    if (el) el.textContent = '00:' + s;
+                }
+            }, 1000);
+        }
+
+        function switchMainPage(pageId, navButton = null) {
+            document.querySelectorAll('.page-view-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-nav-button').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById('view-page-' + pageId);
+            if (target) target.classList.add('active');
+
+            if (navButton) {
+                navButton.classList.add('active');
+            } else {
+                const btn = document.getElementById('nav-btn-' + pageId);
+                if (btn) btn.classList.add('active');
+            }
+
+            const titleMap = {
+                'welcome': 'Welcome Home',
+                'cockpit': 'Live Cockpit · Mode Direct'
+            };
+            const titleElem = document.getElementById('topbar-title-text');
+            if (titleElem) titleElem.textContent = titleMap[pageId] || 'Workspace';
+
+            const topAction = document.getElementById('btn-topbar-action');
+            if (topAction) {
+                if (pageId === 'cockpit') {
+                    topAction.style.display = 'none';
+                    startCockpitTimer();
+                } else {
+                    topAction.style.display = 'inline-flex';
+                }
+            }
+        }
+
         function triggerFastLaunch() {
             socket.emit('new-notification', {
                 title: "Quiz 01 : Cache Hierarchy & Direct Mappings",
@@ -1006,8 +1506,61 @@
                 quizId: 1,
                 title: "Quiz 01 : Cache Hierarchy & Direct Mappings"
             });
-            showToast('🚀 Live session started! Student devices notified.');
-            openQrModal();
+            showToast('🚀 Live session started! Directing to Cockpit...');
+            switchMainPage('cockpit');
+        }
+
+        function cockpitAddBonus() {
+            cockpitSecondsRemaining += 30;
+            const s = cockpitSecondsRemaining < 10 ? '0' + cockpitSecondsRemaining : cockpitSecondsRemaining;
+            document.getElementById('live-timer-display').textContent = '00:' + s;
+            showToast('⏱ +30 Seconds awarded to classroom!');
+        }
+
+        function cockpitTogglePause() {
+            isCockpitPaused = !isCockpitPaused;
+            const btn = document.getElementById('btn-pause-cockpit');
+            btn.innerHTML = isCockpitPaused ? '<span>▶ Resume Timer</span>' : '<span>⏸ Pause Timer</span>';
+            showToast(isCockpitPaused ? 'Timer paused' : 'Timer resumed');
+        }
+
+        function cockpitReveal() {
+            document.querySelectorAll('.cockpit-answer-tile').forEach(t => t.style.opacity = '0.5');
+            const correctTile = document.getElementById('live-tile-1');
+            if (correctTile) {
+                correctTile.style.opacity = '1';
+                correctTile.style.transform = 'scale(1.02)';
+            }
+            showToast('Correct answer revealed on amphitheater screen!');
+            socket.emit('quiz:reveal', { questionId: 2, answer: 'B' });
+        }
+
+        function cockpitAdvance() {
+            cockpitSecondsRemaining = 30;
+            document.getElementById('live-timer-display').textContent = '00:30';
+            document.getElementById('live-q-badge').textContent = 'Question 3 of 5 · Single Choice MCQ';
+            document.getElementById('live-q-statement').textContent = 'In direct-mapped cache, what formula determines which cache line index a 32-bit physical address maps to?';
+
+            document.querySelectorAll('.cockpit-answer-tile').forEach(t => {
+                t.style.opacity = '1';
+                t.style.transform = 'none';
+            });
+            showToast('Advanced to Question 3.');
+            socket.emit('quiz:question_change', { questionIndex: 3 });
+        }
+
+        function cockpitConclude() {
+            if (confirm('Conclude this live session and tabulate final student grades?')) {
+                showToast('Session ended. Directing to Welcome Home...');
+                switchMainPage('welcome');
+            }
+        }
+
+        function toggleSidePanel() {
+            const grid = document.getElementById('cockpit-split-grid');
+            grid.classList.toggle('panel-collapsed');
+            const isCollapsed = grid.classList.contains('panel-collapsed');
+            document.getElementById('btn-toggle-panel').textContent = isCollapsed ? 'Sidebar ◫' : 'Sidebar ◨';
         }
 
         function openQrModal() {
@@ -1043,11 +1596,6 @@
 
         function notifyUpcomingPage(pageName) {
             showToast(`Page "${pageName}" is up next for coding!`);
-        }
-
-        function activateSection(sec, btn) {
-            document.querySelectorAll('.menu-nav-button').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
         }
 
         // Initialize Dynamic Day
