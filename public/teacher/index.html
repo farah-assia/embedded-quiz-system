@@ -3746,6 +3746,36 @@ let quizzesRepository = [
 
         let pendingAiGeneratedQuestions = [];
 
+        function getAiQuestionPrompt(q) {
+            return q.text || q.question || q.statement || 'Formative Question';
+        }
+
+        function getAiQuestionOptions(q) {
+            if (!q.options || !Array.isArray(q.options)) return ['Option A', 'Option B', 'Option C', 'Option D'];
+            return q.options.map((opt, i) => {
+                if (typeof opt === 'string') return opt;
+                if (typeof opt === 'object' && opt !== null) return opt.text || opt.label || ('Option ' + (opt.letter || ['A','B','C','D'][i]));
+                return String(opt);
+            });
+        }
+
+        function getAiCorrectAnswerString(q) {
+            if (q.referenceAnswer) return q.referenceAnswer;
+            if (typeof q.answer === 'string') return q.answer;
+            if (typeof q.answer === 'object' && q.answer !== null && q.answer.text) return q.answer.text;
+            if (q.options && Array.isArray(q.options)) {
+                if (q.correctIndex !== undefined && q.options[q.correctIndex]) {
+                    const opt = q.options[q.correctIndex];
+                    return typeof opt === 'string' ? opt : (opt.text || opt.letter || 'Correct Option');
+                }
+                const correct = q.options.find(o => o.correct);
+                if (correct) return typeof correct === 'string' ? correct : (correct.text || correct.letter);
+                const first = q.options[0];
+                return typeof first === 'string' ? first : (first.text || 'Option A');
+            }
+            return 'Correct Answer';
+        }
+
         function executeAiQuizGeneration() {
             const text = document.getElementById('ai-lecture-text').value.trim();
             if (!text) {
@@ -3761,10 +3791,13 @@ let quizzesRepository = [
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    topic: 'Computer Architecture & Memory Systems',
-                    courseNotes: text,
-                    questionCount: parseInt(document.getElementById('ai-count-select').value),
-                    difficulty: document.getElementById('ai-diff-select').value
+                    mode: 'notes',
+                    notesText: text,
+                    moduleName: 'ARCHI',
+                    level: '1CP',
+                    questionCount: parseInt(document.getElementById('ai-count-select').value) || 3,
+                    difficulty: document.getElementById('ai-diff-select').value,
+                    includeShortAnswer: false
                 })
             })
             .then(res => res.json())
@@ -3772,12 +3805,13 @@ let quizzesRepository = [
                 btn.disabled = false;
                 btn.innerHTML = '<span>✨ Generate Questions with AI</span>';
 
-                if (data.quiz && data.quiz.questions) {
+                if (data.quiz && data.quiz.questions && data.quiz.questions.length > 0) {
                     pendingAiGeneratedQuestions = data.quiz.questions;
                 } else {
                     pendingAiGeneratedQuestions = [
-                        { question: "What is the cache line index formula in direct mapping?", options: ["Block Address mod Lines", "Block Address * Lines", "Tag + Offset", "Line / Tag"], answer: "Block Address mod Lines" },
-                        { question: "Which miss category is eliminated in fully associative cache?", options: ["Compulsory miss", "Conflict miss", "Capacity miss", "Coherence miss"], answer: "Conflict miss" }
+                        { text: "In direct-mapped cache, what formula determines which cache line index a memory block maps to?", options: [{letter:"A", text:"Index = Block Address mod Lines", correct:true}, {letter:"B", text:"Index = Block Address * Lines", correct:false}, {letter:"C", text:"Index = Tag + Offset", correct:false}, {letter:"D", text:"Index = Offset mod Block", correct:false}] },
+                        { text: "Which miss category is eliminated completely in fully associative cache architecture?", options: [{letter:"A", text:"Compulsory miss", correct:false}, {letter:"B", text:"Conflict miss", correct:true}, {letter:"C", text:"Capacity miss", correct:false}, {letter:"D", text:"Coherence miss", correct:false}] },
+                        { text: "What write policy updates both cache and main RAM synchronously on every write?", options: [{letter:"A", text:"Write-Back", correct:false}, {letter:"B", text:"Write-Through", correct:true}, {letter:"C", text:"Write-Allocate", correct:false}, {letter:"D", text:"Lazy Write", correct:false}] }
                     ];
                 }
                 renderAiVerificationCards();
@@ -3786,7 +3820,7 @@ let quizzesRepository = [
                 btn.disabled = false;
                 btn.innerHTML = '<span>✨ Generate Questions with AI</span>';
                 pendingAiGeneratedQuestions = [
-                    { question: "Which cache architecture places a block in ANY line?", options: ["Direct-Mapped", "Fully Associative", "2-Way Set Associative", "Sector Cache"], answer: "Fully Associative" }
+                    { text: "Which cache architecture places a memory block in ANY available line?", options: [{letter:"A", text:"Direct-Mapped", correct:false}, {letter:"B", text:"Fully Associative", correct:true}, {letter:"C", text:"2-Way Set Associative", correct:false}, {letter:"D", text:"Sector Cache", correct:false}] }
                 ];
                 renderAiVerificationCards();
             });
@@ -3797,11 +3831,22 @@ let quizzesRepository = [
             container.innerHTML = '';
             pendingAiGeneratedQuestions.forEach((q, idx) => {
                 const card = document.createElement('div');
-                card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem;';
+                card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem; margin-bottom:0.5rem;';
+                
+                const prompt = getAiQuestionPrompt(q);
+                const correctAns = getAiCorrectAnswerString(q);
+                const opts = getAiQuestionOptions(q);
+
                 card.innerHTML = `
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender); margin-bottom:0.25rem;">Question ${idx + 1} (AI Generated)</div>
-                    <div style="font-size:0.875rem; font-weight:700; color:var(--text-heading); margin-bottom:0.35rem;">${q.question || q.statement}</div>
-                    <div style="font-size:0.75rem; color:var(--mint-success); font-weight:600;">✓ Correct: ${q.answer || (q.options ? q.options[0] : 'N/A')}</div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender);">Question ${idx + 1} (${q.type === 'short_answer' ? 'Short Answer AI' : 'MCQ'})</span>
+                        <span class="pill-status pill-ready" style="font-size:0.65rem; padding:0.1rem 0.4rem;">AI Verified</span>
+                    </div>
+                    <div style="font-size:0.875rem; font-weight:700; color:var(--text-heading); margin-bottom:0.45rem; line-height:1.4;">${prompt}</div>
+                    <div style="font-size:0.75rem; color:var(--mint-success); font-weight:600; margin-bottom:0.4rem;">✓ Correct: ${correctAns}</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.35rem; font-size:0.72rem; color:var(--text-body);">
+                        ${opts.map((opt, oIdx) => '<div style="background:var(--bg-surface); border:1px solid var(--border-warm); border-radius:3px; padding:0.25rem 0.4rem;"><strong>' + ['A','B','C','D'][oIdx] + ':</strong> ' + opt + '</div>').join('')}
+                    </div>
                 `;
                 container.appendChild(card);
             });
@@ -3818,26 +3863,28 @@ let quizzesRepository = [
             container.innerHTML = '';
 
             pendingAiGeneratedQuestions.forEach((q, idx) => {
+                const prompt = getAiQuestionPrompt(q);
+                const opts = getAiQuestionOptions(q);
                 const card = document.createElement('div');
                 card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:1rem; position:relative;';
                 card.innerHTML = `
                     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                        <span style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender);">Question ${idx + 1} (Verified AI)</span>
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender);">Question ${idx + 1} (AI Verified)</span>
                         <button type="button" class="btn btn-secondary btn-sm" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="this.parentElement.parentElement.remove(); document.getElementById('builder-active-q-count').textContent = document.getElementById('builder-questions-container').children.length;">Remove</button>
                     </div>
-                    <input type="text" class="form-input-field" value="${q.question || q.statement}" style="margin-bottom:0.5rem;">
+                    <input type="text" class="form-input-field" value="${prompt.replace(/"/g, '&quot;')}" style="margin-bottom:0.5rem;">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-                        <input type="text" class="form-input-field" value="${q.options && q.options[0] ? q.options[0] : 'Option A'}">
-                        <input type="text" class="form-input-field" value="${q.options && q.options[1] ? q.options[1] : 'Option B (Correct)'}">
-                        <input type="text" class="form-input-field" value="${q.options && q.options[2] ? q.options[2] : 'Option C'}">
-                        <input type="text" class="form-input-field" value="${q.options && q.options[3] ? q.options[3] : 'Option D'}">
+                        <input type="text" class="form-input-field" value="${(opts[0] || 'Option A').replace(/"/g, '&quot;')}">
+                        <input type="text" class="form-input-field" value="${(opts[1] || 'Option B (Correct)').replace(/"/g, '&quot;')}">
+                        <input type="text" class="form-input-field" value="${(opts[2] || 'Option C').replace(/"/g, '&quot;')}">
+                        <input type="text" class="form-input-field" value="${(opts[3] || 'Option D').replace(/"/g, '&quot;')}">
                     </div>
                 `;
                 container.appendChild(card);
             });
 
             document.getElementById('builder-active-q-count').textContent = container.children.length;
-            showToast('AI Questions transferred into Quiz Builder. Verify settings and continue!');
+            showToast('✨ ' + pendingAiGeneratedQuestions.length + ' AI Questions transferred into Quiz Builder. Verify settings and continue!');
         }
 
         // ========================================================
