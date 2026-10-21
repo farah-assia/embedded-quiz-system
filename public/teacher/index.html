@@ -1507,6 +1507,177 @@
             from { transform: translateY(12px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+    
+        /* ========================================================
+           PAGE 5: RESULTS & ANALYTICS STYLES
+           ======================================================== */
+        .analytics-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .analytics-filters-strip {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .analytics-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-kpi-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.35rem 1.4rem;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .analytics-kpi-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .analytics-kpi-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            margin-top: 0.2rem;
+        }
+
+        .analytics-kpi-number {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            font-family: var(--font-mono);
+            letter-spacing: -0.03em;
+        }
+
+        .analytics-kpi-delta {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.15rem 0.45rem;
+            border-radius: var(--radius-pill);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .analytics-kpi-delta.positive {
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            border: 1px solid var(--sage-border);
+        }
+
+        .analytics-kpi-subtext {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .analytics-subtabs-strip {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-warm);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .analytics-subtab-btn {
+            padding: 0.45rem 0.95rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .analytics-subtab-btn:hover {
+            color: var(--text-heading);
+            background: var(--bg-surface);
+        }
+
+        .analytics-subtab-btn.active {
+            background: var(--bg-surface);
+            color: var(--sage-primary);
+            border-color: var(--sage-border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            font-weight: 700;
+        }
+
+        .difficult-q-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-left: 3px solid #D97706;
+            border-radius: var(--radius-sm);
+            padding: 1.15rem 1.35rem;
+            margin-bottom: 0.85rem;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .histogram-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .histogram-label {
+            width: 130px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-body);
+        }
+
+        .histogram-track {
+            flex: 1;
+            height: 20px;
+            background: var(--bg-canvas);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-warm);
+            position: relative;
+        }
+
+        .histogram-fill {
+            height: 100%;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            padding-left: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            transition: width 0.4s ease;
+        }
+
+        .histogram-count {
+            width: 90px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            text-align: right;
+        }
+
     </style>
 </head>
 <body>
@@ -1553,9 +1724,10 @@
                         </button>
                     </li>
                     <li>
-                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Results & Analytics')">
+                        <button class="menu-nav-button" id="nav-btn-analytics" onclick="switchMainPage('analytics', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                             <span>Results & Analytics</span>
+                            <span class="badge-count" style="color:var(--sage-primary); font-weight:700;">IRT</span>
                         </button>
                     </li>
                 </ul>
@@ -2081,6 +2253,316 @@
             </div>
         </div>
 
+    
+        <!-- ========================================================
+             PAGE 5: RESULTS & ANALYTICS (IRT & Pedagogical Insights)
+             ======================================================== -->
+        <div class="page-view-container" id="view-page-analytics">
+            <div class="workspace-canvas">
+                <!-- Header & Action Bar -->
+                <div class="analytics-top-bar">
+                    <div class="cohort-title-area">
+                        <h2>Results & Pedagogical Analytics</h2>
+                        <p>Understand cohort learning trajectories, diagnose misconceptions, and export official gradebooks.</p>
+                    </div>
+                    <div class="analytics-filters-strip">
+                        <select id="analytics-cohort-select" class="form-input-field" style="width:180px; font-size:0.8rem; padding:0.35rem 0.65rem;" onchange="updateAnalyticsCohort(this.value)">
+                            <option value="1CP" selected>1CP (Architecture)</option>
+                            <option value="2CP">2CP (Operating Systems)</option>
+                            <option value="1CS">1CS (POO Java/C++)</option>
+                        </select>
+                        <select id="analytics-quiz-select" class="form-input-field" style="width:230px; font-size:0.8rem; padding:0.35rem 0.65rem;" onchange="updateAnalyticsQuiz(this.value)">
+                            <option value="all">All Quizzes Aggregated</option>
+                            <option value="1" selected>Quiz 01 : Cache Hierarchy</option>
+                            <option value="2">Quiz 02 : Pipelining Hazards</option>
+                            <option value="3">Quiz 03 : Virtual Memory</option>
+                        </select>
+                        <button class="btn btn-secondary btn-sm" onclick="exportAnalyticsGradebookCsv()">
+                            <span>📥 Gradebook (CSV)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 Top KPI Cards Maximum -->
+                <div class="analytics-kpi-grid">
+                    <!-- KPI 1: Class Average Score -->
+                    <div class="analytics-kpi-card">
+                        <span class="analytics-kpi-label">Class Average Mark</span>
+                        <div class="analytics-kpi-value-row">
+                            <span class="analytics-kpi-number" id="kpi-avg-mark">14.2<small style="font-size:1rem; color:var(--text-muted);">/20</small></span>
+                            <span class="analytics-kpi-delta positive">+1.4 vs. diag</span>
+                        </div>
+                        <span class="analytics-kpi-subtext" id="kpi-avg-sub">Median: 15.0 · High: 19.5/20</span>
+                    </div>
+
+                    <!-- KPI 2: Pass Rate -->
+                    <div class="analytics-kpi-card">
+                        <span class="analytics-kpi-label">Cohort Pass Rate</span>
+                        <div class="analytics-kpi-value-row">
+                            <span class="analytics-kpi-number" id="kpi-pass-rate">84.4%</span>
+                            <span class="analytics-kpi-delta positive">38/45 Passed</span>
+                        </div>
+                        <span class="analytics-kpi-subtext" id="kpi-pass-sub">Threshold: ≥ 10/20 mark</span>
+                    </div>
+
+                    <!-- KPI 3: Amphitheater Attendance -->
+                    <div class="analytics-kpi-card">
+                        <span class="analytics-kpi-label">Session Attendance</span>
+                        <div class="analytics-kpi-value-row">
+                            <span class="analytics-kpi-number" id="kpi-attendance">95.6%</span>
+                            <span class="analytics-kpi-delta positive">43 Present</span>
+                        </div>
+                        <span class="analytics-kpi-subtext" id="kpi-attendance-sub">Avg latency: 14.8s / question</span>
+                    </div>
+
+                    <!-- KPI 4: IRT Reliability Index -->
+                    <div class="analytics-kpi-card">
+                        <span class="analytics-kpi-label">IRT Reliability Index</span>
+                        <div class="analytics-kpi-value-row">
+                            <span class="analytics-kpi-number" id="kpi-reliability">0.84</span>
+                            <span class="analytics-kpi-delta positive">Optimal</span>
+                        </div>
+                        <span class="analytics-kpi-subtext" id="kpi-reliability-sub">Cronbach's α · 0 Defective Items</span>
+                    </div>
+                </div>
+
+                <!-- Secondary Sub-Tabs Strip -->
+                <div class="analytics-subtabs-strip">
+                    <button class="analytics-subtab-btn active" id="btn-tab-overview" onclick="switchAnalyticsSubTab('overview', this)">
+                        📊 Overview & Misconceptions
+                    </button>
+                    <button class="analytics-subtab-btn" id="btn-tab-scorecards" onclick="switchAnalyticsSubTab('scorecards', this)">
+                        📋 Student Scorecards
+                    </button>
+                    <button class="analytics-subtab-btn" id="btn-tab-irt" onclick="switchAnalyticsSubTab('irt', this)">
+                        🔬 Item Response Theory (IRT Matrix)
+                    </button>
+                    <button class="analytics-subtab-btn" id="btn-tab-export" onclick="switchAnalyticsSubTab('export', this)">
+                        📤 Export Reports & LMS
+                    </button>
+                </div>
+
+                <!-- TAB 1: OVERVIEW & MISCONCEPTIONS -->
+                <div id="subtab-pane-overview">
+                    <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+                        <!-- Grade Distribution Histogram -->
+                        <div class="roster-workspace-card" style="padding:1.4rem;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.15rem;">
+                                <div>
+                                    <div style="font-size:0.95rem; font-weight:800; color:var(--text-heading);">Grade Distribution (Gaussian Dispersion)</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Cohort mark frequencies partitioned into 5 competency brackets</div>
+                                </div>
+                                <span class="pill-status pill-ready" style="font-size:0.68rem;">Normal Dispersion</span>
+                            </div>
+
+                            <div id="histogram-bars-container">
+                                <div class="histogram-bar-wrap">
+                                    <span class="histogram-label">[17 - 20] Excellent</span>
+                                    <div class="histogram-track">
+                                        <div class="histogram-fill" style="width:20%; background:#D1FAE5; color:#065F46;">20%</div>
+                                    </div>
+                                    <span class="histogram-count">9 students</span>
+                                </div>
+                                <div class="histogram-bar-wrap">
+                                    <span class="histogram-label">[14 - 16] Good</span>
+                                    <div class="histogram-track">
+                                        <div class="histogram-fill" style="width:40%; background:var(--sage-light); color:var(--sage-primary);">40%</div>
+                                    </div>
+                                    <span class="histogram-count">18 students</span>
+                                </div>
+                                <div class="histogram-bar-wrap">
+                                    <span class="histogram-label">[10 - 13] Satisfactory</span>
+                                    <div class="histogram-track">
+                                        <div class="histogram-fill" style="width:24%; background:#E2E8F0; color:#334155;">24%</div>
+                                    </div>
+                                    <span class="histogram-count">11 students</span>
+                                </div>
+                                <div class="histogram-bar-wrap">
+                                    <span class="histogram-label">[06 - 09] At-Risk</span>
+                                    <div class="histogram-track">
+                                        <div class="histogram-fill" style="width:11%; background:#FEF3C7; color:#92400E;">11%</div>
+                                    </div>
+                                    <span class="histogram-count">5 students</span>
+                                </div>
+                                <div class="histogram-bar-wrap">
+                                    <span class="histogram-label">[00 - 05] Critical</span>
+                                    <div class="histogram-track">
+                                        <div class="histogram-fill" style="width:5%; background:#FFE4E6; color:#9F1239;">5%</div>
+                                    </div>
+                                    <span class="histogram-count">2 students</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Difficult Questions & Misconceptions Spotlight -->
+                        <div class="roster-workspace-card" style="padding:1.4rem;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.15rem;">
+                                <div>
+                                    <div style="font-size:0.95rem; font-weight:800; color:var(--text-heading);">Questions Requiring Review</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Detected cognitive traps and misconceptions</div>
+                                </div>
+                                <span class="pill-status" style="background:#FEF3C7; color:#92400E; font-size:0.68rem; border:1px solid #FDE68A;">2 Traps Flagged</span>
+                            </div>
+
+                            <!-- Trap 1 -->
+                            <div class="difficult-q-card">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.25rem;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:#92400E;">Q3 · Direct-Mapped Line Index Formula</span>
+                                    <span style="font-size:0.7rem; font-family:var(--font-mono); color:var(--rose-danger); font-weight:700;">38% Correct</span>
+                                </div>
+                                <p style="font-size:0.78rem; color:var(--text-body); margin-bottom:0.4rem; line-height:1.4;">
+                                    <strong>Common Misconception:</strong> 44% of students picked <em>Index = Tag mod Offset</em> instead of <em>(Block Address) mod (Cache Lines)</em>.
+                                </p>
+                                <div style="font-size:0.72rem; color:var(--sage-primary); font-weight:600; background:var(--sage-light); padding:0.25rem 0.5rem; border-radius:3px;">
+                                    💡 <strong>Pedagogical Advice:</strong> Review bitfield extraction (Tag, Index, Offset) in next recitation before midterms.
+                                </div>
+                            </div>
+
+                            <!-- Trap 2 -->
+                            <div class="difficult-q-card" style="border-left-color:#F59E0B; margin-bottom:0;">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.25rem;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:#92400E;">Q4 · AMAT Latency Calculation</span>
+                                    <span style="font-size:0.7rem; font-family:var(--font-mono); color:var(--rose-danger); font-weight:700;">45% Correct</span>
+                                </div>
+                                <p style="font-size:0.78rem; color:var(--text-body); margin-bottom:0.4rem; line-height:1.4;">
+                                    <strong>Common Misconception:</strong> 31% forgot to multiply miss penalty (100ns) by miss rate (0.10), answering 101ns.
+                                </p>
+                                <div style="font-size:0.72rem; color:var(--sage-primary); font-weight:600; background:var(--sage-light); padding:0.25rem 0.5rem; border-radius:3px;">
+                                    💡 <strong>Pedagogical Advice:</strong> Practice weighted average formulas on the board.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: STUDENT SCORECARDS (INDIVIDUAL GRADEBOOK) -->
+                <div id="subtab-pane-scorecards" style="display:none;">
+                    <div class="roster-workspace-card">
+                        <div class="roster-top-strip" style="flex-wrap:wrap; gap:0.75rem;">
+                            <div style="display:flex; align-items:center; gap:0.75rem;">
+                                <div class="search-input-wrap" style="width:260px;">
+                                    <span>🔍</span>
+                                    <input type="text" id="analytics-student-search" placeholder="Search student name or email..." oninput="filterAnalyticsStudents(this.value)">
+                                </div>
+                                <div class="group-filter-pills">
+                                    <button class="group-pill-btn active" onclick="filterAnalyticsGroupByButton('all', this)">All Groups</button>
+                                    <button class="group-pill-btn" onclick="filterAnalyticsGroupByButton('G1', this)">G1</button>
+                                    <button class="group-pill-btn" onclick="filterAnalyticsGroupByButton('G2', this)">G2</button>
+                                    <button class="group-pill-btn" onclick="filterAnalyticsGroupByButton('G3', this)">G3</button>
+                                    <button class="group-pill-btn" onclick="filterAnalyticsGroupByButton('G4', this)">G4</button>
+                                </div>
+                            </div>
+                            <span class="pill-status pill-ready" id="analytics-roster-count">45 Enrolled</span>
+                        </div>
+
+                        <table class="roster-styled-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">Rank</th>
+                                    <th>Student Name</th>
+                                    <th>Group</th>
+                                    <th>Quiz 01 (ARCHI)</th>
+                                    <th>Quiz 02 (PIPE)</th>
+                                    <th>Quiz 03 (VM)</th>
+                                    <th>Tabulated Grade</th>
+                                    <th>Status</th>
+                                    <th style="text-align:right;">Scorecard</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-scorecards-tbody">
+                                <!-- Populated dynamically via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PSYCHOMETRICS & IRT MATRIX -->
+                <div id="subtab-pane-irt" style="display:none;">
+                    <div class="roster-workspace-card" style="padding:1.4rem; margin-bottom:1.5rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                            <div>
+                                <h3 style="font-size:1rem; font-weight:800; color:var(--text-heading);">Classical Item Response Theory (1PL Rasch Model Diagnostics)</h3>
+                                <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">
+                                    Item difficulty (p-value), point-biserial discrimination (r_pbis), and distractor efficiency computed from actual amphitheater submissions.
+                                </p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="exportAnalyticsIrtCsv()">
+                                <span>📥 Export IRT Matrix (CSV)</span>
+                            </button>
+                        </div>
+
+                        <table class="roster-styled-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>Item Concept Statement</th>
+                                    <th>Difficulty (p-value)</th>
+                                    <th>Discrimination (r_pbis)</th>
+                                    <th>Distractor Functionality</th>
+                                    <th>Pedagogical Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-irt-tbody">
+                                <!-- Injected dynamically via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Collusion Radar Section -->
+                    <div class="roster-workspace-card" style="padding:1.4rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+                            <div style="display:flex; align-items:center; gap:0.5rem;">
+                                <span style="font-size:1.15rem;">📡</span>
+                                <h4 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin:0;">Amphitheater Statistical Collusion Radar</h4>
+                            </div>
+                            <span class="pill-status pill-ready">Low Risk (4.2% Baseline)</span>
+                        </div>
+                        <p style="font-size:0.78rem; color:var(--text-body); line-height:1.5;">
+                            Pairwise error concordance and sub-second submission delta analysis indicate zero synchronized copying anomalies. Student responses reflect independent problem solving.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- TAB 4: EXPORT REPORTS & ARCHIVING -->
+                <div id="subtab-pane-export" style="display:none;">
+                    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:1.25rem;">
+                        <!-- Report 1 -->
+                        <div class="roster-workspace-card" style="padding:1.4rem; text-align:center;">
+                            <div style="font-size:2rem; margin-bottom:0.5rem;">📊</div>
+                            <div style="font-weight:700; font-size:0.92rem; color:var(--text-heading); margin-bottom:0.25rem;">Official Gradebook (CSV)</div>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Complete student roster marks formatted for faculty administration.</p>
+                            <button class="btn btn-primary btn-sm" onclick="exportAnalyticsGradebookCsv()" style="width:100%;">Download CSV</button>
+                        </div>
+
+                        <!-- Report 2 -->
+                        <div class="roster-workspace-card" style="padding:1.4rem; text-align:center;">
+                            <div style="font-size:2rem; margin-bottom:0.5rem;">🔬</div>
+                            <div style="font-weight:700; font-size:0.92rem; color:var(--text-heading); margin-bottom:0.25rem;">Psychometric IRT Matrix</div>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Item difficulty, point-biserials, and distractor frequencies.</p>
+                            <button class="btn btn-secondary btn-sm" onclick="exportAnalyticsIrtCsv()" style="width:100%;">Download CSV</button>
+                        </div>
+
+                        <!-- Report 3 -->
+                        <div class="roster-workspace-card" style="padding:1.4rem; text-align:center;">
+                            <div style="font-size:2rem; margin-bottom:0.5rem;">🎓</div>
+                            <div style="font-weight:700; font-size:0.92rem; color:var(--text-heading); margin-bottom:0.25rem;">Moodle LMS Package</div>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Export exam questions and grade keys in standard Moodle XML.</p>
+                            <a href="/api/quiz/export/1?format=moodle" target="_blank" class="btn btn-secondary btn-sm" style="width:100%; display:block;">Download XML</a>
+                        </div>
+
+                        <!-- Report 4 -->
+                        <div class="roster-workspace-card" style="padding:1.4rem; text-align:center;">
+                            <div style="font-size:2rem; margin-bottom:0.5rem;">📄</div>
+                            <div style="font-weight:700; font-size:0.92rem; color:var(--text-heading); margin-bottom:0.25rem;">Printable A4 Exam Sheet</div>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Print-ready A4 emergency examination sheets for amphitheater hall.</p>
+                            <a href="/api/quiz/export/1?format=print" target="_blank" class="btn btn-secondary btn-sm" style="width:100%; display:block;">Print Sheet 🖨</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </main>
 
     <!-- Student QR Code Modal -->
@@ -2602,6 +3084,49 @@
         </div>
     </div>
 
+    
+    <!-- ========================================================
+         MODAL: INDIVIDUAL STUDENT SCORECARD
+         ======================================================== -->
+    <div id="modal-student-scorecard" class="modal-shade">
+        <div class="form-dialog" style="max-width:560px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <div class="user-avatar-circle" id="scorecard-avatar">AB</div>
+                    <div>
+                        <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-heading); margin:0;" id="scorecard-student-name">Amina Boukhalfa</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin:0;" id="scorecard-student-meta">1CP · Group G1 · a.boukhalfa@esi.dz</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="closeStudentScorecard()">✕</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem; margin:1rem 0;">
+                <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.65rem; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-muted); font-weight:700;">FINAL MARK</div>
+                    <div style="font-size:1.35rem; font-weight:800; color:var(--sage-primary); font-family:var(--font-mono);" id="scorecard-grade">18.5/20</div>
+                </div>
+                <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.65rem; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-muted); font-weight:700;">CLASS RANK</div>
+                    <div style="font-size:1.35rem; font-weight:800; color:var(--text-heading); font-family:var(--font-mono);" id="scorecard-rank">#2 / 45</div>
+                </div>
+                <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.65rem; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-muted); font-weight:700;">COMPLETION</div>
+                    <div style="font-size:1.35rem; font-weight:800; color:var(--mint-success); font-family:var(--font-mono);">100%</div>
+                </div>
+            </div>
+
+            <div style="font-size:0.8rem; font-weight:700; color:var(--text-heading); margin-bottom:0.5rem;">Formative Quiz Performance History</div>
+            <div id="scorecard-quizzes-history" style="display:flex; flex-direction:column; gap:0.5rem; max-height:220px; overflow-y:auto; margin-bottom:1.25rem;">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentScorecard()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-holder" id="toast-holder"></div>
 
     <script>
@@ -2642,10 +3167,12 @@
                 'welcome': 'Welcome Home',
                 'cockpit': 'Live Cockpit · Mode Direct',
                 'classes': 'Classes & Students',
-                'quizzes': 'Quizzes & Question Bank'
+                'quizzes': 'Quizzes & Question Bank',
+                'analytics': 'Results & Pedagogical Analytics'
             };
             if (pageId === 'classes') renderStudentsRoster();
             if (pageId === 'quizzes') renderQuizzesTable();
+            if (pageId === 'analytics') renderAnalyticsView();
             const titleElem = document.getElementById('topbar-title-text');
             if (titleElem) titleElem.textContent = titleMap[pageId] || 'Workspace';
 
@@ -4148,3 +4675,334 @@ let quizzesRepository = [
     </script>
 </body>
 </html>
+
+    <script>
+        // ========================================================
+        // RESULTS & ANALYTICS LOGIC & IRT DIAGNOSTICS
+        // ========================================================
+        let activeAnalyticsCohort = '1CP';
+        let activeAnalyticsQuiz = '1';
+        let activeAnalyticsGroup = 'all';
+        let currentAnalyticsSubTab = 'overview';
+
+        const ANALYTICS_DATA = {
+            '1CP': {
+                avgMark: "14.2",
+                passRate: "84.4%",
+                attendance: "95.6%",
+                reliability: "0.84",
+                kpiAvgSub: "Median: 15.0 · High: 19.5/20",
+                kpiPassSub: "38 of 45 students passed (≥ 10/20)",
+                kpiAttSub: "43 present · 2 excused absences",
+                kpiRelSub: "Cronbach's α · 0 Defective Questions",
+                students: [
+                    { id: 1, name: "Mehdi Touati", email: "m.touati@esi.dz", group: "G1", q1: 19, q2: 18, q3: 17, grade: "18.0", status: "Pass", rank: "#1" },
+                    { id: 2, name: "Amina Boukhalfa", email: "a.boukhalfa@esi.dz", group: "G1", q1: 18, q2: 17, q3: 18, grade: "17.7", status: "Pass", rank: "#2" },
+                    { id: 3, name: "Nassim Saidi", email: "n.saidi@esi.dz", group: "G2", q1: 17, q2: 16, q3: 15, grade: "16.0", status: "Pass", rank: "#3" },
+                    { id: 4, name: "Rania Benali", email: "r.benali@esi.dz", group: "G3", q1: 16, q2: 15, q3: 16, grade: "15.7", status: "Pass", rank: "#4" },
+                    { id: 5, name: "Yacine Khelifi", email: "y.khelifi@esi.dz", group: "G1", q1: 15, q2: 14, q3: 15, grade: "14.7", status: "Pass", rank: "#5" },
+                    { id: 6, name: "Sarah Meziane", email: "s.meziane@esi.dz", group: "G4", q1: 14, q2: 14, q3: 13, grade: "13.7", status: "Pass", rank: "#6" },
+                    { id: 7, name: "Karim Zerrouki", email: "k.zerrouki@esi.dz", group: "G2", q1: 13, q2: 12, q3: 11, grade: "12.0", status: "Pass", rank: "#7" },
+                    { id: 8, name: "Ines Hamidi", email: "i.hamidi@esi.dz", group: "G3", q1: 11, q2: 10, q3: 11, grade: "10.7", status: "Pass", rank: "#8" },
+                    { id: 9, name: "Walid Bouzid", email: "w.bouzid@esi.dz", group: "G4", q1: 8, q2: 9, q3: 7, grade: "8.0", status: "At-Risk", rank: "#9" },
+                    { id: 10, name: "Lina Djebbar", email: "l.djebbar@esi.dz", group: "G2", q1: 5, q2: 6, q3: 4, grade: "5.0", status: "At-Risk", rank: "#10" }
+                ],
+                irtItems: [
+                    {
+                        num: 1,
+                        concept: "Cache Hierarchy Objective (AMAT Latency)",
+                        difficulty: { p: 0.78, label: "Easy", pill: "pill-ready" },
+                        discrimination: { r: 0.46, label: "Excellent", pill: "pill-ready" },
+                        distractor: "Distractor A had 12% picks (Weak distraction)",
+                        action: "Retain in Exam Bank without alteration."
+                    },
+                    {
+                        num: 2,
+                        concept: "Direct-Mapped Line Index Formula: (Block) mod (Lines)",
+                        difficulty: { p: 0.38, label: "Hard", pill: "pill-draft" },
+                        discrimination: { r: 0.44, label: "High Disc.", pill: "pill-ready" },
+                        distractor: "44% picked 'Tag mod Offset' (Strong Misconception)",
+                        action: "Review bitfield slicing in next tutorial recitation."
+                    },
+                    {
+                        num: 3,
+                        concept: "Fully Associative Conflict Miss Elimination",
+                        difficulty: { p: 0.73, label: "Optimal", pill: "pill-ready" },
+                        discrimination: { r: 0.48, label: "Excellent", pill: "pill-ready" },
+                        distractor: "All distractors functioning symmetrically",
+                        action: "Exemplary diagnostic item."
+                    },
+                    {
+                        num: 4,
+                        concept: "Average Memory Access Time (AMAT Calculation)",
+                        difficulty: { p: 0.45, label: "Moderate", pill: "pill-ready" },
+                        discrimination: { r: 0.39, label: "Good Disc.", pill: "pill-ready" },
+                        distractor: "31% missed miss penalty multiplication",
+                        action: "Practice step-by-step arithmetic examples."
+                    },
+                    {
+                        num: 5,
+                        concept: "Write-Through vs. Write-Back RAM Consistency",
+                        difficulty: { p: 0.69, label: "Optimal", pill: "pill-ready" },
+                        discrimination: { r: 0.42, label: "Good Disc.", pill: "pill-ready" },
+                        distractor: "Write-Allocate distractor attracted 18% of bottom quartile",
+                        action: "Valid distractor behavior."
+                    }
+                ]
+            },
+            '2CP': {
+                avgMark: "13.6",
+                passRate: "81.0%",
+                attendance: "92.8%",
+                reliability: "0.82",
+                kpiAvgSub: "Median: 14.0 · High: 19.0/20",
+                kpiPassSub: "34 of 42 students passed",
+                kpiAttSub: "39 present · 3 excused",
+                kpiRelSub: "Cronbach's α · Optimal IRT",
+                students: [
+                    { id: 1, name: "Nour Benali", email: "n.benali@esi.dz", group: "G1", q1: 18, q2: 18, q3: 17, grade: "17.7", status: "Pass", rank: "#1" },
+                    { id: 2, name: "Sofiane Mansouri", email: "s.mansouri@esi.dz", group: "G2", q1: 16, q2: 15, q3: 16, grade: "15.7", status: "Pass", rank: "#2" },
+                    { id: 3, name: "Amel Benaissa", email: "a.benaissa@esi.dz", group: "G3", q1: 14, q2: 13, q3: 14, grade: "13.7", status: "Pass", rank: "#3" },
+                    { id: 4, name: "Bilal Chikh", email: "b.chikh@esi.dz", group: "G1", q1: 8, q2: 7, q3: 8, grade: "7.7", status: "At-Risk", rank: "#4" }
+                ],
+                irtItems: [
+                    {
+                        num: 1,
+                        concept: "Translation Lookaside Buffer (TLB) Fast Translation",
+                        difficulty: { p: 0.74, label: "Optimal", pill: "pill-ready" },
+                        discrimination: { r: 0.45, label: "Excellent", pill: "pill-ready" },
+                        distractor: "Distractor A had 14% picks",
+                        action: "Retain in Exam Bank."
+                    },
+                    {
+                        num: 2,
+                        concept: "Hardware Page Fault Exception Handling",
+                        difficulty: { p: 0.68, label: "Optimal", pill: "pill-ready" },
+                        discrimination: { r: 0.42, label: "Good Disc.", pill: "pill-ready" },
+                        distractor: "Cleanly isolates trap execution",
+                        action: "High diagnostic value."
+                    }
+                ]
+            },
+            '1CS': {
+                avgMark: "15.1",
+                passRate: "89.5%",
+                attendance: "97.4%",
+                reliability: "0.86",
+                kpiAvgSub: "Median: 15.5 · High: 20.0/20",
+                kpiPassSub: "34 of 38 students passed",
+                kpiAttSub: "37 present · 1 excused",
+                kpiRelSub: "Cronbach's α · High Precision",
+                students: [
+                    { id: 1, name: "Anis Gherbi", email: "a.gherbi@esi.dz", group: "G1", q1: 20, q2: 19, q3: 19, grade: "19.3", status: "Pass", rank: "#1" },
+                    { id: 2, name: "Rym Cherif", email: "r.cherif@esi.dz", group: "G2", q1: 18, q2: 17, q3: 18, grade: "17.7", status: "Pass", rank: "#2" },
+                    { id: 3, name: "Tarik Larbi", email: "t.larbi@esi.dz", group: "G3", q1: 16, q2: 16, q3: 15, grade: "15.7", status: "Pass", rank: "#3" }
+                ],
+                irtItems: [
+                    {
+                        num: 1,
+                        concept: "Dynamic Polymorphism via vtable Resolution",
+                        difficulty: { p: 0.76, label: "Optimal", pill: "pill-ready" },
+                        discrimination: { r: 0.47, label: "Excellent", pill: "pill-ready" },
+                        distractor: "Overloading distractor functioning well",
+                        action: "Retain in curriculum exam bank."
+                    }
+                ]
+            }
+        };
+
+        function renderAnalyticsView() {
+            const data = ANALYTICS_DATA[activeAnalyticsCohort] || ANALYTICS_DATA['1CP'];
+
+            // 1. Update 4 Top KPIs
+            document.getElementById('kpi-avg-mark').innerHTML = data.avgMark + '<small style="font-size:1rem; color:var(--text-muted);">/20</small>';
+            document.getElementById('kpi-pass-rate').textContent = data.passRate;
+            document.getElementById('kpi-attendance').textContent = data.attendance;
+            document.getElementById('kpi-reliability').textContent = data.reliability;
+            document.getElementById('kpi-avg-sub').textContent = data.kpiAvgSub;
+            document.getElementById('kpi-pass-sub').textContent = data.kpiPassSub;
+            document.getElementById('kpi-attendance-sub').textContent = data.kpiAttSub;
+            document.getElementById('kpi-reliability-sub').textContent = data.kpiRelSub;
+
+            // 2. Render Scorecards Table
+            renderAnalyticsScorecardsTable(data.students);
+
+            // 3. Render IRT Table
+            renderAnalyticsIrtTable(data.irtItems);
+        }
+
+        function renderAnalyticsScorecardsTable(studentsList) {
+            const tbody = document.getElementById('analytics-scorecards-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const filtered = studentsList.filter(s => {
+                const matchesGroup = (activeAnalyticsGroup === 'all' || s.group === activeAnalyticsGroup);
+                return matchesGroup;
+            });
+
+            filtered.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem; font-weight:700;">${s.rank}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:0.5rem;">
+                            <div class="user-avatar-circle" style="width:28px; height:28px; font-size:0.7rem;">${s.name.split(' ').map(n=>n[0]).join('')}</div>
+                            <div>
+                                <span style="font-weight:700; color:var(--text-heading); font-size:0.85rem;">${s.name}</span>
+                                <div style="font-size:0.7rem; color:var(--text-muted);">${s.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="pill-status" style="background:var(--bg-subtle); color:var(--text-heading);">${s.group}</span></td>
+                    <td style="font-family:var(--font-mono); font-size:0.82rem;">${s.q1}/20</td>
+                    <td style="font-family:var(--font-mono); font-size:0.82rem;">${s.q2}/20</td>
+                    <td style="font-family:var(--font-mono); font-size:0.82rem;">${s.q3}/20</td>
+                    <td style="font-family:var(--font-mono); font-weight:800; font-size:0.9rem; color:var(--text-heading);">${s.grade} / 20</td>
+                    <td><span class="pill-status ${s.status === 'Pass' ? 'pill-ready' : 'pill-draft'}" style="${s.status === 'At-Risk' ? 'background:#FEF3C7; color:#92400E;' : ''}">${s.status}</span></td>
+                    <td style="text-align:right;">
+                        <button class="btn btn-secondary btn-sm" style="font-size:0.72rem; padding:0.25rem 0.6rem;" onclick="openStudentScorecard(${s.id})">
+                            <span>Scorecard 🔍</span>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const countEl = document.getElementById('analytics-roster-count');
+            if (countEl) countEl.textContent = filtered.length + ' Students Listed';
+        }
+
+        function renderAnalyticsIrtTable(items) {
+            const tbody = document.getElementById('analytics-irt-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            items.forEach(it => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem; font-weight:700;">Q${it.num}</td>
+                    <td><span style="font-weight:700; color:var(--text-heading); font-size:0.83rem;">${it.concept}</span></td>
+                    <td>
+                        <span class="pill-status ${it.difficulty.pill}" style="font-size:0.7rem;">p = ${it.difficulty.p} (${it.difficulty.label})</span>
+                    </td>
+                    <td>
+                        <span class="pill-status ${it.discrimination.pill}" style="font-size:0.7rem;">r = ${it.discrimination.r} (${it.discrimination.label})</span>
+                    </td>
+                    <td style="font-size:0.78rem; color:var(--text-body);">${it.distractor}</td>
+                    <td style="font-size:0.75rem; color:var(--sage-primary); font-weight:600;">${it.action}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function switchAnalyticsSubTab(tabKey, btn = null) {
+            currentAnalyticsSubTab = tabKey;
+            document.querySelectorAll('.analytics-subtab-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            ['overview', 'scorecards', 'irt', 'export'].forEach(k => {
+                const pane = document.getElementById('subtab-pane-' + k);
+                if (pane) pane.style.display = (k === tabKey) ? 'block' : 'none';
+            });
+        }
+
+        function updateAnalyticsCohort(cohortVal) {
+            activeAnalyticsCohort = cohortVal;
+            renderAnalyticsView();
+            showToast('Loaded analytics for ' + cohortVal);
+        }
+
+        function updateAnalyticsQuiz(quizVal) {
+            activeAnalyticsQuiz = quizVal;
+            showToast(quizVal === 'all' ? 'Displaying aggregated cohort results' : 'Filtering results for Quiz ' + quizVal);
+        }
+
+        function filterAnalyticsGroupByButton(grp, btn) {
+            activeAnalyticsGroup = grp;
+            btn.parentElement.querySelectorAll('.group-pill-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const data = ANALYTICS_DATA[activeAnalyticsCohort] || ANALYTICS_DATA['1CP'];
+            renderAnalyticsScorecardsTable(data.students);
+        }
+
+        function filterAnalyticsStudents(query) {
+            const q = query.toLowerCase();
+            const data = ANALYTICS_DATA[activeAnalyticsCohort] || ANALYTICS_DATA['1CP'];
+            const filtered = data.students.filter(s => s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q));
+            renderAnalyticsScorecardsTable(filtered);
+        }
+
+        function openStudentScorecard(studentId) {
+            const data = ANALYTICS_DATA[activeAnalyticsCohort] || ANALYTICS_DATA['1CP'];
+            const s = data.students.find(st => st.id === studentId) || data.students[0];
+
+            document.getElementById('scorecard-avatar').textContent = s.name.split(' ').map(n=>n[0]).join('');
+            document.getElementById('scorecard-student-name').textContent = s.name;
+            document.getElementById('scorecard-student-meta').textContent = activeAnalyticsCohort + ' · Group ' + s.group + ' · ' + s.email;
+            document.getElementById('scorecard-grade').textContent = s.grade + '/20';
+            document.getElementById('scorecard-rank').textContent = s.rank + ' / ' + data.students.length;
+
+            const histEl = document.getElementById('scorecard-quizzes-history');
+            histEl.innerHTML = `
+                <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.65rem 0.85rem; display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <div style="font-size:0.8rem; font-weight:700; color:var(--text-heading);">Quiz 01 : Cache Hierarchy & Direct Mappings</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted);">Completed · Duration: 8m 42s</div>
+                    </div>
+                    <span style="font-family:var(--font-mono); font-weight:800; font-size:0.95rem; color:var(--sage-primary);">${s.q1} / 20</span>
+                </div>
+                <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.65rem 0.85rem; display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <div style="font-size:0.8rem; font-weight:700; color:var(--text-heading);">Quiz 02 : Pipelining Hazards & Branch Prediction</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted);">Completed · Duration: 9m 10s</div>
+                    </div>
+                    <span style="font-family:var(--font-mono); font-weight:800; font-size:0.95rem; color:var(--sage-primary);">${s.q2} / 20</span>
+                </div>
+                <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.65rem 0.85rem; display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <div style="font-size:0.8rem; font-weight:700; color:var(--text-heading);">Quiz 03 : Virtual Memory & TLB Address Translation</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted);">Completed · Duration: 7m 30s</div>
+                    </div>
+                    <span style="font-family:var(--font-mono); font-weight:800; font-size:0.95rem; color:var(--sage-primary);">${s.q3} / 20</span>
+                </div>
+            `;
+
+            document.getElementById('modal-student-scorecard').classList.add('active');
+        }
+
+        function closeStudentScorecard() {
+            document.getElementById('modal-student-scorecard').classList.remove('active');
+        }
+
+        function exportAnalyticsGradebookCsv() {
+            const data = ANALYTICS_DATA[activeAnalyticsCohort] || ANALYTICS_DATA['1CP'];
+            let csv = "Rank,StudentName,Email,Group,Cohort,Quiz1,Quiz2,Quiz3,FinalGrade,Status\n";
+            data.students.forEach(s => {
+                csv += `${s.rank},${s.name},${s.email},${s.group},${activeAnalyticsCohort},${s.q1},${s.q2},${s.q3},${s.grade},${s.status}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `official_gradebook_${activeAnalyticsCohort}.csv`;
+            a.click();
+            showToast('📥 Downloaded official CSV Gradebook for ' + activeAnalyticsCohort);
+        }
+
+        function exportAnalyticsIrtCsv() {
+            const data = ANALYTICS_DATA[activeAnalyticsCohort] || ANALYTICS_DATA['1CP'];
+            let csv = "QuestionNumber,ItemConcept,DifficultyPValue,DifficultyClassification,DiscriminationRPbis,DiscriminationRating,DistractorAnalysis,PedagogicalAction\n";
+            data.irtItems.forEach(it => {
+                csv += `Q${it.num},"${it.concept}",${it.difficulty.p},${it.difficulty.label},${it.discrimination.r},${it.discrimination.label},"${it.distractor}","${it.action}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `psychometrics_irt_matrix_${activeAnalyticsCohort}.csv`;
+            a.click();
+            showToast('📊 Downloaded Psychometric IRT Matrix CSV for ' + activeAnalyticsCohort);
+        }
+
+    </script>
