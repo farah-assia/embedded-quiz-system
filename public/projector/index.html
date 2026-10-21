@@ -608,6 +608,26 @@
             text-transform: uppercase;
         }
 
+        .q-academic-topic-pill {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--border-subtle);
+            color: #CBD5E1;
+            padding: 0.35rem 0.95rem;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .q-academic-topic-pill .topic-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 6px #10B981;
+        }
+
         /* Circular Radial Timer */
         .timer-container {
             position: relative;
@@ -741,6 +761,18 @@
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        .opt-shape-watermark {
+            position: absolute;
+            right: 1.25rem;
+            bottom: -0.65rem;
+            width: 105px;
+            height: 105px;
+            opacity: 0.14;
+            pointer-events: none;
+            z-index: 1;
+            transition: opacity 0.3s;
+        }
+
         .opt-card.opt-a { background: linear-gradient(135deg, #ef4444, #dc2626); }
         .opt-card.opt-b { background: linear-gradient(135deg, #3b82f6, #2563eb); }
         .opt-card.opt-c { background: linear-gradient(135deg, #f59e0b, #d97706); }
@@ -821,27 +853,33 @@
 
         /* Option Card Revealed States */
         .opt-card.correct-answer {
-            border-color: #ffffff;
-            box-shadow: 0 0 50px rgba(16, 185, 129, 0.9);
-            transform: scale(1.02);
+            border-color: #FFFFFF;
+            box-shadow: 0 0 55px rgba(16, 185, 129, 0.95), 0 0 0 3px #FFFFFF;
+            transform: scale(1.025);
+            z-index: 5;
         }
 
         .opt-card.correct-answer .opt-reveal-badge {
             display: inline-block;
-            background: #ffffff;
-            color: #047857;
+            background: #FFFFFF;
+            color: #065F46;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .opt-card.correct-answer .opt-shape-watermark {
+            opacity: 0.28;
         }
 
         .opt-card.incorrect-dimmed {
-            opacity: 0.3;
-            transform: scale(0.98);
-            filter: grayscale(40%);
+            opacity: 0.35;
+            transform: scale(0.975);
+            filter: grayscale(45%);
         }
 
         .opt-card.incorrect-dimmed .opt-reveal-badge {
             display: inline-block;
-            background: rgba(0, 0, 0, 0.4);
-            color: #fca5a5;
+            background: rgba(0, 0, 0, 0.45);
+            color: #FCA5A5;
         }
 
         /* AI Semantic Concept Clusters Board */
@@ -1290,10 +1328,16 @@
         <section id="view-question" class="view-section">
             <div class="question-wrapper">
                 <div class="q-top-bar">
-                    <div class="q-meta-badge" id="q-counter-badge">Question 01 / 05</div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                        <div class="q-meta-badge" id="q-counter-badge">Question 01 / 04</div>
+                        <span class="q-academic-topic-pill" id="q-academic-topic">
+                            <span class="topic-dot"></span>
+                            <span id="q-topic-text">Architecture des Ordinateurs · Amphi A</span>
+                        </span>
+                    </div>
 
                     <!-- Circular Radial Timer -->
-                    <div class="timer-container" id="timer-wrapper">
+                    <div class="timer-container" id="timer-wrapper" title="Auditorium Radial Timer">
                         <svg class="timer-svg" viewBox="0 0 100 100">
                             <circle class="timer-bg-circle" cx="50" cy="50" r="45"></circle>
                             <circle class="timer-bar-circle" id="timer-stroke" cx="50" cy="50" r="45"></circle>
@@ -1304,32 +1348,33 @@
                     <!-- Submissions Tracker -->
                     <div class="submission-tracker">
                         <div class="tracker-label-row">
-                            <span>Submissions:</span>
-                            <strong id="submission-text">0 / 0</strong>
+                            <span>Live Submissions:</span>
+                            <strong id="submission-text">38 / 42 (90%)</strong>
                         </div>
                         <div class="tracker-bar-bg">
-                            <div class="tracker-bar-fill" id="submission-progress"></div>
+                            <div class="tracker-bar-fill" id="submission-progress" style="width: 90%;"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Question Text Card -->
                 <div class="q-body-card">
-                    <h2 class="q-text-large" id="q-headline">Loading question...</h2>
+                    <h2 class="q-text-large" id="q-headline">In direct-mapped cache architecture, which address field is used to select the specific cache line / index?</h2>
                 </div>
 
                 <!-- High-Impact 2x2 Options Grid -->
                 <div class="options-grid" id="options-grid">
                     <div class="opt-card opt-a" id="opt-card-0">
+                        <svg class="opt-shape-watermark" viewBox="0 0 24 24" fill="white"><polygon points="12 3 22 21 2 21"></polygon></svg>
                         <div class="opt-main-content">
                             <div class="opt-letter-badge">A</div>
-                            <div class="opt-label-text" id="opt-text-0">Option A</div>
+                            <div class="opt-label-text" id="opt-text-0">Tag comparison field</div>
                             <span class="opt-reveal-badge" id="opt-badge-0">Correct</span>
                         </div>
                         <div class="opt-dist-container" id="opt-dist-0">
                             <div class="opt-dist-header">
-                                <span id="dist-count-0">0 students</span>
-                                <span id="dist-pct-0">0%</span>
+                                <span id="dist-count-0">4 students</span>
+                                <span id="dist-pct-0">10%</span>
                             </div>
                             <div class="opt-dist-track">
                                 <div class="opt-dist-bar" id="dist-bar-0"></div>
@@ -1338,15 +1383,16 @@
                     </div>
 
                     <div class="opt-card opt-b" id="opt-card-1">
+                        <svg class="opt-shape-watermark" viewBox="0 0 24 24" fill="white"><polygon points="12 2 22 12 12 22 2 12"></polygon></svg>
                         <div class="opt-main-content">
                             <div class="opt-letter-badge">B</div>
-                            <div class="opt-label-text" id="opt-text-1">Option B</div>
+                            <div class="opt-label-text" id="opt-text-1">Cache Set / Line Index field</div>
                             <span class="opt-reveal-badge" id="opt-badge-1">Correct</span>
                         </div>
                         <div class="opt-dist-container" id="opt-dist-1">
                             <div class="opt-dist-header">
-                                <span id="dist-count-1">0 students</span>
-                                <span id="dist-pct-1">0%</span>
+                                <span id="dist-count-1">34 students</span>
+                                <span id="dist-pct-1">81%</span>
                             </div>
                             <div class="opt-dist-track">
                                 <div class="opt-dist-bar" id="dist-bar-1"></div>
@@ -1355,15 +1401,16 @@
                     </div>
 
                     <div class="opt-card opt-c" id="opt-card-2">
+                        <svg class="opt-shape-watermark" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10"></circle></svg>
                         <div class="opt-main-content">
                             <div class="opt-letter-badge">C</div>
-                            <div class="opt-label-text" id="opt-text-2">Option C</div>
+                            <div class="opt-label-text" id="opt-text-2">Byte offset within block</div>
                             <span class="opt-reveal-badge" id="opt-badge-2">Correct</span>
                         </div>
                         <div class="opt-dist-container" id="opt-dist-2">
                             <div class="opt-dist-header">
-                                <span id="dist-count-2">0 students</span>
-                                <span id="dist-pct-2">0%</span>
+                                <span id="dist-count-2">3 students</span>
+                                <span id="dist-pct-2">7%</span>
                             </div>
                             <div class="opt-dist-track">
                                 <div class="opt-dist-bar" id="dist-bar-2"></div>
@@ -1372,15 +1419,16 @@
                     </div>
 
                     <div class="opt-card opt-d" id="opt-card-3">
+                        <svg class="opt-shape-watermark" viewBox="0 0 24 24" fill="white"><rect x="3" y="3" width="18" height="18" rx="3"></rect></svg>
                         <div class="opt-main-content">
                             <div class="opt-letter-badge">D</div>
-                            <div class="opt-label-text" id="opt-text-3">Option D</div>
+                            <div class="opt-label-text" id="opt-text-3">Virtual Page Number (VPN)</div>
                             <span class="opt-reveal-badge" id="opt-badge-3">Correct</span>
                         </div>
                         <div class="opt-dist-container" id="opt-dist-3">
                             <div class="opt-dist-header">
-                                <span id="dist-count-3">0 students</span>
-                                <span id="dist-pct-3">0%</span>
+                                <span id="dist-count-3">1 students</span>
+                                <span id="dist-pct-3">2%</span>
                             </div>
                             <div class="opt-dist-track">
                                 <div class="opt-dist-bar" id="dist-bar-3"></div>
@@ -1648,6 +1696,8 @@
             }
         }
 
+        let answerRevealed = false;
+
         // ================= VIEW SWITCHER =================
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -1662,6 +1712,14 @@
             } else if (viewId === 'view-question') {
                 const b = document.getElementById('btn-stage-question');
                 if (b) b.classList.add('active');
+                if (!currentQuestionData) {
+                    renderQuestion({
+                        index: 0,
+                        total: demoQuestions.length,
+                        durationSeconds: 30,
+                        question: demoQuestions[0]
+                    });
+                }
             } else if (viewId === 'view-podium') {
                 const b = document.getElementById('btn-stage-podium');
                 if (b) b.classList.add('active');
@@ -1717,12 +1775,27 @@
         function renderQuestion(data) {
             switchView('view-question');
             currentQuestionData = data;
-            document.getElementById('q-counter-badge').textContent = `Question ${data.index + 1} / ${data.total || 5}`;
-            document.getElementById('q-headline').textContent = data.question.question_text || data.question.text;
+            answerRevealed = false;
 
-            // Reset Submissions
-            document.getElementById('submission-text').textContent = '0 / 0';
-            document.getElementById('submission-progress').style.width = '0%';
+            const qCounter = document.getElementById('q-counter-badge');
+            if (qCounter) qCounter.textContent = `Question ${String((data.index || 0) + 1).padStart(2, '0')} / ${String(data.total || 4).padStart(2, '0')}`;
+            
+            const headlineEl = document.getElementById('q-headline');
+            if (headlineEl) headlineEl.textContent = data.question.question_text || data.question.text;
+
+            const topicEl = document.getElementById('q-topic-text');
+            if (topicEl) {
+                topicEl.textContent = data.question.module || 'Architecture des Ordinateurs · Amphi A';
+            }
+
+            // Submissions Tracker
+            const subCount = data.submissionsCount !== undefined ? data.submissionsCount : 38;
+            const subTotal = data.totalStudents || 42;
+            const subPct = Math.min(100, Math.round((subCount / subTotal) * 100));
+            const subTextEl = document.getElementById('submission-text');
+            const subBarEl = document.getElementById('submission-progress');
+            if (subTextEl) subTextEl.textContent = `${subCount} / ${subTotal} (${subPct}%)`;
+            if (subBarEl) subBarEl.style.width = `${subPct}%`;
 
             const isShortAnswer = data.question.type === 'short_answer';
             const board = document.getElementById('ai-clusters-board');
@@ -1744,13 +1817,15 @@
                     const distBox = document.getElementById(`opt-dist-${i}`);
                     const distBar = document.getElementById(`dist-bar-${i}`);
 
+                    if (!card) continue;
+
                     if (i < opts.length) {
                         card.style.display = 'flex';
                         card.classList.remove('correct-answer', 'incorrect-dimmed');
-                        text.textContent = opts[i].answer_text || opts[i].text || opts[i];
-                        badge.style.display = 'none';
-                        distBox.style.display = 'none';
-                        distBar.style.width = '0%';
+                        if (text) text.textContent = opts[i].answer_text || opts[i].text || opts[i];
+                        if (badge) badge.style.display = 'none';
+                        if (distBox) distBox.style.display = 'none';
+                        if (distBar) distBar.style.width = '0%';
                     } else {
                         card.style.display = 'none';
                     }
@@ -2128,42 +2203,93 @@
         // ================= PRESENTER DEMO ACTIONS =================
         let demoQuestions = [
             {
-                text: "In Java Object-Oriented Programming, which keyword is used to inherit a class?",
-                options: ["implements", "extends", "inherits", "instanceof"],
-                correctIndex: 1
+                text: "In direct-mapped cache architecture, which address field is used to select the specific cache line / index?",
+                module: "Architecture des Ordinateurs · Amphi A",
+                type: "single_choice",
+                options: [
+                    "Tag comparison field",
+                    "Cache Set / Line Index field",
+                    "Byte offset within block",
+                    "Virtual Page Number (VPN)"
+                ],
+                correctIndex: 1,
+                tallies: { 0: 4, 1: 34, 2: 3, 3: 1 },
+                submissionsCount: 42,
+                totalStudents: 42
             },
             {
-                text: "Which layer of the OSI model does the Wi-Fi 802.11 Access Point primarily operate at?",
-                options: ["Application Layer", "Transport Layer", "Data Link & Physical", "Network Layer"],
-                correctIndex: 2
+                text: "Which cache write policy guarantees that main memory is updated simultaneously on every CPU store, avoiding dirty blocks?",
+                module: "Architecture des Ordinateurs · Amphi A",
+                type: "single_choice",
+                options: [
+                    "Write-Through Policy",
+                    "Write-Back with dirty bit",
+                    "Write-Around Allocation",
+                    "Lazy Write Invalidation"
+                ],
+                correctIndex: 0,
+                tallies: { 0: 32, 1: 7, 2: 2, 3: 1 },
+                submissionsCount: 42,
+                totalStudents: 42
             },
             {
-                text: "What is the primary advantage of hosting an embedded quiz system directly on a Raspberry Pi?",
-                options: ["Requires constant 5G cloud access", "100% offline edge operation with zero latency", "Consumes 500W power", "Only works on Windows"],
-                correctIndex: 1
+                text: "Why is an embedded Raspberry Pi 5 setup uniquely advantageous for amphi evaluations compared to cloud web apps?",
+                module: "Embedded Systems · Edge AI",
+                type: "single_choice",
+                options: [
+                    "Requires 5G cellular roaming data",
+                    "Autonomous offline Wi-Fi with zero WAN latency",
+                    "Consumes 450 Watts of auditorium power",
+                    "Requires external cloud subscription"
+                ],
+                correctIndex: 1,
+                tallies: { 0: 1, 1: 39, 2: 1, 3: 1 },
+                submissionsCount: 42,
+                totalStudents: 42
+            },
+            {
+                text: "Explain what happens during a cache conflict miss in direct-mapped architectures, and why associativity reduces it.",
+                module: "Architecture des Ordinateurs · Amphi A",
+                type: "short_answer",
+                durationSeconds: 45,
+                referenceAnswer: "A conflict miss occurs when multiple memory blocks map to the exact same cache set, repeatedly evicting each other despite free capacity in other lines. Associativity provides alternative ways within each set.",
+                keyConcepts: ["conflict miss", "same cache set", "associativity", "eviction", "mapping", "ways"]
             }
         ];
         let currentDemoQIndex = 0;
 
         function triggerNextDemoQuestion() {
+            currentDemoQIndex++;
             const q = demoQuestions[currentDemoQIndex % demoQuestions.length];
-            socket.emit('quiz:broadcast_question', {
+            const qData = {
                 quizId: currentQuizId,
                 question: q,
                 index: currentDemoQIndex % demoQuestions.length,
                 total: demoQuestions.length,
-                durationSeconds: 30
-            });
-            currentDemoQIndex++;
+                durationSeconds: q.durationSeconds || 30,
+                submissionsCount: q.submissionsCount || 38,
+                totalStudents: q.totalStudents || 42
+            };
+            try {
+                socket.emit('quiz:broadcast_question', qData);
+            } catch (e) {}
+            renderQuestion(qData);
         }
 
         function triggerAnswerReveal() {
-            const correct = currentQuestionData && currentQuestionData.question ? (currentQuestionData.question.correctIndex !== undefined ? currentQuestionData.question.correctIndex : 1) : 1;
-            socket.emit('quiz:reveal_answer', {
-                quizId: currentQuizId,
-                questionIndex: currentQuestionData ? currentQuestionData.index : 0,
-                correctIndex: correct
-            });
+            answerRevealed = true;
+            const currentQ = (currentQuestionData && currentQuestionData.question) ? currentQuestionData.question : demoQuestions[0];
+            const correct = currentQ.correctIndex !== undefined ? currentQ.correctIndex : 1;
+            const tallies = currentQ.tallies || (correct === 1 ? { 0: 4, 1: 34, 2: 3, 3: 1 } : { 0: 32, 1: 6, 2: 3, 3: 1 });
+            try {
+                socket.emit('quiz:reveal_answer', {
+                    quizId: currentQuizId,
+                    questionIndex: currentQuestionData ? currentQuestionData.index : 0,
+                    correctIndex: correct,
+                    tallies: tallies
+                });
+            } catch (e) {}
+            revealAnswer(correct, tallies);
         }
 
         function triggerPodiumReveal() {
@@ -2177,6 +2303,7 @@
                     { rank: 5, name: "Sara Bouzid", score: "14.0 / 20" }
                 ]
             });
+            renderPodium();
         }
 
         function simulateStudentJoin() {
@@ -2235,7 +2362,7 @@
             }
         }
 
-        // Keyboard Shortcuts: 1/2/3 = Views, D = Demo Student, Space = Advance/Reveal, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
+        // Keyboard Shortcuts: 1/2/3 = Views, D = Demo Student, Space = Advance/Reveal, R = Reveal, N = Next Question, A = AI Demo, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
         window.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
@@ -2247,17 +2374,23 @@
                 switchView('view-podium');
             } else if (e.key === 'd' || e.key === 'D') {
                 simulateDemoStudentJoin();
+            } else if (e.key === 'r' || e.key === 'R') {
+                triggerAnswerReveal();
+            } else if (e.key === 'n' || e.key === 'N') {
+                triggerNextDemoQuestion();
+            } else if (e.key === 'a' || e.key === 'A') {
+                triggerAiShortAnswerDemo();
             } else if (e.code === 'Space') {
                 e.preventDefault();
                 const questionView = document.getElementById('view-question');
-                if (questionView.classList.contains('active')) {
-                    if (timeLeft > 0) {
+                if (questionView && questionView.classList.contains('active')) {
+                    if (!answerRevealed && timeLeft > 0) {
                         triggerAnswerReveal();
                     } else {
                         triggerNextDemoQuestion();
                     }
                 } else {
-                    triggerNextDemoQuestion();
+                    switchView('view-question');
                 }
             } else if (e.key === 'f' || e.key === 'F') {
                 toggleFullScreen();
