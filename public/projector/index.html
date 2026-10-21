@@ -12,21 +12,24 @@
 
     <style>
         :root {
-            --bg-stage: #070c14;
-            --surface-dark: #0f172a;
-            --surface-card: #152238;
-            --surface-elevated: #1e2e4a;
+            --bg-stage: #0A0E17;
+            --surface-dark: #121824;
+            --surface-card: #182232;
+            --surface-elevated: #202D42;
             --navy-primary: #153247;
-            --gold-primary: #f5c242;
-            --gold-light: #fef08a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-subtle: rgba(255, 255, 255, 0.09);
-            --border-highlight: rgba(245, 194, 66, 0.45);
-            --color-a: #ef4444;
-            --color-b: #3b82f6;
-            --color-c: #f59e0b;
-            --color-d: #10b981;
+            --sage-primary: #3E6F58;
+            --sage-light: rgba(62, 111, 88, 0.2);
+            --gold-primary: #E5A83B;
+            --gold-light: #FDE68A;
+            --text-main: #F8FAFC;
+            --text-heading: #FFFFFF;
+            --text-muted: #94A3B8;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(62, 111, 88, 0.45);
+            --color-a: #E11D48;
+            --color-b: #2563EB;
+            --color-c: #D97706;
+            --color-d: #16A34A;
         }
 
         * {
@@ -178,8 +181,140 @@
 
         .btn-ctrl:hover {
             background: var(--surface-card);
-            border-color: var(--gold-primary);
+            border-color: var(--sage-primary);
             color: #ffffff;
+        }
+
+        .stage-switcher-group {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .btn-stage-switch {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.35rem 0.85rem;
+            border-radius: 7px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn-stage-switch:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-stage-switch.active {
+            background: var(--sage-primary);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(62, 111, 88, 0.4);
+        }
+
+        .academic-term-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--sage-light);
+            border: 1px solid rgba(62, 111, 88, 0.4);
+            color: #A7F3D0;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .faculty-lead-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: var(--surface-dark);
+            border: 1px solid var(--border-subtle);
+            padding: 0.45rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.85rem;
+        }
+        .faculty-lead-pill strong {
+            color: var(--text-heading);
+        }
+        .faculty-lead-pill .faculty-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--sage-primary);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pin-badge-box {
+            background: #F1F5F9;
+            border: 2px dashed #CBD5E1;
+            border-radius: 16px;
+            padding: 0.85rem 1.25rem;
+            margin-top: 1rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .pin-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #64748B;
+        }
+        .pin-digits {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.3rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            color: #0F172A;
+            line-height: 1;
+        }
+
+        .lobby-status-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: rgba(18, 24, 36, 0.9);
+            border: 1px solid var(--border-subtle);
+            padding: 0.85rem 1.85rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 1.25rem;
+            max-width: 900px;
+            width: 100%;
+        }
+        .pulse-ring {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 10px #10B981;
+            animation: pulseDot 2s infinite;
         }
 
         /* ----------------- MAIN VIEW AREA ----------------- */
@@ -1020,34 +1155,37 @@
         <div class="brand-group">
             <div class="brand-logo">
                 <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
-                    <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/>
-                    <path d="M25 45V65C25 76 50 82 50 82C50 82 75 76 75 65V45" stroke="#f5c242" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M85 36V70" stroke="#f5c242" stroke-width="4" stroke-linecap="round"/>
-                    <circle cx="85" cy="72" r="4" fill="#f5c242"/>
+                    <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#3E6F58"/>
+                    <path d="M25 45V65C25 76 50 82 50 82C50 82 75 76 75 65V45" stroke="#3E6F58" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M85 36V70" stroke="#E5A83B" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="85" cy="72" r="4" fill="#E5A83B"/>
                 </svg>
-                <div class="brand-name">κουίζυ<span>.</span></div>
+                <div class="brand-name">κουίζυ<span style="color:var(--sage-primary);">.</span> <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin-left:0.25rem;">Bloom Campus</span></div>
             </div>
-            <div class="pi-badge">
+            <div class="pi-badge" style="background:rgba(62,111,88,0.15); border-color:rgba(62,111,88,0.4); color:#A7F3D0;">
                 <span class="pi-dot"></span>
-                <span>Raspberry Pi HDMI Output</span>
+                <span>Raspberry Pi 5 · Offline Edge Active (192.168.4.1)</span>
             </div>
         </div>
 
         <div class="network-bar">
             <div class="network-pill">
                 <span class="status-dot"></span>
-                <span>AP: <strong>κουίζυ-Offline</strong></span>
+                <span>AP: <strong>κουίζυ-Amphi-A</strong></span>
             </div>
             <div class="network-pill">
-                <span>URL: <strong id="display-host-url">http://quiz.local:7000/student</strong></span>
-            </div>
-            <div class="network-pill" id="net-telemetry-pill" title="Classroom Wi-Fi Network Telemetry">
-                <span class="status-dot" id="net-telemetry-dot" style="background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-                <span>Telemetry: <strong id="net-telemetry-count">0 connected</strong></span>
+                <span>URL: <strong id="display-host-url">http://192.168.4.1:7000/student</strong></span>
             </div>
         </div>
 
         <div class="nav-controls">
+            <!-- Stage Quick-Switcher -->
+            <div class="stage-switcher-group">
+                <button type="button" class="btn-stage-switch active" id="btn-stage-lobby" onclick="switchView('view-lobby')">1 · Lobby</button>
+                <button type="button" class="btn-stage-switch" id="btn-stage-question" onclick="switchView('view-question')">2 · Question</button>
+                <button type="button" class="btn-stage-switch" id="btn-stage-podium" onclick="switchView('view-podium')">3 · Podium</button>
+            </div>
+
             <button type="button" class="btn-ctrl" id="btn-sound" onclick="toggleSound()">
                 <svg id="sound-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                 <span id="sound-label">Audio On</span>
@@ -1064,45 +1202,63 @@
         <!-- ================= 1. LOBBY VIEW ================= -->
         <section id="view-lobby" class="view-section active">
             <div class="lobby-container">
+                <!-- Academic Header -->
                 <div class="lobby-header">
-                    <h1 class="lobby-title">Classroom Evaluation Session</h1>
-                    <p class="lobby-subtitle">Connect your smartphone to join the evaluation room and answer live questions.</p>
+                    <span class="academic-term-pill">2026/2027 · Semester 1 · Evaluation Session</span>
+                    <h1 class="lobby-title">Amphithéâtre A · Architecture des Ordinateurs</h1>
+                    <p class="lobby-subtitle">Interactive formative checkpoint on Cache Hierarchies & Direct Mappings · Cohort 1CP</p>
+                    <div class="faculty-lead-pill">
+                        <span class="faculty-avatar" id="lobby-faculty-avatar">AB</span>
+                        <span>Course Lead: <strong id="lobby-faculty-name">Dr. Amina Benali</strong></span>
+                        <span style="opacity:0.4;">•</span>
+                        <span>Département Architecture & Systèmes · ESI Algiers</span>
+                    </div>
                 </div>
 
                 <div class="lobby-cards-row">
                     <!-- QR Code Card -->
                     <div class="qr-card">
-                        <span class="qr-card-tag">Scan with Phone</span>
+                        <span class="qr-card-tag" style="background:var(--sage-primary); color:#FFFFFF;">Scan to Join</span>
                         <div class="qr-frame" id="qr-code-container">
                             <div style="font-size:0.9rem; color:#64748b;">Loading QR Code...</div>
                         </div>
-                        <div class="qr-caption">Instant Camera Join</div>
-                        <div class="qr-url-sub" id="qr-direct-link">http://...</div>
+                        <div class="qr-caption" style="color:var(--surface-dark);">Instant Camera Join</div>
+                        <div class="qr-url-sub" id="qr-direct-link">http://192.168.4.1:7000/student</div>
+
+                        <!-- Big Session PIN Code -->
+                        <div class="pin-badge-box">
+                            <span class="pin-label">Classroom Session PIN</span>
+                            <span class="pin-digits">884 219</span>
+                        </div>
+
+                        <button type="button" class="btn-ctrl" style="margin-top:0.75rem; font-size:0.72rem; padding:0.25rem 0.65rem;" onclick="simulateDemoStudentJoin()">
+                            <span>➕ Simulate Student Join (+1)</span>
+                        </button>
                     </div>
 
                     <!-- Instructions -->
                     <div class="instructions-card">
                         <div class="step-item">
-                            <div class="step-num">1</div>
+                            <div class="step-num" style="background:var(--sage-light); border-color:var(--sage-primary); color:#A7F3D0;">1</div>
                             <div class="step-content">
-                                <h3>Connect to Classroom Wi-Fi</h3>
-                                <p>Select the Wi-Fi network <code>κουίζυ-Offline</code> on your device (no password).</p>
+                                <h3>Connect to Amphitheater Wi-Fi</h3>
+                                <p>Select the Wi-Fi network <code>κουίζυ-Amphi-A</code> on your smartphone. No internet or cellular data required (local edge server).</p>
                             </div>
                         </div>
 
                         <div class="step-item">
-                            <div class="step-num">2</div>
+                            <div class="step-num" style="background:var(--sage-light); border-color:var(--sage-primary); color:#A7F3D0;">2</div>
                             <div class="step-content">
                                 <h3>Scan QR or Open Browser</h3>
-                                <p>Scan the code on screen or navigate to <code id="instruction-url">http://quiz.local:7000/student</code>.</p>
+                                <p>Point your smartphone camera at the QR code, or navigate to <code id="instruction-url">http://192.168.4.1:7000/student</code>.</p>
                             </div>
                         </div>
 
                         <div class="step-item">
-                            <div class="step-num">3</div>
+                            <div class="step-num" style="background:var(--sage-light); border-color:var(--sage-primary); color:#A7F3D0;">3</div>
                             <div class="step-content">
-                                <h3>Enter Your Name & Ready!</h3>
-                                <p>Sign in with your university student profile to register attendance.</p>
+                                <h3>Sign In & Keep Ready!</h3>
+                                <p>Select your student name from the roster. As soon as Dr. Benali launches Question 1, your smartphone screen will activate.</p>
                             </div>
                         </div>
                     </div>
@@ -1111,7 +1267,8 @@
                 <!-- Real-time Connected Roster -->
                 <div class="roster-area">
                     <div class="roster-count">
-                        Connected Students: <strong id="lobby-count">0</strong>
+                        Connected Students: <strong id="lobby-count">0</strong> <span style="font-size:0.9rem; color:#64748B; font-weight:500;">/ 45 enrolled</span>
+                        <span class="pi-dot" style="margin-left:0.5rem;" title="Live Edge Sync"></span>
                     </div>
                     <div class="students-flex" id="lobby-roster">
                         <div class="student-chip">
@@ -1119,6 +1276,12 @@
                             <span>Waiting for students to join...</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Live Channel Readiness Strip -->
+                <div class="lobby-status-strip">
+                    <span class="pulse-ring"></span>
+                    <span>📡 Live Amphitheater Channel Active · Waiting for Dr. Amina Benali to launch Question 1 from the Cockpit...</span>
                 </div>
             </div>
         </section>
@@ -1488,8 +1651,44 @@
         // ================= VIEW SWITCHER =================
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
+            const target = document.getElementById(viewId);
+            if (target) target.classList.add('active');
+
+            // Synchronize Stage Switcher Buttons
+            document.querySelectorAll('.btn-stage-switch').forEach(btn => btn.classList.remove('active'));
+            if (viewId === 'view-lobby') {
+                const b = document.getElementById('btn-stage-lobby');
+                if (b) b.classList.add('active');
+            } else if (viewId === 'view-question') {
+                const b = document.getElementById('btn-stage-question');
+                if (b) b.classList.add('active');
+            } else if (viewId === 'view-podium') {
+                const b = document.getElementById('btn-stage-podium');
+                if (b) b.classList.add('active');
+            }
         }
+
+        function syncFacultyLead() {
+            try {
+                const storedName = localStorage.getItem('bloom_profile_name');
+                if (storedName) {
+                    const nameEl = document.getElementById('lobby-faculty-name');
+                    const avatarEl = document.getElementById('lobby-faculty-avatar');
+                    if (nameEl) nameEl.textContent = storedName;
+                    if (avatarEl) {
+                        const parts = storedName.replace(/^(Dr\.|Pr\.|Prof\.|Mr\.|Mrs\.|Ms\.)\s*/i, '').trim().split(/\s+/);
+                        let initials = 'AB';
+                        if (parts.length >= 2) {
+                            initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+                        } else if (parts.length === 1 && parts[0].length > 0) {
+                            initials = parts[0].substring(0, 2).toUpperCase();
+                        }
+                        avatarEl.textContent = initials;
+                    }
+                }
+            } catch (e) {}
+        }
+        syncFacultyLead();
 
         // ================= WEBSOCKET LISTENERS =================
         // 1. Student Roster Update
@@ -1981,9 +2180,42 @@
         }
 
         function simulateStudentJoin() {
-            const names = ["Nadia Cherif", "Yacine Belkacem", "Farid Haddad", "Lina Mansour", "Rayane Ziane"];
-            const chosen = names[Math.floor(Math.random() * names.length)];
-            socket.emit('quiz:join', { quizId: currentQuizId, role: 'student', name: chosen, email: `${chosen.toLowerCase().replace(' ', '.')}@univ.dz` });
+            simulateDemoStudentJoin();
+        }
+
+        function simulateDemoStudentJoin() {
+            const demoNames = [
+                "Nadia Cherif", "Yacine Belkacem", "Farid Haddad", 
+                "Lina Mansour", "Rayane Ziane", "Amel Boukhalfa", 
+                "Hichem Mebarek", "Sofia Rahmani", "Walid Khelifi",
+                "Kenza Benali", "Sami Meziane", "Ines Dahmane"
+            ];
+            const chosen = demoNames[Math.floor(Math.random() * demoNames.length)];
+            try {
+                socket.emit('quiz:join', { 
+                    quizId: currentQuizId, 
+                    role: 'student', 
+                    name: chosen, 
+                    email: `${chosen.toLowerCase().replace(/\s+/g, '.')}@univ.dz` 
+                });
+            } catch (e) {}
+
+            // Immediate visual roster update for local amphi preview
+            const roster = document.getElementById('lobby-roster');
+            const countEl = document.getElementById('lobby-count');
+            if (roster && countEl) {
+                let current = parseInt(countEl.textContent, 10) || 0;
+                current++;
+                countEl.textContent = current;
+                if (roster.querySelector('.student-chip span')?.textContent?.includes('Waiting')) {
+                    roster.innerHTML = '';
+                }
+                const chip = document.createElement('div');
+                chip.className = 'student-chip';
+                chip.style.animation = 'scaleIn 0.3s ease';
+                chip.innerHTML = `<span class="chip-dot" style="background:#10B981;"></span><span>${chosen}</span>`;
+                roster.appendChild(chip);
+            }
         }
 
         function togglePresenterBar() {
@@ -2003,9 +2235,19 @@
             }
         }
 
-        // Keyboard Shortcuts: Space = Advance/Reveal, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
+        // Keyboard Shortcuts: 1/2/3 = Views, D = Demo Student, Space = Advance/Reveal, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
         window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            if (e.key === '1') {
+                switchView('view-lobby');
+            } else if (e.key === '2') {
+                switchView('view-question');
+            } else if (e.key === '3') {
+                switchView('view-podium');
+            } else if (e.key === 'd' || e.key === 'D') {
+                simulateDemoStudentJoin();
+            } else if (e.code === 'Space') {
                 e.preventDefault();
                 const questionView = document.getElementById('view-question');
                 if (questionView.classList.contains('active')) {
