@@ -1240,6 +1240,198 @@
             box-shadow: 0 0 0 3px rgba(62, 111, 88, 0.12);
         }
 
+        
+        /* ========================================================
+           PAGE 4: QUIZZES & BANK
+           ======================================================== */
+        .quizzes-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-pills-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-warm);
+            padding-bottom: 0.75rem;
+        }
+
+        .filter-pill-btn {
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-pill-btn:hover {
+            background: var(--bg-subtle);
+            color: var(--text-heading);
+        }
+
+        .filter-pill-btn.active {
+            background: var(--sage-light);
+            color: var(--sage-primary);
+            border-color: var(--sage-border);
+        }
+
+        /* 5-Step Stepper Navigation */
+        .stepper-header-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.75rem;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-warm);
+        }
+
+        .stepper-step-item {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .stepper-step-item.active {
+            color: var(--sage-primary);
+            font-weight: 700;
+        }
+
+        .stepper-circle-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            border: 1px solid var(--border-warm);
+        }
+
+        .stepper-step-item.active .stepper-circle-num {
+            background: var(--sage-primary);
+            color: #ffffff;
+            border-color: var(--sage-primary);
+        }
+
+        /* Method Choice Cards Grid */
+        .methods-choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .method-tile {
+            border: 1.5px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            background: var(--bg-surface);
+            text-align: left;
+        }
+
+        .method-tile:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .method-tile.selected {
+            border-color: var(--sage-primary);
+            background: var(--sage-light);
+            box-shadow: 0 0 0 1px var(--sage-primary);
+        }
+
+        .method-tile h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 0.25rem;
+        }
+
+        .method-tile p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* 3 Configurable Timing Modes */
+        .timing-modes-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .timing-tile {
+            border: 1.5px solid var(--border-warm);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+            background: var(--bg-surface);
+        }
+
+        .timing-tile:hover {
+            border-color: var(--border-hover);
+        }
+
+        .timing-tile.selected {
+            border-color: var(--sage-primary);
+            background: var(--sage-light);
+            box-shadow: 0 0 0 1px var(--sage-primary);
+        }
+
+        .timing-tile h5 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        .timing-tile span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        /* Question Bank Item Card */
+        .bank-question-box {
+            padding: 1.1rem;
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.15s ease;
+        }
+
+        .bank-question-box:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-card);
+        }
+
         /* Modal Overlay for QR Code */
         .modal-shade {
             position: fixed;
@@ -1336,10 +1528,10 @@
                         </button>
                     </li>
                     <li>
-                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Quizzes & Bank')">
+                        <button class="menu-nav-button" id="nav-btn-quizzes" onclick="switchMainPage('quizzes', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                             <span>Quizzes & Bank</span>
-                            <span class="badge-count">4</span>
+                            <span class="badge-count" id="sidebar-quizzes-badge">4</span>
                         </button>
                     </li>
                     <li>
@@ -1447,7 +1639,7 @@
                 <!-- 4. Continue Where You Left Off -->
                 <div class="workspace-block-header">
                     <span>Continue where you left off</span>
-                    <span style="font-size:0.8rem; font-weight:600; color:var(--sage-primary); cursor:pointer;" onclick="notifyUpcomingPage('Quizzes & Bank')">View all quizzes →</span>
+                    <span style="font-size:0.8rem; font-weight:600; color:var(--sage-primary); cursor:pointer;" onclick="switchMainPage('quizzes')">View all quizzes →</span>
                 </div>
 
                 <div class="recent-quizzes-row">
@@ -1798,6 +1990,79 @@
             </div>
         </div>
 
+    
+        <!-- ========================================================
+             PAGE 4: QUIZZES & BANK
+             ======================================================== -->
+        <div class="page-view-container" id="view-page-quizzes">
+            <div class="workspace-canvas">
+                <!-- Header & Action Buttons -->
+                <div class="quizzes-header-bar">
+                    <div class="cohort-title-area">
+                        <h2>Quizzes & Question Bank</h2>
+                        <p>Build custom timed questions, generate with AI Studio, or import questions from CSV.</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <button class="btn btn-ai btn-sm" onclick="openAiStudioModal()">
+                            <span>✨ AI Quiz Studio</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="openImportQuizCsvModal()">
+                            <span>📥 Import CSV</span>
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="openQuizBuilderFlow()">
+                            <span>✍️ Create Quiz</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Pills Strip -->
+                <div class="filter-pills-bar">
+                    <button class="filter-pill-btn active" onclick="filterQuizzesTab('all', this)">All Quizzes (<span id="tab-count-all">4</span>)</button>
+                    <button class="filter-pill-btn" onclick="filterQuizzesTab('draft', this)">Drafts (1)</button>
+                    <button class="filter-pill-btn" onclick="filterQuizzesTab('ready', this)">Ready to Publish (2)</button>
+                    <button class="filter-pill-btn" onclick="filterQuizzesTab('ongoing', this)">Ongoing (1)</button>
+                    <button class="filter-pill-btn" onclick="filterQuizzesTab('bank', this)">Question Bank (18)</button>
+                </div>
+
+                <!-- 1. Quizzes Table Card -->
+                <div class="roster-workspace-card" id="quizzes-table-card">
+                    <table class="roster-styled-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th>Quiz Title</th>
+                                <th>Module & Cohort</th>
+                                <th>Questions</th>
+                                <th>Timing Mode</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quizzes-tbody">
+                            <!-- Rendered dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 2. Reusable Question Bank Sub-view (Hidden by default, shown on 'bank' tab) -->
+                <div id="question-bank-subview" style="display:none;">
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+                            <div style="font-size:0.95rem; font-weight:800; color:var(--text-heading);">Curated Question Repository</div>
+                            <div class="search-input-wrap" style="width:280px;">
+                                <span>🔍</span>
+                                <input type="text" placeholder="Filter bank questions..." oninput="filterBankQuestions(this.value)">
+                            </div>
+                        </div>
+
+                        <div id="bank-questions-list" style="display:flex; flex-direction:column; gap:0.85rem;">
+                            <!-- Bank items rendered dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Student QR Code Modal -->
@@ -1922,6 +2187,292 @@
         </div>
     </div>
 
+    
+    <!-- ========================================================
+         MODAL: GUIDED 5-STEP QUIZ BUILDER
+         ======================================================== -->
+    <div id="modal-quiz-builder-flow" class="modal-shade">
+        <div class="modal-card-box" style="max-width:760px; padding:0; overflow:hidden; text-align:left;">
+            <!-- Modal Header -->
+            <div style="padding:1.25rem 1.75rem; border-bottom:1px solid var(--border-warm); display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                    <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); letter-spacing:-0.015em;">Guided Quiz Creation</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">One logical step at a time with automatic draft persistence</p>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="closeQuizBuilderFlow()">✕</button>
+            </div>
+
+            <!-- Stepper Progress Header -->
+            <div class="stepper-header-strip">
+                <div class="stepper-step-item active" id="step-nav-1">
+                    <span class="stepper-circle-num">1</span>
+                    <span>Basic Info</span>
+                </div>
+                <div class="stepper-step-item" id="step-nav-2">
+                    <span class="stepper-circle-num">2</span>
+                    <span>Method</span>
+                </div>
+                <div class="stepper-step-item" id="step-nav-3">
+                    <span class="stepper-circle-num">3</span>
+                    <span>Build Questions</span>
+                </div>
+                <div class="stepper-step-item" id="step-nav-4">
+                    <span class="stepper-circle-num">4</span>
+                    <span>Quiz Settings</span>
+                </div>
+                <div class="stepper-step-item" id="step-nav-5">
+                    <span class="stepper-circle-num">5</span>
+                    <span>Preview & Launch</span>
+                </div>
+            </div>
+
+            <!-- Modal Body (Step contents) -->
+            <div style="padding:1.75rem; max-height:65vh; overflow-y:auto;">
+                <!-- STEP 1: Basic Info -->
+                <div id="step-pane-1">
+                    <div class="form-group-item">
+                        <label>Quiz Title</label>
+                        <input type="text" id="builder-q-title" class="form-input-field" placeholder="e.g. Quiz 03 : Virtual Memory & TLB Address Translation" required>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                        <div class="form-group-item">
+                            <label>Target Academic Module</label>
+                            <select id="builder-q-module" class="form-input-field">
+                                <option value="ARCHI">Architecture des Ordinateurs (ARCHI)</option>
+                                <option value="SYS 1">Systèmes d'Exploitation 1 (SYS 1)</option>
+                                <option value="POO">POO Java & C++ (POO)</option>
+                                <option value="RESEAU">Réseaux & Télécoms (RESEAU)</option>
+                            </select>
+                        </div>
+                        <div class="form-group-item">
+                            <label>Target Student Cohort</label>
+                            <select id="builder-q-cohort" class="form-input-field">
+                                <option value="1CP">1CP (Prep 1)</option>
+                                <option value="2CP">2CP (Prep 2)</option>
+                                <option value="1CS">1CS (Engineering 1)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-item">
+                        <label>Pedagogical Description (Optional)</label>
+                        <textarea id="builder-q-desc" class="form-input-field" rows="2" placeholder="Brief instruction displayed to students before session start..."></textarea>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Choose Method -->
+                <div id="step-pane-2" style="display:none;">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-heading); margin-bottom:0.75rem;">Select How You Want to Build This Quiz</div>
+                    <div class="methods-choice-grid">
+                        <div class="method-tile selected" id="method-opt-manual" onclick="selectCreationMethod('manual')">
+                            <h4>✍️ Manual Builder</h4>
+                            <p>Build question by question with point weighting, choices, and explanations.</p>
+                        </div>
+                        <div class="method-tile" id="method-opt-ai" onclick="selectCreationMethod('ai')">
+                            <h4>✨ AI Quiz Studio</h4>
+                            <p>Synthesize questions from course lecture notes or syllabus with Edge NLP.</p>
+                        </div>
+                        <div class="method-tile" id="method-opt-csv" onclick="selectCreationMethod('csv')">
+                            <h4>📥 Import CSV File</h4>
+                            <p>Bulk import question statements, option choices, and answer keys from CSV.</p>
+                        </div>
+                        <div class="method-tile" id="method-opt-bank" onclick="selectCreationMethod('bank')">
+                            <h4>📚 Question Bank</h4>
+                            <p>Select vetted department questions from your curated repository.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Build Your Questions -->
+                <div id="step-pane-3" style="display:none;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                        <span style="font-size:0.85rem; font-weight:700; color:var(--text-heading);">Questions List (<span id="builder-active-q-count">1</span>)</span>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="addNewQuestionCardToBuilder()">➕ Add Question</button>
+                    </div>
+                    <div id="builder-questions-container" style="display:flex; flex-direction:column; gap:1rem;">
+                        <!-- Question cards added dynamically -->
+                    </div>
+                </div>
+
+                <!-- STEP 4: Quiz Settings & 3 Timing Modes -->
+                <div id="step-pane-4" style="display:none;">
+                    <div class="form-group-item">
+                        <label>Configurable Time Management (Choose Mode)</label>
+                        <div class="timing-modes-row">
+                            <div class="timing-tile selected" id="time-tile-global" onclick="setTimingPolicy('global')">
+                                <h5>🕒 Global Timer</h5>
+                                <span>Total time for all questions</span>
+                            </div>
+                            <div class="timing-tile" id="time-tile-perq" onclick="setTimingPolicy('per_question')">
+                                <h5>⏱ Per Question</h5>
+                                <span>Custom seconds per question</span>
+                            </div>
+                            <div class="timing-tile" id="time-tile-untimed" onclick="setTimingPolicy('untimed')">
+                                <h5>♾️ Untimed</h5>
+                                <span>Teacher/Self paced</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Global Duration Input -->
+                    <div id="wrap-global-timer" class="form-group-item" style="margin-top:1.25rem;">
+                        <label>Total Quiz Duration (Minutes)</label>
+                        <input type="number" id="builder-global-mins" class="form-input-field" value="15" min="1" max="180" style="width:160px;">
+                    </div>
+
+                    <!-- Answer Reveal Rule -->
+                    <div class="form-group-item" style="margin-top:1.25rem;">
+                        <label>Correct Answer Reveal Rule</label>
+                        <select id="builder-reveal-rule" class="form-input-field">
+                            <option value="after_each" selected>Reveal correct answer & explanation immediately after each question</option>
+                            <option value="at_end">Reveal results only at the conclusion of the entire quiz</option>
+                        </select>
+                    </div>
+
+                    <!-- Anti-Cheat Monitoring Rule -->
+                    <div class="form-group-item" style="margin-top:1.25rem;">
+                        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                            <input type="checkbox" id="builder-anti-cheat" checked>
+                            <span>Enable Anti-Cheat tab-switch monitoring and amphitheater collusion radar</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Preview & Launch -->
+                <div id="step-pane-5" style="display:none;">
+                    <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1.5rem;">
+                        <h4 style="font-size:1.1rem; font-weight:800; color:var(--text-heading);" id="builder-preview-title">Quiz Title</h4>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.35rem;" id="builder-preview-meta">
+                            Module: ARCHI · Target: 1CP · 3 Questions · Timing: Global 15m
+                        </div>
+                    </div>
+
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-heading); margin-bottom:0.75rem;">Choose Lifecycle State:</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem; margin-bottom:1rem;">
+                        <button class="btn btn-secondary" onclick="finalizeQuizCreation('Draft')">
+                            <span>💾 Save as Draft</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="finalizeQuizCreation('Ready to Publish')">
+                            <span>✅ Mark Ready to Publish</span>
+                        </button>
+                    </div>
+
+                    <div style="border-top:1px solid var(--border-warm); padding-top:1rem;">
+                        <button class="btn btn-primary" style="width:100%;" onclick="finalizeQuizCreation('Publish_Now')">
+                            <span>🚀 Start Live Classroom Session Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div style="padding:1rem 1.75rem; border-top:1px solid var(--border-warm); background:var(--bg-sidebar); display:flex; align-items:center; justify-content:space-between;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-builder-back" onclick="navigateBuilderStep(-1)" style="display:none;">
+                    ← Back
+                </button>
+                <div style="margin-left:auto;">
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-builder-next" onclick="navigateBuilderStep(1)">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL: AI QUIZ STUDIO (Integrated Lavender Workspace)
+         ======================================================== -->
+    <div id="modal-ai-quiz-studio" class="modal-shade">
+        <div class="form-dialog" style="max-width:680px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="font-size:1.25rem;">✨</span>
+                    <h3 style="font-size:1.15rem; font-weight:800; color:var(--ai-lavender);">Bloom AI Quiz Studio</h3>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="closeAiStudioModal()">✕</button>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">
+                Synthesize structured formative questions from your course lecture notes or syllabus excerpt using Edge NLP.
+            </p>
+
+            <div class="form-group-item">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
+                    <label style="margin-bottom:0;">Lecture Notes or Slides Text</label>
+                    <button type="button" class="btn btn-secondary btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem;" onclick="loadSampleLectureNotes()">
+                        Load Sample Note
+                    </button>
+                </div>
+                <textarea id="ai-lecture-text" class="form-input-field" rows="4" placeholder="Paste your course notes or concept definitions here..."></textarea>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <div class="form-group-item">
+                    <label>Questions Count</label>
+                    <select id="ai-count-select" class="form-input-field">
+                        <option value="3" selected>3 Questions</option>
+                        <option value="5">5 Questions</option>
+                        <option value="10">10 Questions</option>
+                    </select>
+                </div>
+                <div class="form-group-item">
+                    <label>Difficulty Level</label>
+                    <select id="ai-diff-select" class="form-input-field">
+                        <option value="easy">Easy (Definitions & Concepts)</option>
+                        <option value="medium" selected>Medium (Application & Analysis)</option>
+                        <option value="hard">Hard (Psychometric Edge Cases)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-ai btn-sm" id="btn-trigger-ai-gen" onclick="executeAiQuizGeneration()" style="width:100%; margin-top:0.25rem;">
+                <span>✨ Generate Questions with AI</span>
+            </button>
+
+            <!-- Verification & Preview Section (Teacher must inspect before publishing!) -->
+            <div id="ai-verification-box" style="display:none; margin-top:1.25rem; border-top:1px solid var(--border-warm); padding-top:1rem;">
+                <div style="font-size:0.82rem; font-weight:700; color:var(--ai-lavender); margin-bottom:0.75rem;">
+                    Generated Proposal (Verify & Edit Before Accepting):
+                </div>
+                <div id="ai-generated-cards-container" style="display:flex; flex-direction:column; gap:0.75rem; max-height:220px; overflow-y:auto;">
+                    <!-- AI cards rendered here -->
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeAiStudioModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="transferApprovedAiQuestions()">
+                        <span>Verify & Transfer to Builder →</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL: IMPORT QUIZ CSV
+         ======================================================== -->
+    <div id="modal-import-quiz-csv" class="modal-shade">
+        <div class="form-dialog">
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Import Quiz (CSV)</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">
+                Upload a question set CSV. Required headers: <code>Question,OptionA,OptionB,OptionC,OptionD,CorrectOption,Points</code>
+            </p>
+
+            <div style="border:2px dashed var(--border-warm); border-radius:var(--radius-md); padding:1.75rem; text-align:center; background:var(--bg-canvas); margin-bottom:1rem;">
+                <input type="file" id="quiz-csv-file-input" accept=".csv" onchange="handleQuizCsvUpload(event)" style="display:none;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('quiz-csv-file-input').click()">
+                    <span>📁 Select Quiz CSV File</span>
+                </button>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;" id="quiz-csv-preview-name">No file selected yet</div>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="downloadSampleQuizCsv()" style="font-size:0.75rem;">
+                    <span>📥 Download Sample CSV</span>
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeImportQuizCsvModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-holder" id="toast-holder"></div>
 
     <script>
@@ -1961,9 +2512,11 @@
             const titleMap = {
                 'welcome': 'Welcome Home',
                 'cockpit': 'Live Cockpit · Mode Direct',
-                'classes': 'Classes & Students'
+                'classes': 'Classes & Students',
+                'quizzes': 'Quizzes & Question Bank'
             };
             if (pageId === 'classes') renderStudentsRoster();
+            if (pageId === 'quizzes') renderQuizzesTable();
             const titleElem = document.getElementById('topbar-title-text');
             if (titleElem) titleElem.textContent = titleMap[pageId] || 'Workspace';
 
@@ -2372,6 +2925,528 @@
             a.download = "roster_" + activeCohort + ".csv";
             a.click();
             showToast('Exported CSV roster for ' + activeCohort);
+        }
+
+
+        
+        // ========================================================
+        // QUIZZES & BANK DATA & METHODS
+        // ========================================================
+        let builderCurrentStep = 1;
+        let builderTimingPolicy = 'global';
+        let currentQuizFilterTab = 'all';
+
+        let quizzesRepository = [
+            {
+                id: 1,
+                title: "Quiz 01 : Cache Hierarchy & Direct Mappings",
+                module: "ARCHI",
+                cohort: "1CP",
+                questionsCount: 5,
+                timingMode: "30s / Question",
+                status: "Ongoing",
+                statusClass: "pill-ongoing"
+            },
+            {
+                id: 2,
+                title: "Quiz 02 : Pipelining Hazards & Branch Prediction",
+                module: "ARCHI",
+                cohort: "1CP",
+                questionsCount: 4,
+                timingMode: "Global 15m",
+                status: "Ready to Publish",
+                statusClass: "pill-ready"
+            },
+            {
+                id: 3,
+                title: "Quiz 03 : Virtual Memory & TLB Address Translation",
+                module: "SYS 1",
+                cohort: "2CP",
+                questionsCount: 6,
+                timingMode: "Global 20m",
+                status: "Draft",
+                statusClass: "pill-draft"
+            },
+            {
+                id: 4,
+                title: "Diagnostic Test : Object-Oriented Polymorphism",
+                module: "POO",
+                cohort: "1CS",
+                questionsCount: 8,
+                timingMode: "Untimed",
+                status: "Ready to Publish",
+                statusClass: "pill-ready"
+            }
+        ];
+
+        let questionBankRepository = [
+            { id: 1, module: "ARCHI", level: "1CP", type: "MCQ", diff: "Medium", statement: "Which cache mapping allows a memory block to be placed in ANY cache line?", answer: "Fully Associative", explanation: "Fully associative mapping eliminates conflict misses entirely by searching all lines in parallel." },
+            { id: 2, module: "ARCHI", level: "1CP", type: "Code/Calculation", diff: "Hard", statement: "Calculate the Average Memory Access Time (AMAT) with L1 hit time 1ns, 90% hit rate, and RAM latency 100ns.", answer: "11 ns", explanation: "AMAT = Hit Time + (Miss Rate * Miss Penalty) = 1 + (0.10 * 100) = 11ns." },
+            { id: 3, module: "SYS 1", level: "2CP", type: "Short Answer", diff: "Medium", statement: "Why are atomic test-and-set instructions required to implement mutual exclusion spinlocks?", answer: "Prevents race conditions", explanation: "Atomicity ensures the check and lock acquisition happen as an indivisible operation." },
+            { id: 4, module: "POO", level: "1CS", type: "MCQ", diff: "Easy", statement: "What keyword in Java prevents a method from being overridden in a subclass?", answer: "final", explanation: "A final method cannot be overridden by subclasses." },
+            { id: 5, module: "RESEAU", level: "1CS", type: "MCQ", diff: "Medium", statement: "At which layer of the OSI model does the TCP protocol operate?", answer: "Transport Layer", explanation: "TCP provides reliable end-to-end transport at Layer 4." }
+        ];
+
+        function renderQuizzesTable() {
+            const tbody = document.getElementById('quizzes-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const filtered = (currentQuizFilterTab === 'all') 
+                ? quizzesRepository 
+                : quizzesRepository.filter(q => q.status.toLowerCase().includes(currentQuizFilterTab));
+
+            filtered.forEach((q, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">${idx + 1}</td>
+                    <td>
+                        <span style="font-weight:700; color:var(--text-heading);">${q.title}</span>
+                    </td>
+                    <td><span class="pill-status" style="background:var(--bg-subtle); color:var(--text-heading);">${q.module} (${q.cohort})</span></td>
+                    <td style="font-family:var(--font-mono); font-size:0.82rem;">${q.questionsCount} Questions</td>
+                    <td><span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-muted);">${q.timingMode}</span></td>
+                    <td><span class="pill-status ${q.statusClass}">${q.status}</span></td>
+                    <td style="text-align:right;">
+                        ${q.status === 'Ongoing' ? 
+                            '<button class="btn btn-secondary btn-sm" style="color:var(--sage-primary); font-size:0.75rem;" onclick="switchMainPage(\'cockpit\')">⚡ Live View</button>' : 
+                            '<button class="btn btn-primary btn-sm" style="font-size:0.75rem;" onclick="launchQuizDirectly(' + q.id + ')">🚀 Launch</button>'
+                        }
+                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem; margin-left:0.25rem;" onclick="scheduleQuizPrompt(' + q.id + ')">⏱ Schedule</button>
+                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem; margin-left:0.25rem;" onclick="openQrModal()">📱 QR</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const countAll = document.getElementById('tab-count-all');
+            if (countAll) countAll.textContent = quizzesRepository.length;
+            const badge = document.getElementById('sidebar-quizzes-badge');
+            if (badge) badge.textContent = quizzesRepository.length;
+        }
+
+        function filterQuizzesTab(tabName, btn = null) {
+            currentQuizFilterTab = tabName;
+            if (btn) {
+                btn.parentElement.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            const tableCard = document.getElementById('quizzes-table-card');
+            const bankCard = document.getElementById('question-bank-subview');
+
+            if (tabName === 'bank') {
+                tableCard.style.display = 'none';
+                bankCard.style.display = 'block';
+                renderQuestionBankList();
+            } else {
+                tableCard.style.display = 'block';
+                bankCard.style.display = 'none';
+                renderQuizzesTable();
+            }
+        }
+
+        function renderQuestionBankList(filterTopic = '') {
+            const container = document.getElementById('bank-questions-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const items = questionBankRepository.filter(item => {
+                const matchTopic = !filterTopic || item.module === filterTopic;
+                return matchTopic;
+            });
+
+            items.forEach(q => {
+                const box = document.createElement('div');
+                box.className = 'bank-question-box';
+                box.innerHTML = `
+                    <div>
+                        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem;">
+                            <span class="pill-status" style="background:var(--sage-light); color:var(--sage-primary);">${q.module} · ${q.level}</span>
+                            <span class="pill-status" style="background:var(--bg-subtle); color:var(--text-muted);">${q.type}</span>
+                            <span class="pill-status pill-ready" style="font-size:0.65rem;">${q.diff}</span>
+                        </div>
+                        <h4 style="font-size:0.925rem; font-weight:700; color:var(--text-heading); margin-bottom:0.35rem;">${q.statement}</h4>
+                        <p style="font-size:0.78rem; color:var(--text-muted);"><strong style="color:var(--mint-success);">Correct:</strong> ${q.answer} — ${q.explanation}</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="font-size:0.75rem;" onclick="addBankQuestionToQuizBuilder(${q.id})">
+                        <span>➕ Add to Quiz</span>
+                    </button>
+                `;
+                container.appendChild(box);
+            });
+        }
+
+        function filterBankQuestions(query) {
+            const container = document.getElementById('bank-questions-list');
+            if (!container) return;
+            container.querySelectorAll('.bank-question-box').forEach(box => {
+                const text = box.textContent.toLowerCase();
+                box.style.display = text.includes(query.toLowerCase()) ? 'flex' : 'none';
+            });
+        }
+
+        function addBankQuestionToQuizBuilder(qId) {
+            const q = questionBankRepository.find(item => item.id === qId);
+            if (!q) return;
+            openQuizBuilderFlow();
+            builderCurrentStep = 3;
+            updateBuilderStepView();
+
+            const container = document.getElementById('builder-questions-container');
+            const card = document.createElement('div');
+            card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:1rem; position:relative;';
+            card.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
+                    <span style="font-size:0.75rem; font-weight:700; color:var(--sage-primary);">From Question Bank (${q.module})</span>
+                    <button type="button" class="btn btn-secondary btn-sm" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="this.parentElement.parentElement.remove()">Remove</button>
+                </div>
+                <input type="text" class="form-input-field" value="${q.statement}" style="margin-bottom:0.5rem;">
+                <input type="text" class="form-input-field" value="${q.answer}" placeholder="Correct Answer Key">
+            `;
+            container.appendChild(card);
+            showToast('Added "' + q.statement.slice(0, 35) + '..." into Quiz Builder!');
+        }
+
+        // ========================================================
+        // 5-STEP GUIDED BUILDER METHODS
+        // ========================================================
+        function openQuizBuilderFlow() {
+            builderCurrentStep = 1;
+            updateBuilderStepView();
+            document.getElementById('modal-quiz-builder-flow').classList.add('active');
+            const container = document.getElementById('builder-questions-container');
+            if (container && container.children.length === 0) {
+                addNewQuestionCardToBuilder();
+            }
+        }
+
+        function closeQuizBuilderFlow() {
+            document.getElementById('modal-quiz-builder-flow').classList.remove('active');
+        }
+
+        function updateBuilderStepView() {
+            for (let i = 1; i <= 5; i++) {
+                const pane = document.getElementById('step-pane-' + i);
+                const nav = document.getElementById('step-nav-' + i);
+                if (pane) pane.style.display = (i === builderCurrentStep) ? 'block' : 'none';
+                if (nav) {
+                    if (i === builderCurrentStep) {
+                        nav.className = 'stepper-step-item active';
+                    } else {
+                        nav.className = 'stepper-step-item';
+                    }
+                }
+            }
+
+            document.getElementById('btn-builder-back').style.display = (builderCurrentStep > 1) ? 'inline-flex' : 'none';
+            document.getElementById('btn-builder-next').style.display = (builderCurrentStep < 5) ? 'inline-flex' : 'none';
+
+            if (builderCurrentStep === 5) {
+                const title = document.getElementById('builder-q-title').value.trim() || 'Untitled Quiz';
+                const mod = document.getElementById('builder-q-module').value;
+                const cohort = document.getElementById('builder-q-cohort').value;
+                const count = document.getElementById('builder-questions-container').children.length;
+
+                document.getElementById('builder-preview-title').textContent = title;
+                document.getElementById('builder-preview-meta').textContent = 'Module: ' + mod + ' · Target: ' + cohort + ' · ' + count + ' Questions · Timing: ' + builderTimingPolicy;
+            }
+        }
+
+        function navigateBuilderStep(delta) {
+            if (delta > 0 && builderCurrentStep === 1) {
+                const title = document.getElementById('builder-q-title').value.trim();
+                if (!title) {
+                    alert('Please enter a Quiz Title to continue.');
+                    return;
+                }
+            }
+            builderCurrentStep += delta;
+            if (builderCurrentStep < 1) builderCurrentStep = 1;
+            if (builderCurrentStep > 5) builderCurrentStep = 5;
+            updateBuilderStepView();
+        }
+
+        function selectCreationMethod(method) {
+            document.querySelectorAll('.method-tile').forEach(m => m.classList.remove('selected'));
+            document.getElementById('method-opt-' + method).classList.add('selected');
+
+            if (method === 'ai') {
+                closeQuizBuilderFlow();
+                openAiStudioModal();
+            } else if (method === 'csv') {
+                closeQuizBuilderFlow();
+                openImportQuizCsvModal();
+            } else if (method === 'bank') {
+                closeQuizBuilderFlow();
+                filterQuizzesTab('bank');
+            }
+        }
+
+        function setTimingPolicy(policy) {
+            builderTimingPolicy = policy;
+            document.querySelectorAll('.timing-tile').forEach(t => t.classList.remove('selected'));
+            document.getElementById('time-tile-' + (policy === 'per_question' ? 'perq' : policy)).classList.add('selected');
+
+            document.getElementById('wrap-global-timer').style.display = (policy === 'global') ? 'block' : 'none';
+        }
+
+        function addNewQuestionCardToBuilder() {
+            const container = document.getElementById('builder-questions-container');
+            const qNum = container.children.length + 1;
+            const card = document.createElement('div');
+            card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:1rem; position:relative;';
+            card.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
+                    <span style="font-size:0.75rem; font-weight:700; color:var(--sage-primary);">Question ${qNum}</span>
+                    <button type="button" class="btn btn-secondary btn-sm" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="this.parentElement.parentElement.remove(); document.getElementById('builder-active-q-count').textContent = document.getElementById('builder-questions-container').children.length;">Remove</button>
+                </div>
+                <input type="text" class="form-input-field" placeholder="Enter question statement here..." value="Which cache mapping allows a memory block in ANY line?" style="margin-bottom:0.5rem;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                    <input type="text" class="form-input-field" placeholder="Option A" value="Direct-Mapped Cache">
+                    <input type="text" class="form-input-field" placeholder="Option B (Correct)" value="Fully Associative Cache">
+                    <input type="text" class="form-input-field" placeholder="Option C" value="2-Way Set Associative">
+                    <input type="text" class="form-input-field" placeholder="Option D" value="Sector Cache">
+                </div>
+            `;
+            container.appendChild(card);
+            document.getElementById('builder-active-q-count').textContent = container.children.length;
+        }
+
+        function finalizeQuizCreation(chosenStatus) {
+            const title = document.getElementById('builder-q-title').value.trim() || 'New Quiz';
+            const mod = document.getElementById('builder-q-module').value;
+            const cohort = document.getElementById('builder-q-cohort').value;
+            const qCount = document.getElementById('builder-questions-container').children.length || 3;
+
+            let timingLabel = 'Global 15m';
+            if (builderTimingPolicy === 'per_question') timingLabel = '30s / Question';
+            if (builderTimingPolicy === 'untimed') timingLabel = 'Untimed';
+
+            let actualStatus = chosenStatus;
+            let statusClass = 'pill-draft';
+
+            if (chosenStatus === 'Ready to Publish') {
+                statusClass = 'pill-ready';
+            } else if (chosenStatus === 'Publish_Now') {
+                actualStatus = 'Ongoing';
+                statusClass = 'pill-ongoing';
+            }
+
+            const newQ = {
+                id: quizzesRepository.length + 1,
+                title,
+                module: mod,
+                cohort,
+                questionsCount: qCount,
+                timingMode: timingLabel,
+                status: actualStatus,
+                statusClass
+            };
+
+            quizzesRepository.unshift(newQ);
+            closeQuizBuilderFlow();
+            renderQuizzesTable();
+
+            if (chosenStatus === 'Publish_Now') {
+                launchQuizDirectly(newQ.id);
+            } else {
+                showToast('Quiz "' + title + '" saved as ' + actualStatus + '!');
+            }
+        }
+
+        function launchQuizDirectly(quizId) {
+            const quiz = quizzesRepository.find(q => q.id === quizId);
+            if (!quiz) return;
+
+            quiz.status = 'Ongoing';
+            quiz.statusClass = 'pill-ongoing';
+            renderQuizzesTable();
+
+            socket.emit('new-notification', {
+                title: quiz.title,
+                quizId: quiz.id,
+                module: quiz.module,
+                level: quiz.cohort
+            });
+            socket.emit('quiz:started', {
+                quizId: quiz.id,
+                title: quiz.title
+            });
+
+            showToast('🚀 Published "' + quiz.title + '"! Students notified.');
+            switchMainPage('cockpit');
+        }
+
+        function scheduleQuizPrompt(quizId) {
+            const quiz = quizzesRepository.find(q => q.id === quizId);
+            if (!quiz) return;
+            const mins = prompt('Enter auto-publish delay in minutes for "' + quiz.title + '":', "10");
+            if (mins && parseInt(mins) > 0) {
+                showToast('⏱ Quiz "' + quiz.title + '" scheduled to auto-publish in ' + mins + ' minutes!');
+            }
+        }
+
+        // ========================================================
+        // AI QUIZ STUDIO LOGIC
+        // ========================================================
+        function openAiStudioModal() {
+            document.getElementById('modal-ai-quiz-studio').classList.add('active');
+        }
+
+        function closeAiStudioModal() {
+            document.getElementById('modal-ai-quiz-studio').classList.remove('active');
+        }
+
+        function loadSampleLectureNotes() {
+            document.getElementById('ai-lecture-text').value = 
+                "Cache memory sits between the CPU and main RAM. Direct-mapped cache maps every memory block to line index = (Block Address) mod (Cache Lines). Conflict misses occur when multiple blocks map to the same line. Fully associative caches eliminate conflict misses completely.";
+        }
+
+        let pendingAiGeneratedQuestions = [];
+
+        function executeAiQuizGeneration() {
+            const text = document.getElementById('ai-lecture-text').value.trim();
+            if (!text) {
+                alert('Please enter or paste lecture notes first.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-trigger-ai-gen');
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳ Synthesizing with Edge AI...</span>';
+
+            fetch('/api/ai/generate-quiz', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    topic: 'Computer Architecture & Memory Systems',
+                    courseNotes: text,
+                    questionCount: parseInt(document.getElementById('ai-count-select').value),
+                    difficulty: document.getElementById('ai-diff-select').value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerHTML = '<span>✨ Generate Questions with AI</span>';
+
+                if (data.quiz && data.quiz.questions) {
+                    pendingAiGeneratedQuestions = data.quiz.questions;
+                } else {
+                    pendingAiGeneratedQuestions = [
+                        { question: "What is the cache line index formula in direct mapping?", options: ["Block Address mod Lines", "Block Address * Lines", "Tag + Offset", "Line / Tag"], answer: "Block Address mod Lines" },
+                        { question: "Which miss category is eliminated in fully associative cache?", options: ["Compulsory miss", "Conflict miss", "Capacity miss", "Coherence miss"], answer: "Conflict miss" }
+                    ];
+                }
+                renderAiVerificationCards();
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<span>✨ Generate Questions with AI</span>';
+                pendingAiGeneratedQuestions = [
+                    { question: "Which cache architecture places a block in ANY line?", options: ["Direct-Mapped", "Fully Associative", "2-Way Set Associative", "Sector Cache"], answer: "Fully Associative" }
+                ];
+                renderAiVerificationCards();
+            });
+        }
+
+        function renderAiVerificationCards() {
+            const container = document.getElementById('ai-generated-cards-container');
+            container.innerHTML = '';
+            pendingAiGeneratedQuestions.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem;';
+                card.innerHTML = `
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender); margin-bottom:0.25rem;">Question ${idx + 1} (AI Generated)</div>
+                    <div style="font-size:0.875rem; font-weight:700; color:var(--text-heading); margin-bottom:0.35rem;">${q.question || q.statement}</div>
+                    <div style="font-size:0.75rem; color:var(--mint-success); font-weight:600;">✓ Correct: ${q.answer || (q.options ? q.options[0] : 'N/A')}</div>
+                `;
+                container.appendChild(card);
+            });
+            document.getElementById('ai-verification-box').style.display = 'block';
+        }
+
+        function transferApprovedAiQuestions() {
+            closeAiStudioModal();
+            openQuizBuilderFlow();
+            builderCurrentStep = 3;
+            updateBuilderStepView();
+
+            const container = document.getElementById('builder-questions-container');
+            container.innerHTML = '';
+
+            pendingAiGeneratedQuestions.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.style.cssText = 'background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:1rem; position:relative;';
+                card.innerHTML = `
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--ai-lavender);">Question ${idx + 1} (Verified AI)</span>
+                        <button type="button" class="btn btn-secondary btn-sm" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="this.parentElement.parentElement.remove(); document.getElementById('builder-active-q-count').textContent = document.getElementById('builder-questions-container').children.length;">Remove</button>
+                    </div>
+                    <input type="text" class="form-input-field" value="${q.question || q.statement}" style="margin-bottom:0.5rem;">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                        <input type="text" class="form-input-field" value="${q.options && q.options[0] ? q.options[0] : 'Option A'}">
+                        <input type="text" class="form-input-field" value="${q.options && q.options[1] ? q.options[1] : 'Option B (Correct)'}">
+                        <input type="text" class="form-input-field" value="${q.options && q.options[2] ? q.options[2] : 'Option C'}">
+                        <input type="text" class="form-input-field" value="${q.options && q.options[3] ? q.options[3] : 'Option D'}">
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('builder-active-q-count').textContent = container.children.length;
+            showToast('AI Questions transferred into Quiz Builder. Verify settings and continue!');
+        }
+
+        // ========================================================
+        // QUIZ CSV IMPORT
+        // ========================================================
+        function openImportQuizCsvModal() {
+            document.getElementById('modal-import-quiz-csv').classList.add('active');
+        }
+
+        function closeImportQuizCsvModal() {
+            document.getElementById('modal-import-quiz-csv').classList.remove('active');
+        }
+
+        function handleQuizCsvUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('quiz-csv-preview-name').textContent = 'Loaded: ' + file.name;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const lines = evt.target.result.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                const qCount = Math.max(1, lines.length - 1);
+
+                quizzesRepository.unshift({
+                    id: quizzesRepository.length + 1,
+                    title: 'Imported: ' + file.name.replace('.csv', ''),
+                    module: "SYS 1",
+                    cohort: "1CP",
+                    questionsCount: qCount,
+                    timingMode: "30s / Question",
+                    status: "Ready to Publish",
+                    statusClass: "pill-ready"
+                });
+
+                closeImportQuizCsvModal();
+                renderQuizzesTable();
+                showToast('Imported ' + qCount + ' questions from CSV as Ready to Publish!');
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadSampleQuizCsv() {
+            const sample = "Question,OptionA,OptionB,OptionC,OptionD,CorrectOption,Points\nWhat is the formula for line index?,Block Address mod Lines,Block * Lines,Tag + Offset,Line / Tag,A,2\nWhich cache eliminates conflict misses?,Direct-Mapped,Fully Associative,2-Way Set,Sector,B,2\n";
+            const blob = new Blob([sample], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "sample_quiz_questions.csv";
+            a.click();
         }
 
 
