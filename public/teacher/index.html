@@ -1737,13 +1737,13 @@
                 <div class="menu-group-header">Personal</div>
                 <ul class="menu-list">
                     <li>
-                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Settings')">
+                        <button class="menu-nav-button" id="nav-btn-settings" onclick="switchMainPage('settings', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             <span>Settings</span>
                         </button>
                     </li>
                     <li>
-                        <button class="menu-nav-button" onclick="notifyUpcomingPage('Teacher Profile')">
+                        <button class="menu-nav-button" id="nav-btn-profile" onclick="switchMainPage('profile', this)">
                             <svg class="menu-svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             <span>Teacher Profile</span>
                         </button>
@@ -1752,7 +1752,7 @@
             </div>
         </nav>
 
-        <div class="sidebar-user-footer" onclick="notifyUpcomingPage('Teacher Profile')">
+        <div class="sidebar-user-footer" onclick="switchMainPage('profile')" style="cursor:pointer;" title="View Faculty Profile">
             <div class="user-avatar-wrap">
                 <div class="user-avatar-circle">AB</div>
                 <div class="online-dot"></div>
@@ -1809,17 +1809,17 @@
 
                 <!-- 3. Three Clean Action Shortcuts (Progressive Disclosure) -->
                 <div class="shortcuts-row">
-                    <div class="shortcut-item-card" onclick="notifyUpcomingPage('AI Quiz Studio')">
+                    <div class="shortcut-item-card" onclick="openAiQuizStudioModal()">
                         <div class="shortcut-badge-icon" style="background:var(--ai-light); color:var(--ai-lavender);">✨</div>
                         <h4>AI Quiz Studio</h4>
                         <p>Synthesize questions from lecture notes, slides, or syllabus topics with semantic AI rubrics.</p>
                     </div>
-                    <div class="shortcut-item-card" onclick="notifyUpcomingPage('Classes & Students')">
+                    <div class="shortcut-item-card" onclick="switchMainPage('classes')">
                         <div class="shortcut-badge-icon" style="background:var(--sage-light); color:var(--sage-primary);">👥</div>
                         <h4>My Classes</h4>
                         <p>Manage 1CP, 2CP & 1CS student cohorts, view rosters, and bulk import class CSVs.</p>
                     </div>
-                    <div class="shortcut-item-card" onclick="notifyUpcomingPage('Question Bank')">
+                    <div class="shortcut-item-card" onclick="switchMainPage('quizzes'); switchQuizTab('bank');">
                         <div class="shortcut-badge-icon" style="background:var(--mint-light); color:var(--mint-success);">📚</div>
                         <h4>Question Bank</h4>
                         <p>Access your curated repository of vetted computer science questions tagged by module.</p>
@@ -1874,7 +1874,7 @@
                             </div>
                         </div>
                         <div class="recent-quiz-footer-actions">
-                            <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
+                            <button class="btn btn-secondary btn-sm" onclick="openCreateQuizModal()">
                                 <span>Continue Editing ✏️</span>
                             </button>
                         </div>
@@ -1896,7 +1896,7 @@
                             </div>
                         </div>
                         <div class="recent-quiz-footer-actions">
-                            <button class="btn btn-secondary btn-sm" onclick="notifyUpcomingPage('Quiz Editor')">
+                            <button class="btn btn-secondary btn-sm" onclick="openCreateQuizModal()">
                                 <span>Continue Editing ✏️</span>
                             </button>
                         </div>
@@ -2538,6 +2538,370 @@
             </div>
         </div>
 
+    
+        <!-- ========================================================
+             PAGE 6: SETTINGS (Preferences, Defaults & Security)
+             ======================================================== -->
+        <div class="page-view-container" id="view-page-settings">
+            <div class="workspace-canvas" style="max-width:960px;">
+                <!-- Header -->
+                <div class="quizzes-header-bar">
+                    <div class="cohort-title-area">
+                        <h2>Workspace & Quiz Settings</h2>
+                        <p>Configure interface language, default quiz timing policies, notifications, and credentials.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="saveSettings()">
+                        <span>Save Preferences</span>
+                    </button>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:1.5rem;">
+                    <!-- 1. General & Localization -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">General & Localization</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1.25rem;">Define display language and university academic calendar.</p>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>Interface Language</label>
+                                <select id="setting-language" class="form-input-field">
+                                    <option value="en" selected>English (UK / US International)</option>
+                                    <option value="fr">Français (Algérie / France)</option>
+                                    <option value="ar">العربية (الجزائر)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-item">
+                                <label>Current Academic Term</label>
+                                <input type="text" id="setting-term" class="form-input-field" value="2026/2027 · Semester 1 (Automne)">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>University Campus & Timezone</label>
+                                <select class="form-input-field">
+                                    <option selected>ESI Algiers · Africa/Algiers (GMT+1)</option>
+                                    <option>USTHB Algiers · Africa/Algiers (GMT+1)</option>
+                                    <option>EPAU Algiers · Africa/Algiers (GMT+1)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-item">
+                                <label>Interface Palette Theme</label>
+                                <select class="form-input-field">
+                                    <option selected>Warm Nordic & Paper Pastel (Default)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Default Quiz Engine Rules -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Default Quiz Engine Rules</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1.25rem;">Pre-set behavior applied when creating new quizzes.</p>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>Default Timing Mode</label>
+                                <select id="setting-default-timing" class="form-input-field">
+                                    <option value="per_q" selected>Per-Question Individual Timer (30 seconds)</option>
+                                    <option value="global">Global Total Duration (20 minutes)</option>
+                                    <option value="untimed">Untimed Mode (Self-paced)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-item">
+                                <label>Answer Reveal Policy</label>
+                                <select id="setting-reveal-policy" class="form-input-field">
+                                    <option value="teacher_choice" selected>Teacher Controls Reveal (Cockpit button)</option>
+                                    <option value="instant">Reveal Immediately After Each Question</option>
+                                    <option value="end">Reveal Only at Session Conclusion</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>Anti-Cheat & Collusion Sensitivity</label>
+                                <select class="form-input-field">
+                                    <option selected>Standard (Flag 3+ tab switches & synchronous mirroring)</option>
+                                    <option>Strict (Lock student screen upon backgrounding)</option>
+                                    <option>Relaxed (Diagnostic mode without penalties)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-item">
+                                <label>AI Semantic NLP Generator Mode</label>
+                                <select class="form-input-field">
+                                    <option selected>Local Offline Edge AI (TF-IDF & Vector Space)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Notifications & Real-Time Alerts -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Notifications & Alerts</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1.25rem;">Choose what triggers alerts during live sessions.</p>
+
+                        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                            <label style="display:flex; align-items:center; gap:0.6rem; font-size:0.83rem; color:var(--text-body); cursor:pointer;">
+                                <input type="checkbox" id="setting-notify-sound" checked style="accent-color:var(--sage-primary);">
+                                <span>Play gentle sound tone when a live amphitheater question concludes</span>
+                            </label>
+                            <label style="display:flex; align-items:center; gap:0.6rem; font-size:0.83rem; color:var(--text-body); cursor:pointer;">
+                                <input type="checkbox" id="setting-notify-cheat" checked style="accent-color:var(--sage-primary);">
+                                <span>Display realtime toast alerts when student tab switches are detected</span>
+                            </label>
+                            <label style="display:flex; align-items:center; gap:0.6rem; font-size:0.83rem; color:var(--text-body); cursor:pointer;">
+                                <input type="checkbox" id="setting-notify-email" checked style="accent-color:var(--sage-primary);">
+                                <span>Email automatic gradebook summary upon session conclusion</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. Security & Credentials -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Account Security & Credentials</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1.25rem;">Manage teacher credentials and authentication keys.</p>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>Current Password</label>
+                                <input type="password" id="setting-cur-pass" class="form-input-field" placeholder="••••••••••••">
+                            </div>
+                            <div class="form-group-item">
+                                <label>New Password</label>
+                                <input type="password" id="setting-new-pass" class="form-input-field" placeholder="Leave blank to keep current">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.75rem; border-top:1px solid var(--border-warm); padding-top:1rem;">
+                            <div>
+                                <span style="font-size:0.85rem; font-weight:700; color:var(--text-heading);">Two-Factor Authentication (2FA)</span>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">Enforced via University Authenticator app</div>
+                            </div>
+                            <span class="pill-status pill-ready">Active & Protected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             PAGE 7: TEACHER PROFILE (Academic Identity & Affiliation)
+             ======================================================== -->
+        <div class="page-view-container" id="view-page-profile">
+            <div class="workspace-canvas" style="max-width:980px;">
+                <!-- Header -->
+                <div class="quizzes-header-bar">
+                    <div class="cohort-title-area">
+                        <h2>Teacher Academic Profile</h2>
+                        <p>Manage faculty identity, institutional accreditation, assigned cohorts, office drop-in status & research credentials.</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+                        <button class="btn btn-secondary btn-sm" onclick="openStudentProfilePreview()">
+                            <span>👁 Student Preview</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="window.print()">
+                            <span>📄 Print Dossier</span>
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="saveTeacherProfile()">
+                            <span>Update Profile</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1. Hero Faculty Card -->
+                <div class="roster-workspace-card" style="padding:1.85rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:1.75rem; flex-wrap:wrap;">
+                    <div style="position:relative;">
+                        <div class="user-avatar-circle" id="profile-avatar-display" style="width:76px; height:76px; font-size:1.6rem; border:2px solid var(--sage-border); background-size:cover; background-position:center; overflow:hidden;">
+                            AB
+                        </div>
+                        <div class="online-dot" id="profile-status-dot" style="width:14px; height:14px; border:2px solid #fff; bottom:2px; right:2px;" title="Online Status"></div>
+                        <input type="file" id="profile-avatar-file-input" accept="image/*" style="display:none;" onchange="handleProfilePhotoUpload(event)">
+                    </div>
+
+                    <div style="flex:1; min-width:260px;">
+                        <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                            <h3 style="font-size:1.35rem; font-weight:800; color:var(--text-heading); margin:0;" id="profile-name-display">Dr. Amina Benali</h3>
+                            <span class="pill-status pill-ready">Maître de Conférences A · Enseignante-Chercheuse</span>
+                        </div>
+                        <p style="font-size:0.85rem; color:var(--sage-primary); font-weight:600; margin:0.25rem 0;" id="profile-dept-display">
+                            Département Architecture & Systèmes Informatiques · ESI Algiers
+                        </p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">
+                            ID: <strong>ESI-FAC-2018-042</strong> · Tenure Track · LCSI Research Lab
+                        </p>
+                        <div style="margin-top:0.4rem;">
+                            <span id="profile-consultation-status-pill" class="pill-status pill-ready" style="font-size:0.73rem; padding:0.2rem 0.6rem; display:inline-flex; align-items:center; gap:0.4rem;">
+                                <span style="width:7px; height:7px; border-radius:50%; background:currentColor; display:inline-block;"></span>
+                                <span id="profile-consultation-status-text">Office Consultations: Open for Drop-in</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('profile-avatar-file-input').click()">
+                            <span>📷 Change Photo</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="cycleAvatarPreset()">
+                            <span>🎨 Color Preset</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="btn-remove-avatar" style="display:none;" onclick="removeProfileCustomPhoto()">
+                            <span>Reset Photo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Teaching Impact KPI Strip -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+                    <div class="roster-workspace-card" style="padding:1.15rem; display:flex; align-items:center; gap:1rem;">
+                        <div class="shortcut-badge-icon" style="background:var(--sage-light); color:var(--sage-primary); width:40px; height:40px; font-size:1.15rem; margin:0;">🎓</div>
+                        <div>
+                            <div style="font-size:1.35rem; font-weight:800; color:var(--text-heading); line-height:1.1;" id="kpi-profile-students">125</div>
+                            <div style="font-size:0.73rem; color:var(--text-muted); margin-top:2px;">Enrolled Students (3 Cohorts)</div>
+                        </div>
+                    </div>
+                    <div class="roster-workspace-card" style="padding:1.15rem; display:flex; align-items:center; gap:1rem;">
+                        <div class="shortcut-badge-icon" style="background:var(--mint-light); color:var(--mint-success); width:40px; height:40px; font-size:1.15rem; margin:0;">⚡</div>
+                        <div>
+                            <div style="font-size:1.35rem; font-weight:800; color:var(--text-heading); line-height:1.1;">48</div>
+                            <div style="font-size:0.73rem; color:var(--text-muted); margin-top:2px;">Live Amphitheater Sessions</div>
+                        </div>
+                    </div>
+                    <div class="roster-workspace-card" style="padding:1.15rem; display:flex; align-items:center; gap:1rem;">
+                        <div class="shortcut-badge-icon" style="background:var(--ai-light); color:var(--ai-lavender); width:40px; height:40px; font-size:1.15rem; margin:0;">📚</div>
+                        <div>
+                            <div style="font-size:1.35rem; font-weight:800; color:var(--text-heading); line-height:1.1;">124</div>
+                            <div style="font-size:0.73rem; color:var(--text-muted); margin-top:2px;">Vetted Questions in Bank</div>
+                        </div>
+                    </div>
+                    <div class="roster-workspace-card" style="padding:1.15rem; display:flex; align-items:center; gap:1rem;">
+                        <div class="shortcut-badge-icon" style="background:rgba(217, 119, 6, 0.12); color:#D97706; width:40px; height:40px; font-size:1.15rem; margin:0;">📈</div>
+                        <div>
+                            <div style="font-size:1.35rem; font-weight:800; color:var(--text-heading); line-height:1.1;">94.2%</div>
+                            <div style="font-size:0.73rem; color:var(--text-muted); margin-top:2px;">Average Class Attendance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:1.5rem;">
+                    <!-- 3. Personal & Contact Coordinates -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+                            <div>
+                                <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Contact & Office Coordinates</h3>
+                                <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Publicly visible to enrolled students on their mobile syllabus card.</p>
+                            </div>
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.78rem; font-weight:600; color:var(--text-body); cursor:pointer;">
+                                <input type="checkbox" id="profile-toggle-dropin" checked onchange="toggleDropinStatus(this.checked)" style="accent-color:var(--sage-primary);">
+                                <span>Allow Student Walk-ins</span>
+                            </label>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                            <div class="form-group-item">
+                                <label>Full Name & Academic Title</label>
+                                <input type="text" id="profile-input-name" class="form-input-field" value="Dr. Amina Benali">
+                            </div>
+                            <div class="form-group-item">
+                                <label>Institutional University Email</label>
+                                <input type="email" id="profile-input-email" class="form-input-field" value="a.benali@esi.dz">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                            <div class="form-group-item">
+                                <label>Campus Office Location</label>
+                                <input type="text" id="profile-input-office" class="form-input-field" value="Building B · Office 214 (LCSI Laboratory)">
+                            </div>
+                            <div class="form-group-item">
+                                <label>Weekly Student Consultation Hours</label>
+                                <input type="text" id="profile-input-hours" class="form-input-field" value="Tuesdays & Thursdays, 10:00 - 12:00">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>Direct Academic Channel / Teams / Telegram</label>
+                                <input type="text" id="profile-input-teams" class="form-input-field" value="@amina_benali (ESI MS Teams)">
+                            </div>
+                            <div class="form-group-item">
+                                <label>Laboratory Extension Phone</label>
+                                <input type="text" id="profile-input-phone" class="form-input-field" value="+213 (0) 23 93 91 32 · Poste 214">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Assigned Teaching Modules & Student Cohorts -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+                            <div>
+                                <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Assigned Teaching Modules & Student Cohorts</h3>
+                                <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Active curriculum assignments for Semester 1 (2026/2027).</p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="openAddModuleModal()">
+                                <span>➕ Add Module</span>
+                            </button>
+                        </div>
+
+                        <div id="profile-modules-container" style="display:flex; flex-direction:column; gap:0.75rem;">
+                            <!-- Rendered dynamically via renderTeacherModules() -->
+                        </div>
+                    </div>
+
+                    <!-- 5. University Affiliation, Laboratory & Research Focus -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Academic Affiliation, Research & Accreditations</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1.25rem;">Research laboratory affiliation and scholarly indices.</p>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                            <div class="form-group-item">
+                                <label>Higher Education Institution</label>
+                                <input type="text" class="form-input-field" value="École Nationale Supérieure d'Informatique (ESI Algiers)" readonly style="background:var(--bg-subtle);">
+                            </div>
+                            <div class="form-group-item">
+                                <label>Academic Department</label>
+                                <input type="text" id="profile-input-dept" class="form-input-field" value="Département Architecture & Systèmes Informatiques">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                            <div class="form-group-item">
+                                <label>Affiliated Research Laboratory</label>
+                                <input type="text" id="profile-input-lab" class="form-input-field" value="LCSI · Laboratoire de la Communication dans les Systèmes Informatiques">
+                            </div>
+                            <div class="form-group-item">
+                                <label>Primary Research Axes</label>
+                                <input type="text" id="profile-input-axes" class="form-input-field" value="Processor Architectures, Cache Hierarchies, Embedded AI">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div class="form-group-item">
+                                <label>Highest Qualification / Ph.D.</label>
+                                <input type="text" id="profile-input-phd" class="form-input-field" value="Ph.D. in Computer Systems Architecture (ESI Algiers, 2017) · HDR (2022)">
+                            </div>
+                            <div class="form-group-item">
+                                <label>Scholarly Identifiers (ORCID & Scholar)</label>
+                                <input type="text" id="profile-input-orcid" class="form-input-field" value="ORCID: 0000-0002-8419-7201 · Scholar: Amina Benali">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Pedagogical Statement & Course Philosophy -->
+                    <div class="roster-workspace-card" style="padding:1.5rem;">
+                        <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Pedagogical Statement & Course Philosophy</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.75rem;">Brief bio visible on course syllabus and projector screen welcome.</p>
+                        <textarea id="profile-input-bio" class="form-input-field" rows="3">Enseignante-chercheuse à l'ESI depuis 2018, spécialisée dans l'architecture matérielle des processeurs, les hiérarchies mémoire caches et les systèmes embarqués. Responsable de l'évaluation formative interactive en amphithéâtre.</textarea>
+
+                        <div style="margin-top:1rem;">
+                            <label style="font-size:0.75rem; font-weight:700; color:var(--text-heading); margin-bottom:0.35rem; display:block;">Syllabus Note for Students</label>
+                            <input type="text" id="profile-input-welcome-note" class="form-input-field" value="Welcome to this semester's interactive sessions! Keep your smartphones ready for real-time formative checkpoints.">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Student QR Code Modal -->
@@ -2557,6 +2921,97 @@
                 <button class="btn btn-secondary btn-sm" onclick="closeQrModal()">Close</button>
                 <a href="/projector" target="_blank" class="btn btn-primary btn-sm">Open Projector Screen 🖥</a>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal: Student Profile Preview (How Students See You) -->
+    <div id="modal-student-profile-preview" class="modal-shade">
+        <div class="form-dialog" style="max-width:540px; padding:2rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+                <span class="pill-status pill-ready">Student Mobile Preview</span>
+                <button class="btn btn-secondary btn-sm" onclick="closeStudentProfilePreview()">✕ Close</button>
+            </div>
+
+            <!-- Preview Card (Emulating Student Portal Card) -->
+            <div style="background:var(--bg-subtle); border:1px solid var(--border-warm); border-radius:var(--radius-md); padding:1.5rem; margin-bottom:1.25rem;">
+                <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:1rem;">
+                    <div class="user-avatar-circle" id="student-preview-avatar" style="width:64px; height:64px; font-size:1.35rem; border:2px solid var(--sage-border); background-size:cover; background-position:center;">
+                        AB
+                    </div>
+                    <div>
+                        <h4 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin:0;" id="student-preview-name">Dr. Amina Benali</h4>
+                        <div style="font-size:0.78rem; color:var(--sage-primary); font-weight:600;" id="student-preview-dept">Département Architecture & Systèmes · ESI</div>
+                        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Enseignante Responsable de Module</div>
+                    </div>
+                </div>
+
+                <div style="background:#fff; border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem; display:flex; flex-direction:column; gap:0.5rem; font-size:0.78rem; color:var(--text-body); margin-bottom:1rem;">
+                    <div>📍 <strong>Office:</strong> <span id="student-preview-office">Building B · Office 214</span></div>
+                    <div>🕒 <strong>Office Hours:</strong> <span id="student-preview-hours">Tuesdays & Thursdays, 10:00 - 12:00</span></div>
+                    <div>📧 <strong>Email:</strong> <span id="student-preview-email">a.benali@esi.dz</span></div>
+                    <div>💬 <strong>Status:</strong> <span id="student-preview-status" style="color:var(--mint-success); font-weight:700;">Open for Drop-in Questions</span></div>
+                </div>
+
+                <div style="background:#fff; border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem; margin-bottom:1rem;">
+                    <div style="font-size:0.72rem; font-weight:700; color:var(--text-heading); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.04em;">Assigned Courses</div>
+                    <div id="student-preview-modules-list" style="display:flex; flex-direction:column; gap:0.35rem; font-size:0.75rem; color:var(--text-body);">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <div style="font-size:0.75rem; color:var(--text-body); line-height:1.45; font-style:italic;" id="student-preview-bio">
+                    "Welcome to this semester's interactive sessions! Keep your smartphones ready for real-time formative checkpoints."
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end;">
+                <button class="btn btn-primary btn-sm" onclick="closeStudentProfilePreview()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Teaching Module -->
+    <div id="modal-add-teacher-module" class="modal-shade">
+        <div class="form-dialog" style="max-width:460px;">
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading); margin-bottom:0.25rem;">Add Teaching Module</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">Assign a new course curriculum or lab cohort to your schedule.</p>
+
+            <form onsubmit="submitAddTeacherModule(event)">
+                <div class="form-group-item" style="margin-bottom:0.85rem;">
+                    <label>Module Title</label>
+                    <input type="text" id="new-module-title" class="form-input-field" placeholder="e.g. Réseaux Informatiques 1" required>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.85rem;">
+                    <div class="form-group-item">
+                        <label>Module Code</label>
+                        <input type="text" id="new-module-code" class="form-input-field" placeholder="e.g. RESEAU" required>
+                    </div>
+                    <div class="form-group-item">
+                        <label>Target Cohort</label>
+                        <select id="new-module-cohort" class="form-input-field">
+                            <option value="1CP">1CP (Prep 1)</option>
+                            <option value="2CP">2CP (Prep 2)</option>
+                            <option value="1CS" selected>1CS (Cycle Sup 1)</option>
+                            <option value="2CS">2CS (Cycle Sup 2)</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.25rem;">
+                    <div class="form-group-item">
+                        <label>Student Count</label>
+                        <input type="number" id="new-module-count" class="form-input-field" value="40" min="1" max="250" required>
+                    </div>
+                    <div class="form-group-item">
+                        <label>Amphi / Room Location</label>
+                        <input type="text" id="new-module-room" class="form-input-field" placeholder="e.g. Amphi C" required>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeAddModuleModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Assign Module</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -3143,11 +3598,14 @@
                 'cockpit': 'Live Cockpit · Mode Direct',
                 'classes': 'Classes & Students',
                 'quizzes': 'Quizzes & Question Bank',
-                'analytics': 'Results & Pedagogical Analytics'
+                'analytics': 'Results & Pedagogical Analytics',
+                'settings': 'Workspace & Quiz Settings',
+                'profile': 'Teacher Academic Profile'
             };
             if (pageId === 'classes') renderStudentsRoster();
             if (pageId === 'quizzes') renderQuizzesTable();
             if (pageId === 'analytics') { populateAnalyticsQuizDropdown(activeAnalyticsCohort); renderAnalyticsView(); }
+            if (pageId === 'profile') renderTeacherModules();
             const titleElem = document.getElementById('topbar-title-text');
             if (titleElem) titleElem.textContent = titleMap[pageId] || 'Workspace';
 
@@ -4648,8 +5106,6 @@ let quizzesRepository = [
             if (pill) pill.textContent = `${today} · TEACHER SPACE`;
         });
     </script>
-</body>
-</html>
 
     <script>
         // ========================================================
@@ -5109,3 +5565,402 @@ let quizzesRepository = [
         }
 
     </script>
+    <script>
+        // ========================================================
+        // SETTINGS & TEACHER PROFILE METHODS
+        // ========================================================
+        let teacherModulesList = [
+            { title: "Architecture des Ordinateurs", code: "ARCHI", cohort: "1CP", count: 45, room: "Amphithéâtre A", icon: "🏛" },
+            { title: "Systèmes d'Exploitation 1", code: "SYS 1", cohort: "2CP", count: 42, room: "Amphithéâtre B", icon: "💻" },
+            { title: "Programmation Orientée Objet", code: "POO", cohort: "1CS", count: 38, room: "Lab Salle 04", icon: "☕" }
+        ];
+
+        function renderTeacherModules() {
+            const container = document.getElementById('profile-modules-container');
+            if (!container) return;
+
+            let totalStudents = 0;
+            container.innerHTML = teacherModulesList.map((m, idx) => {
+                totalStudents += parseInt(m.count) || 0;
+                return `
+                    <div style="background:var(--bg-subtle); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem 1.15rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+                        <div style="display:flex; align-items:center; gap:0.85rem;">
+                            <div style="font-size:1.4rem;">${m.icon || '📚'}</div>
+                            <div>
+                                <div style="font-size:0.88rem; font-weight:700; color:var(--text-heading);">${m.title} <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--sage-primary); margin-left:0.35rem;">(${m.code})</span></div>
+                                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">
+                                    Cohort <strong>${m.cohort}</strong> · ${m.count} enrolled students · Location: <strong>${m.room}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.5rem;">
+                            <span class="pill-status pill-ready" style="font-size:0.72rem;">Active S1</span>
+                            <button class="btn btn-secondary btn-sm" style="padding:0.25rem 0.6rem; color:var(--rose-accent);" onclick="removeTeacherModule(${idx})" title="Remove module">✕</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const kpiStudents = document.getElementById('kpi-profile-students');
+            if (kpiStudents) kpiStudents.textContent = totalStudents;
+        }
+
+        function openAddModuleModal() {
+            const modal = document.getElementById('modal-add-teacher-module');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeAddModuleModal() {
+            const modal = document.getElementById('modal-add-teacher-module');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function submitAddTeacherModule(e) {
+            e.preventDefault();
+            const title = document.getElementById('new-module-title').value.trim();
+            const code = document.getElementById('new-module-code').value.trim().toUpperCase();
+            const cohort = document.getElementById('new-module-cohort').value;
+            const count = parseInt(document.getElementById('new-module-count').value) || 40;
+            const room = document.getElementById('new-module-room').value.trim();
+
+            if (!title || !code) return;
+
+            teacherModulesList.push({
+                title,
+                code,
+                cohort,
+                count,
+                room: room || 'Amphithéâtre C',
+                icon: '📘'
+            });
+
+            renderTeacherModules();
+            localStorage.setItem('bloom_profile_modules', JSON.stringify(teacherModulesList));
+            closeAddModuleModal();
+            showToast(`✅ Added module ${code} (${cohort}) to faculty teaching schedule`);
+        }
+
+        function removeTeacherModule(idx) {
+            if (teacherModulesList.length <= 1) {
+                showToast('⚠️ You must keep at least one active assigned teaching module.');
+                return;
+            }
+            const removed = teacherModulesList.splice(idx, 1)[0];
+            renderTeacherModules();
+            localStorage.setItem('bloom_profile_modules', JSON.stringify(teacherModulesList));
+            showToast(`🗑 Removed module ${removed.code} from schedule`);
+        }
+
+        const AVATAR_COLOR_PRESETS = [
+            { bg: '#3E6F58', text: '#FFFFFF' },
+            { bg: '#D97706', text: '#FFFFFF' },
+            { bg: '#7C3AED', text: '#FFFFFF' },
+            { bg: '#153247', text: '#FFFFFF' },
+            { bg: '#2563EB', text: '#FFFFFF' },
+            { bg: '#059669', text: '#FFFFFF' }
+        ];
+        let currentAvatarPresetIndex = 0;
+
+        function cycleAvatarPreset() {
+            currentAvatarPresetIndex = (currentAvatarPresetIndex + 1) % AVATAR_COLOR_PRESETS.length;
+            const preset = AVATAR_COLOR_PRESETS[currentAvatarPresetIndex];
+            applyAvatarPreset(preset.bg, preset.text);
+            localStorage.setItem('bloom_profile_avatar_color', JSON.stringify(preset));
+            showToast('🎨 Switched avatar color theme');
+        }
+
+        function applyAvatarPreset(bg, text) {
+            const avatarEl = document.getElementById('profile-avatar-display');
+            const sidebarAvatar = document.querySelector('.sidebar-user-footer .user-avatar-circle');
+            const previewAvatar = document.getElementById('student-preview-avatar');
+
+            [avatarEl, sidebarAvatar, previewAvatar].forEach(el => {
+                if (el) {
+                    el.style.backgroundColor = bg;
+                    el.style.color = text;
+                    el.style.backgroundImage = 'none';
+                }
+            });
+        }
+
+        function handleProfilePhotoUpload(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast('⚠️ Please select a valid image file (PNG, JPG, WebP).');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                applyAvatarImage(dataUrl);
+                localStorage.setItem('bloom_profile_avatar_img', dataUrl);
+                showToast('📷 Faculty photo updated and saved');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function applyAvatarImage(dataUrl) {
+            const avatarEl = document.getElementById('profile-avatar-display');
+            const sidebarAvatar = document.querySelector('.sidebar-user-footer .user-avatar-circle');
+            const previewAvatar = document.getElementById('student-preview-avatar');
+            const btnRemove = document.getElementById('btn-remove-avatar');
+
+            [avatarEl, sidebarAvatar, previewAvatar].forEach(el => {
+                if (el) {
+                    el.style.backgroundImage = `url("${dataUrl}")`;
+                    el.textContent = '';
+                }
+            });
+            if (btnRemove) btnRemove.style.display = 'inline-flex';
+        }
+
+        function removeProfileCustomPhoto() {
+            localStorage.removeItem('bloom_profile_avatar_img');
+            const btnRemove = document.getElementById('btn-remove-avatar');
+            if (btnRemove) btnRemove.style.display = 'none';
+
+            const name = (document.getElementById('profile-input-name') && document.getElementById('profile-input-name').value.trim()) || 'Dr. Amina Benali';
+            const initials = name.replace('Dr. ', '').split(' ').map(w => w[0]).slice(0, 2).join('');
+
+            const avatarEl = document.getElementById('profile-avatar-display');
+            const sidebarAvatar = document.querySelector('.sidebar-user-footer .user-avatar-circle');
+            const previewAvatar = document.getElementById('student-preview-avatar');
+
+            [avatarEl, sidebarAvatar, previewAvatar].forEach(el => {
+                if (el) {
+                    el.style.backgroundImage = 'none';
+                    el.textContent = initials;
+                }
+            });
+
+            const savedPreset = localStorage.getItem('bloom_profile_avatar_color');
+            if (savedPreset) {
+                try {
+                    const p = JSON.parse(savedPreset);
+                    applyAvatarPreset(p.bg, p.text);
+                } catch(e) {}
+            }
+            showToast('🔄 Photo reset to initial monogram');
+        }
+
+        function toggleDropinStatus(isOpen) {
+            const pill = document.getElementById('profile-consultation-status-pill');
+            const text = document.getElementById('profile-consultation-status-text');
+            const dot = document.getElementById('profile-status-dot');
+            const previewStatus = document.getElementById('student-preview-status');
+
+            if (isOpen) {
+                if (pill) { pill.className = 'pill-status pill-ready'; }
+                if (text) text.textContent = 'Office Consultations: Open for Drop-in';
+                if (dot) dot.style.background = '#2E7D32';
+                if (previewStatus) {
+                    previewStatus.textContent = 'Open for Drop-in Questions';
+                    previewStatus.style.color = 'var(--mint-success)';
+                }
+            } else {
+                if (pill) { pill.className = 'pill-status pill-draft'; }
+                if (text) text.textContent = 'Consultations: By Appointment Only';
+                if (dot) dot.style.background = '#94a3b8';
+                if (previewStatus) {
+                    previewStatus.textContent = 'By Appointment Only (Lecture / Research)';
+                    previewStatus.style.color = 'var(--text-muted)';
+                }
+            }
+            localStorage.setItem('bloom_profile_dropin', isOpen ? '1' : '0');
+        }
+
+        function openStudentProfilePreview() {
+            const name = document.getElementById('profile-input-name').value.trim() || 'Dr. Amina Benali';
+            const dept = document.getElementById('profile-input-dept').value.trim() || 'Département Architecture & Systèmes';
+            const email = document.getElementById('profile-input-email').value.trim() || 'a.benali@esi.dz';
+            const office = document.getElementById('profile-input-office').value.trim() || 'Building B · Office 214';
+            const hours = document.getElementById('profile-input-hours').value.trim() || 'Tuesdays & Thursdays, 10:00 - 12:00';
+            const note = document.getElementById('profile-input-welcome-note').value.trim() || 'Welcome to this semester\'s interactive sessions!';
+
+            document.getElementById('student-preview-name').textContent = name;
+            document.getElementById('student-preview-dept').textContent = dept;
+            document.getElementById('student-preview-email').textContent = email;
+            document.getElementById('student-preview-office').textContent = office;
+            document.getElementById('student-preview-hours').textContent = hours;
+            document.getElementById('student-preview-bio').textContent = `"${note}"`;
+
+            const modulesListEl = document.getElementById('student-preview-modules-list');
+            if (modulesListEl) {
+                modulesListEl.innerHTML = teacherModulesList.map(m => `
+                    <div>• <strong>${m.code}</strong> : ${m.title} (${m.cohort}) · <em>${m.room}</em></div>
+                `).join('');
+            }
+
+            const modal = document.getElementById('modal-student-profile-preview');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeStudentProfilePreview() {
+            const modal = document.getElementById('modal-student-profile-preview');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function saveSettings() {
+            const lang = document.getElementById('setting-language').value;
+            const term = document.getElementById('setting-term').value;
+            const timing = document.getElementById('setting-default-timing').value;
+            const reveal = document.getElementById('setting-reveal-policy').value;
+
+            localStorage.setItem('bloom_setting_lang', lang);
+            localStorage.setItem('bloom_setting_term', term);
+            localStorage.setItem('bloom_setting_timing', timing);
+            localStorage.setItem('bloom_setting_reveal', reveal);
+
+            showToast('✅ Preferences and default quiz rules saved successfully!');
+        }
+
+        function saveTeacherProfile() {
+            const name = document.getElementById('profile-input-name').value.trim() || 'Dr. Amina Benali';
+            const email = document.getElementById('profile-input-email').value.trim() || 'a.benali@esi.dz';
+            const office = document.getElementById('profile-input-office').value.trim();
+            const hours = document.getElementById('profile-input-hours').value.trim();
+            const teams = document.getElementById('profile-input-teams').value.trim();
+            const dept = document.getElementById('profile-input-dept').value.trim();
+            const lab = document.getElementById('profile-input-lab').value.trim();
+            const axes = document.getElementById('profile-input-axes').value.trim();
+            const phd = document.getElementById('profile-input-phd').value.trim();
+            const orcid = document.getElementById('profile-input-orcid').value.trim();
+            const bio = document.getElementById('profile-input-bio').value.trim();
+            const welcomeNote = document.getElementById('profile-input-welcome-note').value.trim();
+
+            // Update DOM representations
+            const profileDisplay = document.getElementById('profile-name-display');
+            if (profileDisplay) profileDisplay.textContent = name;
+
+            const deptDisplay = document.getElementById('profile-dept-display');
+            if (deptDisplay) deptDisplay.textContent = dept + ' · ESI Algiers';
+
+            const initials = name.replace('Dr. ', '').split(' ').map(w => w[0]).slice(0, 2).join('');
+            const profileAvatar = document.getElementById('profile-avatar-display');
+            if (profileAvatar && !profileAvatar.style.backgroundImage.includes('url')) {
+                profileAvatar.textContent = initials;
+            }
+
+            // Update sidebar footer
+            const userMeta = document.querySelector('.sidebar-user-footer .user-meta-info h4');
+            if (userMeta) userMeta.textContent = name;
+            const userAvatar = document.querySelector('.sidebar-user-footer .user-avatar-circle');
+            if (userAvatar && !userAvatar.style.backgroundImage.includes('url')) {
+                userAvatar.textContent = initials;
+            }
+
+            // Update topbar welcome text if present
+            const welcomeGreeting = document.querySelector('.welcome-hero-intro h2');
+            if (welcomeGreeting) welcomeGreeting.textContent = 'Welcome back, ' + name + '! 👋';
+
+            // Persist all fields to localStorage
+            localStorage.setItem('bloom_profile_name', name);
+            localStorage.setItem('bloom_profile_email', email);
+            localStorage.setItem('bloom_profile_office', office);
+            localStorage.setItem('bloom_profile_hours', hours);
+            localStorage.setItem('bloom_profile_teams', teams);
+            localStorage.setItem('bloom_profile_dept', dept);
+            localStorage.setItem('bloom_profile_lab', lab);
+            localStorage.setItem('bloom_profile_axes', axes);
+            localStorage.setItem('bloom_profile_phd', phd);
+            localStorage.setItem('bloom_profile_orcid', orcid);
+            localStorage.setItem('bloom_profile_bio', bio);
+            localStorage.setItem('bloom_profile_welcome_note', welcomeNote);
+
+            showToast('✅ Faculty dossier updated and synced for ' + name);
+        }
+
+        // Initialize saved settings & profile from localStorage on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Load saved settings
+                const savedLang = localStorage.getItem('bloom_setting_lang');
+                if (savedLang && document.getElementById('setting-language')) document.getElementById('setting-language').value = savedLang;
+                const savedTerm = localStorage.getItem('bloom_setting_term');
+                if (savedTerm && document.getElementById('setting-term')) document.getElementById('setting-term').value = savedTerm;
+                const savedTiming = localStorage.getItem('bloom_setting_timing');
+                if (savedTiming && document.getElementById('setting-default-timing')) document.getElementById('setting-default-timing').value = savedTiming;
+                const savedReveal = localStorage.getItem('bloom_setting_reveal');
+                if (savedReveal && document.getElementById('setting-reveal-policy')) document.getElementById('setting-reveal-policy').value = savedReveal;
+
+                // Load saved profile data
+                const savedName = localStorage.getItem('bloom_profile_name');
+                if (savedName) {
+                    if (document.getElementById('profile-input-name')) document.getElementById('profile-input-name').value = savedName;
+                    const profileDisplay = document.getElementById('profile-name-display');
+                    if (profileDisplay) profileDisplay.textContent = savedName;
+                    const initials = savedName.replace('Dr. ', '').split(' ').map(w => w[0]).slice(0, 2).join('');
+                    const profileAvatar = document.getElementById('profile-avatar-display');
+                    if (profileAvatar) profileAvatar.textContent = initials;
+                    const userMeta = document.querySelector('.sidebar-user-footer .user-meta-info h4');
+                    if (userMeta) userMeta.textContent = savedName;
+                    const userAvatar = document.querySelector('.sidebar-user-footer .user-avatar-circle');
+                    if (userAvatar) userAvatar.textContent = initials;
+                    const welcomeGreeting = document.querySelector('.welcome-hero-intro h2');
+                    if (welcomeGreeting) welcomeGreeting.textContent = 'Welcome back, ' + savedName + '! 👋';
+                }
+
+                const savedEmail = localStorage.getItem('bloom_profile_email');
+                if (savedEmail && document.getElementById('profile-input-email')) document.getElementById('profile-input-email').value = savedEmail;
+                const savedOffice = localStorage.getItem('bloom_profile_office');
+                if (savedOffice && document.getElementById('profile-input-office')) document.getElementById('profile-input-office').value = savedOffice;
+                const savedHours = localStorage.getItem('bloom_profile_hours');
+                if (savedHours && document.getElementById('profile-input-hours')) document.getElementById('profile-input-hours').value = savedHours;
+                const savedTeams = localStorage.getItem('bloom_profile_teams');
+                if (savedTeams && document.getElementById('profile-input-teams')) document.getElementById('profile-input-teams').value = savedTeams;
+                const savedDept = localStorage.getItem('bloom_profile_dept');
+                if (savedDept && document.getElementById('profile-input-dept')) document.getElementById('profile-input-dept').value = savedDept;
+                const savedLab = localStorage.getItem('bloom_profile_lab');
+                if (savedLab && document.getElementById('profile-input-lab')) document.getElementById('profile-input-lab').value = savedLab;
+                const savedAxes = localStorage.getItem('bloom_profile_axes');
+                if (savedAxes && document.getElementById('profile-input-axes')) document.getElementById('profile-input-axes').value = savedAxes;
+                const savedPhd = localStorage.getItem('bloom_profile_phd');
+                if (savedPhd && document.getElementById('profile-input-phd')) document.getElementById('profile-input-phd').value = savedPhd;
+                const savedOrcid = localStorage.getItem('bloom_profile_orcid');
+                if (savedOrcid && document.getElementById('profile-input-orcid')) document.getElementById('profile-input-orcid').value = savedOrcid;
+                const savedBio = localStorage.getItem('bloom_profile_bio');
+                if (savedBio && document.getElementById('profile-input-bio')) document.getElementById('profile-input-bio').value = savedBio;
+                const savedWelcomeNote = localStorage.getItem('bloom_profile_welcome_note');
+                if (savedWelcomeNote && document.getElementById('profile-input-welcome-note')) document.getElementById('profile-input-welcome-note').value = savedWelcomeNote;
+
+                // Load modules
+                const savedModules = localStorage.getItem('bloom_profile_modules');
+                if (savedModules) {
+                    try {
+                        teacherModulesList = JSON.parse(savedModules);
+                    } catch(e) {}
+                }
+                renderTeacherModules();
+
+                // Load dropin status
+                const savedDropin = localStorage.getItem('bloom_profile_dropin');
+                if (savedDropin !== null) {
+                    const isDropin = savedDropin === '1';
+                    const toggleEl = document.getElementById('profile-toggle-dropin');
+                    if (toggleEl) toggleEl.checked = isDropin;
+                    toggleDropinStatus(isDropin);
+                }
+
+                // Load saved avatar
+                const savedAvatarImg = localStorage.getItem('bloom_profile_avatar_img');
+                if (savedAvatarImg) {
+                    applyAvatarImage(savedAvatarImg);
+                } else {
+                    const savedPreset = localStorage.getItem('bloom_profile_avatar_color');
+                    if (savedPreset) {
+                        try {
+                            const p = JSON.parse(savedPreset);
+                            applyAvatarPreset(p.bg, p.text);
+                        } catch(e) {}
+                    }
+                }
+            } catch (e) {
+                console.warn('LocalStorage load warning:', e);
+            }
+        });
+    </script>
+</body>
+</html>
