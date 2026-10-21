@@ -1294,6 +1294,24 @@
             border-bottom: 1px solid var(--border-warm);
         }
 
+        .pill-scheduled {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FDE68A;
+        }
+
+        .stepper-step-item {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .stepper-step-item:hover {
+            color: var(--sage-primary);
+            background: rgba(62, 111, 88, 0.05);
+            border-radius: var(--radius-sm);
+        }
+
         .stepper-step-item {
             display: flex;
             align-items: center;
@@ -1742,7 +1760,7 @@
                     <div class="cockpit-session-brand">
                         <span class="cockpit-pulse-badge"></span>
                         <h3 class="cockpit-title-h3" id="live-quiz-title">Quiz 01 : Cache Hierarchy & Direct Mappings</h3>
-                        <span class="cockpit-sub-span">Target: 1CP · Amphitheater A</span>
+                        <span class="cockpit-sub-span" id="live-quiz-cohort-target">Target: 1CP · Amphitheater A</span>
                     </div>
                     <div class="cockpit-top-stats-strip">
                         <div class="cockpit-stat-pill">
@@ -1833,7 +1851,7 @@
                                 </button>
                             </div>
                             <div class="toolbar-group-right">
-                                <button class="btn btn-primary btn-sm" onclick="cockpitAdvance()">
+                                <button class="btn btn-primary btn-sm" id="btn-cockpit-advance" onclick="cockpitAdvance()">
                                     <span>Next Question →</span>
                                 </button>
                                 <button class="btn btn-secondary btn-sm" style="color:var(--rose-danger);" onclick="cockpitConclude()">
@@ -2204,23 +2222,23 @@
 
             <!-- Stepper Progress Header -->
             <div class="stepper-header-strip">
-                <div class="stepper-step-item active" id="step-nav-1">
+                <div class="stepper-step-item active" id="step-nav-1" onclick="jumpToBuilderStep(1)">
                     <span class="stepper-circle-num">1</span>
                     <span>Basic Info</span>
                 </div>
-                <div class="stepper-step-item" id="step-nav-2">
+                <div class="stepper-step-item" id="step-nav-2" onclick="jumpToBuilderStep(2)">
                     <span class="stepper-circle-num">2</span>
                     <span>Method</span>
                 </div>
-                <div class="stepper-step-item" id="step-nav-3">
+                <div class="stepper-step-item" id="step-nav-3" onclick="jumpToBuilderStep(3)">
                     <span class="stepper-circle-num">3</span>
                     <span>Build Questions</span>
                 </div>
-                <div class="stepper-step-item" id="step-nav-4">
+                <div class="stepper-step-item" id="step-nav-4" onclick="jumpToBuilderStep(4)">
                     <span class="stepper-circle-num">4</span>
                     <span>Quiz Settings</span>
                 </div>
-                <div class="stepper-step-item" id="step-nav-5">
+                <div class="stepper-step-item" id="step-nav-5" onclick="jumpToBuilderStep(5)">
                     <span class="stepper-circle-num">5</span>
                     <span>Preview & Launch</span>
                 </div>
@@ -2473,6 +2491,71 @@
         </div>
     </div>
 
+    
+    <!-- ========================================================
+         MODAL: SCHEDULE QUIZ SESSION
+         ======================================================== -->
+    <div id="modal-schedule-quiz" class="modal-shade">
+        <div class="form-dialog" style="max-width:540px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="font-size:1.25rem;">⏱</span>
+                    <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-heading);">Schedule Amphitheater Quiz</h3>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="closeScheduleModal()">✕</button>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">
+                Program an automated session release. Students receive reminders and the quiz unlocks automatically.
+            </p>
+
+            <div style="background:var(--bg-subtle); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem 1rem; margin-bottom:1.25rem;">
+                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">SELECTED QUIZ</div>
+                <div style="font-size:0.95rem; font-weight:700; color:var(--text-heading); margin-top:0.2rem;" id="schedule-quiz-title-display">Quiz 01 : Cache Hierarchy</div>
+                <div style="font-size:0.75rem; color:var(--sage-primary); font-weight:600; margin-top:0.15rem;" id="schedule-quiz-cohort-display">Target Cohort: 1CP</div>
+            </div>
+
+            <input type="hidden" id="schedule-target-quiz-id" value="">
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+                <div class="form-group-item">
+                    <label>Session Date</label>
+                    <input type="date" id="schedule-session-date" class="form-input-field" value="2026-10-22">
+                </div>
+                <div class="form-group-item">
+                    <label>Start Time</label>
+                    <input type="time" id="schedule-session-time" class="form-input-field" value="08:30">
+                </div>
+            </div>
+
+            <div class="form-group-item" style="margin-bottom:1rem;">
+                <label>Amphitheater / Classroom Location</label>
+                <select id="schedule-session-room" class="form-input-field">
+                    <option value="Amphithéâtre A (Grand)">Amphithéâtre A (Grand) · 120 seats</option>
+                    <option value="Amphithéâtre B">Amphithéâtre B · 90 seats</option>
+                    <option value="Salle C10 (Lab)">Salle C10 (Computer Lab)</option>
+                </select>
+            </div>
+
+            <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:0.85rem; margin-bottom:1.25rem; display:flex; flex-direction:column; gap:0.6rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.82rem; color:var(--text-body); cursor:pointer; margin-bottom:0;">
+                    <input type="checkbox" id="schedule-opt-notify" checked style="accent-color:var(--sage-primary);">
+                    <span>Send push notification & QR invite to enrolled students</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.82rem; color:var(--text-body); cursor:pointer; margin-bottom:0;">
+                    <input type="checkbox" id="schedule-opt-autolaunch" checked style="accent-color:var(--sage-primary);">
+                    <span>Auto-transition into Live Cockpit when scheduled time starts</span>
+                </label>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeScheduleModal()">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="confirmScheduleQuiz()">
+                    <span>Save Schedule ⏱</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-holder" id="toast-holder"></div>
 
     <script>
@@ -2531,19 +2614,104 @@
             }
         }
 
+        let activeLiveQuiz = null;
+        let activeLiveQuestionIndex = 0;
+
+        function loadQuizIntoCockpit(quiz) {
+            activeLiveQuiz = quiz;
+            activeLiveQuestionIndex = 0;
+            renderCockpitLiveQuestion();
+        }
+
+        function renderCockpitLiveQuestion() {
+            if (!activeLiveQuiz) {
+                activeLiveQuiz = quizzesRepository[0];
+            }
+            if (!activeLiveQuiz || !activeLiveQuiz.questions || activeLiveQuiz.questions.length === 0) return;
+
+            const total = activeLiveQuiz.questions.length;
+            if (activeLiveQuestionIndex >= total) activeLiveQuestionIndex = total - 1;
+            const q = activeLiveQuiz.questions[activeLiveQuestionIndex];
+
+            // Update top bar
+            const titleEl = document.getElementById('live-quiz-title');
+            if (titleEl) titleEl.textContent = activeLiveQuiz.title;
+            const subSpan = document.getElementById('live-quiz-cohort-target');
+            if (subSpan) subSpan.textContent = 'Target: ' + activeLiveQuiz.cohort + ' · Amphitheater A';
+
+            // Update question badge & statement
+            const badgeEl = document.getElementById('live-q-badge');
+            if (badgeEl) badgeEl.textContent = 'Question ' + (activeLiveQuestionIndex + 1) + ' of ' + total + ' · ' + (q.type || 'Single Choice MCQ');
+            const stmtEl = document.getElementById('live-q-statement');
+            if (stmtEl) stmtEl.textContent = q.statement;
+
+            // Render answer tiles
+            const tiles = [
+                document.getElementById('live-tile-0'),
+                document.getElementById('live-tile-1'),
+                document.getElementById('live-tile-2'),
+                document.getElementById('live-tile-3')
+            ];
+
+            const totalVotes = 38;
+            const dist = q.votes || [12, 70, 14, 4];
+            const letters = ['A', 'B', 'C', 'D'];
+
+            tiles.forEach((tile, idx) => {
+                if (!tile) return;
+                tile.className = 'cockpit-answer-tile';
+                tile.style.opacity = '1';
+                tile.style.transform = 'none';
+
+                const pct = dist[idx] || 0;
+                const votesCount = Math.round((pct / 100) * totalVotes);
+
+                const fillBar = tile.querySelector('.cockpit-tile-fill-bar');
+                if (fillBar) fillBar.style.width = pct + '%';
+
+                const keyEl = tile.querySelector('.cockpit-tile-key');
+                if (keyEl) {
+                    keyEl.textContent = letters[idx];
+                    keyEl.style.borderColor = 'var(--border-warm)';
+                    keyEl.style.color = 'var(--text-heading)';
+                }
+
+                const pctEl = tile.querySelector('.cockpit-tile-percentage');
+                if (pctEl) {
+                    pctEl.style.color = 'var(--text-heading)';
+                    pctEl.textContent = pct + '% (' + votesCount + ' votes)';
+                }
+
+                const labelEl = tile.querySelector('.cockpit-tile-label');
+                if (labelEl) {
+                    labelEl.textContent = (q.options && q.options[idx]) ? q.options[idx] : ('Option ' + letters[idx]);
+                }
+            });
+
+            // Update participation counter
+            const partEl = document.getElementById('live-participation-count');
+            if (partEl) {
+                partEl.textContent = totalVotes + ' / 45 Responded (84%)';
+            }
+
+            // Reset running timer
+            cockpitSecondsRemaining = 30;
+            const timerEl = document.getElementById('live-timer-display');
+            if (timerEl) timerEl.textContent = '00:30';
+
+            // Next Question button label
+            const nextBtn = document.getElementById('btn-cockpit-advance');
+            if (nextBtn) {
+                if (activeLiveQuestionIndex === total - 1) {
+                    nextBtn.innerHTML = '<span>Finish & Tabulate 🏁</span>';
+                } else {
+                    nextBtn.innerHTML = '<span>Next Question →</span>';
+                }
+            }
+        }
+
         function triggerFastLaunch() {
-            socket.emit('new-notification', {
-                title: "Quiz 01 : Cache Hierarchy & Direct Mappings",
-                quizId: 1,
-                module: "ARCHI",
-                level: "1CP"
-            });
-            socket.emit('quiz:started', {
-                quizId: 1,
-                title: "Quiz 01 : Cache Hierarchy & Direct Mappings"
-            });
-            showToast('🚀 Live session started! Directing to Cockpit...');
-            switchMainPage('cockpit');
+            launchQuizDirectly(1);
         }
 
         function cockpitAddBonus() {
@@ -2561,55 +2729,58 @@
         }
 
         function cockpitReveal() {
-            document.querySelectorAll('.cockpit-answer-tile').forEach(t => {
-                t.style.opacity = '0.45';
-                t.classList.remove('revealed-correct');
+            if (!activeLiveQuiz) activeLiveQuiz = quizzesRepository[0];
+            const q = activeLiveQuiz.questions[activeLiveQuestionIndex];
+            const correctIdx = (q && q.correctIndex !== undefined) ? q.correctIndex : 1;
+            const letters = ['A', 'B', 'C', 'D'];
+            const correctLetter = letters[correctIdx];
+
+            const tiles = [
+                document.getElementById('live-tile-0'),
+                document.getElementById('live-tile-1'),
+                document.getElementById('live-tile-2'),
+                document.getElementById('live-tile-3')
+            ];
+
+            tiles.forEach((t, idx) => {
+                if (!t) return;
+                if (idx === correctIdx) {
+                    t.classList.add('revealed-correct');
+                    t.style.opacity = '1';
+                    t.style.transform = 'scale(1.02)';
+                    const key = t.querySelector('.cockpit-tile-key');
+                    if (key) {
+                        key.style.borderColor = 'var(--mint-success)';
+                        key.style.color = 'var(--mint-success)';
+                    }
+                    const pct = t.querySelector('.cockpit-tile-percentage');
+                    if (pct) {
+                        pct.style.color = 'var(--mint-success)';
+                        const curText = pct.textContent.split(' ✓')[0];
+                        pct.textContent = curText + ' ✓ Correct';
+                    }
+                } else {
+                    t.style.opacity = '0.45';
+                    t.classList.remove('revealed-correct');
+                }
             });
-            const correctTile = document.getElementById('live-tile-1');
-            if (correctTile) {
-                correctTile.classList.add('revealed-correct');
-                correctTile.style.opacity = '1';
-                correctTile.style.transform = 'scale(1.02)';
-                const key = correctTile.querySelector('.cockpit-tile-key');
-                if (key) {
-                    key.style.borderColor = 'var(--mint-success)';
-                    key.style.color = 'var(--mint-success)';
-                }
-                const pct = correctTile.querySelector('.cockpit-tile-percentage');
-                if (pct) {
-                    pct.style.color = 'var(--mint-success)';
-                    pct.textContent = '71% (27 votes) ✓ Correct';
-                }
-            }
-            showToast('Correct answer (B) revealed on amphitheater screen!');
-            socket.emit('quiz:reveal', { questionId: 2, answer: 'B' });
+
+            showToast('Correct answer (' + correctLetter + ') revealed on amphitheater screen!');
+            socket.emit('quiz:reveal', { questionId: activeLiveQuestionIndex + 1, answer: correctLetter });
         }
 
         function cockpitAdvance() {
-            cockpitSecondsRemaining = 30;
-            document.getElementById('live-timer-display').textContent = '00:30';
-            document.getElementById('live-q-badge').textContent = 'Question 3 of 5 · Single Choice MCQ';
-            document.getElementById('live-q-statement').textContent = 'In direct-mapped cache, what formula determines which cache line index a 32-bit physical address maps to?';
-
-            document.querySelectorAll('.cockpit-answer-tile').forEach(t => {
-                t.classList.remove('revealed-correct');
-                t.style.opacity = '1';
-                t.style.transform = 'none';
-                const key = t.querySelector('.cockpit-tile-key');
-                if (key) {
-                    key.style.borderColor = 'var(--border-warm)';
-                    key.style.color = 'var(--text-heading)';
-                }
-                const pct = t.querySelector('.cockpit-tile-percentage');
-                if (pct) {
-                    pct.style.color = 'var(--text-heading)';
-                }
-            });
-            const tile1Pct = document.getElementById('live-tile-1')?.querySelector('.cockpit-tile-percentage');
-            if (tile1Pct) tile1Pct.textContent = '71% (27 votes)';
-
-            showToast('Advanced to Question 3.');
-            socket.emit('quiz:question_change', { questionIndex: 3 });
+            if (!activeLiveQuiz) activeLiveQuiz = quizzesRepository[0];
+            const total = activeLiveQuiz.questions.length;
+            if (activeLiveQuestionIndex < total - 1) {
+                activeLiveQuestionIndex++;
+                renderCockpitLiveQuestion();
+                showToast('Advanced to Question ' + (activeLiveQuestionIndex + 1) + ' of ' + total);
+                socket.emit('quiz:question_change', { questionIndex: activeLiveQuestionIndex + 1 });
+            } else {
+                showToast('🏁 All ' + total + ' questions completed! Session concluding...');
+                cockpitConclude();
+            }
         }
 
         function cockpitConclude() {
@@ -2936,7 +3107,7 @@
         let builderTimingPolicy = 'global';
         let currentQuizFilterTab = 'all';
 
-        let quizzesRepository = [
+let quizzesRepository = [
             {
                 id: 1,
                 title: "Quiz 01 : Cache Hierarchy & Direct Mappings",
@@ -2945,7 +3116,69 @@
                 questionsCount: 5,
                 timingMode: "30s / Question",
                 status: "Ongoing",
-                statusClass: "pill-ongoing"
+                statusClass: "pill-ongoing",
+                questions: [
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Which cache mapping architecture allows a memory block to be placed in ANY cache line without collision restrictions?",
+                        options: [
+                            "Direct-Mapped Cache",
+                            "Fully Associative Cache",
+                            "2-Way Set Associative Cache",
+                            "Sector Cache"
+                        ],
+                        correctIndex: 1,
+                        votes: [13, 71, 13, 3]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "In direct-mapped cache, what formula determines which cache line index a 32-bit physical address maps to?",
+                        options: [
+                            "Index = Block Address mod (Number of Cache Lines)",
+                            "Index = Tag mod (Offset)",
+                            "Index = Block Address × 32",
+                            "Index = Offset mod (Block Size)"
+                        ],
+                        correctIndex: 0,
+                        votes: [68, 15, 12, 5]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Which type of cache miss occurs when a block is accessed for the very first time after power-on?",
+                        options: [
+                            "Conflict Miss",
+                            "Capacity Miss",
+                            "Compulsory / Cold Miss",
+                            "Coherence Miss"
+                        ],
+                        correctIndex: 2,
+                        votes: [8, 14, 73, 5]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Calculate Average Memory Access Time (AMAT) with L1 hit time 1ns, 10% miss rate, and 100ns RAM penalty:",
+                        options: [
+                            "10.0 ns",
+                            "11.0 ns",
+                            "101.0 ns",
+                            "1.1 ns"
+                        ],
+                        correctIndex: 1,
+                        votes: [18, 64, 11, 7]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "What write policy updates modified data into BOTH cache and main memory simultaneously on every write?",
+                        options: [
+                            "Write-Back",
+                            "Write-Through",
+                            "Write-Allocate",
+                            "No-Write Allocate"
+                        ],
+                        correctIndex: 1,
+                        votes: [22, 69, 6, 3]
+                    }
+                ]
             },
             {
                 id: 2,
@@ -2955,27 +3188,177 @@
                 questionsCount: 4,
                 timingMode: "Global 15m",
                 status: "Ready to Publish",
-                statusClass: "pill-ready"
+                statusClass: "pill-ready",
+                questions: [
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Which pipeline hazard occurs when an instruction depends on the result of a previous instruction still inside the pipeline?",
+                        options: [
+                            "Structural Hazard",
+                            "Data Hazard (Read After Write)",
+                            "Control Hazard",
+                            "Coherence Hazard"
+                        ],
+                        correctIndex: 1,
+                        votes: [10, 75, 11, 4]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "What hardware technique resolves data hazards without stalling the CPU by passing results directly to earlier stages?",
+                        options: [
+                            "Branch Delay Slotting",
+                            "Data Forwarding / Register Bypassing",
+                            "Static Compiler Inlining",
+                            "Cache Pre-fetching"
+                        ],
+                        correctIndex: 1,
+                        votes: [12, 74, 9, 5]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "In a classic 5-stage RISC pipeline, how many branch penalty stall cycles occur when an unpredicted branch is taken?",
+                        options: [
+                            "1 cycle",
+                            "2 cycles",
+                            "3 cycles",
+                            "5 cycles"
+                        ],
+                        correctIndex: 1,
+                        votes: [25, 62, 9, 4]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "What hardware action takes place during a pipeline stall (bubble)?",
+                        options: [
+                            "All pipeline registers are zeroed out",
+                            "Hardware inserts NOPs and freezes upstream program counter & instruction registers",
+                            "The CPU clock frequency is halved",
+                            "Interrupt vector table is reloaded"
+                        ],
+                        correctIndex: 1,
+                        votes: [14, 72, 8, 6]
+                    }
+                ]
             },
             {
                 id: 3,
                 title: "Quiz 03 : Virtual Memory & TLB Address Translation",
                 module: "SYS 1",
                 cohort: "2CP",
-                questionsCount: 6,
+                questionsCount: 4,
                 timingMode: "Global 20m",
                 status: "Draft",
-                statusClass: "pill-draft"
+                statusClass: "pill-draft",
+                questions: [
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "What is the primary role of the Translation Lookaside Buffer (TLB) in virtual memory management?",
+                        options: [
+                            "Store physical page data permanently",
+                            "High-speed hardware cache for virtual-to-physical page table translations",
+                            "Manage disk swap space allocations",
+                            "Prevent CPU stack overflow"
+                        ],
+                        correctIndex: 1,
+                        votes: [12, 73, 11, 4]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "When the CPU references a valid virtual address whose page is not currently present in physical RAM, what occurs?",
+                        options: [
+                            "Segmentation fault and immediate process termination",
+                            "Page Fault hardware exception trapped by OS kernel",
+                            "Automatic reboot of the machine",
+                            "TLB shootdown broadcast interrupt"
+                        ],
+                        correctIndex: 1,
+                        votes: [16, 70, 9, 5]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "What is the primary spatial benefit of multi-level hierarchical page tables over a single flat page table?",
+                        options: [
+                            "Decreases memory translation latency",
+                            "Unused virtual address space does not allocate physical page table frames",
+                            "Eliminates the possibility of TLB misses",
+                            "Doubles the maximum physical RAM capacity"
+                        ],
+                        correctIndex: 1,
+                        votes: [14, 71, 10, 5]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Which page replacement policy evicts the page that has not been referenced for the longest duration of time?",
+                        options: [
+                            "FIFO (First In First Out)",
+                            "LRU (Least Recently Used)",
+                            "Optimal / Belady (MIN)",
+                            "Clock / Second Chance"
+                        ],
+                        correctIndex: 1,
+                        votes: [15, 74, 7, 4]
+                    }
+                ]
             },
             {
                 id: 4,
                 title: "Diagnostic Test : Object-Oriented Polymorphism",
                 module: "POO",
                 cohort: "1CS",
-                questionsCount: 8,
+                questionsCount: 4,
                 timingMode: "Untimed",
                 status: "Ready to Publish",
-                statusClass: "pill-ready"
+                statusClass: "pill-ready",
+                questions: [
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "In Object-Oriented Programming, dynamic runtime polymorphism is implemented through which mechanism?",
+                        options: [
+                            "Static function overloading at compile time",
+                            "Virtual Method Table (vtable) dispatch resolution at runtime",
+                            "C preprocessor macro expansion",
+                            "Automatic memory garbage collection"
+                        ],
+                        correctIndex: 1,
+                        votes: [11, 76, 8, 5]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Which keyword in Java prevents a class from being subclassed or a method from being overridden?",
+                        options: [
+                            "static",
+                            "final",
+                            "abstract",
+                            "protected"
+                        ],
+                        correctIndex: 1,
+                        votes: [9, 78, 10, 3]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "Which SOLID design principle asserts that software entities should be open for extension, but closed for modification?",
+                        options: [
+                            "Single Responsibility Principle",
+                            "Open/Closed Principle (OCP)",
+                            "Liskov Substitution Principle",
+                            "Interface Segregation Principle"
+                        ],
+                        correctIndex: 1,
+                        votes: [12, 75, 9, 4]
+                    },
+                    {
+                        type: "Single Choice MCQ",
+                        statement: "What occurs if a class contains at least one pure virtual / abstract method without an implementation?",
+                        options: [
+                            "The class is abstract and cannot be directly instantiated",
+                            "The compiler produces a fatal syntax error",
+                            "The method executes a default empty function",
+                            "The class can only be instantiated with the new keyword"
+                        ],
+                        correctIndex: 0,
+                        votes: [74, 14, 8, 4]
+                    }
+                ]
             }
         ];
 
@@ -3001,18 +3384,19 @@
                 tr.innerHTML = `
                     <td style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">${idx + 1}</td>
                     <td>
-                        <span style="font-weight:700; color:var(--text-heading);">${q.title}</span>
+                        <div style="font-weight:700; color:var(--text-heading);">${q.title}</div>
+                        ${q.scheduledFor ? '<div style="font-size:0.72rem; color:#92400E; margin-top:0.15rem;">⏱ Scheduled for ' + q.scheduledFor + '</div>' : ''}
                     </td>
                     <td><span class="pill-status" style="background:var(--bg-subtle); color:var(--text-heading);">${q.module} (${q.cohort})</span></td>
                     <td style="font-family:var(--font-mono); font-size:0.82rem;">${q.questionsCount} Questions</td>
                     <td><span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-muted);">${q.timingMode}</span></td>
                     <td><span class="pill-status ${q.statusClass}">${q.status}</span></td>
-                    <td style="text-align:right;">
+                    <td style="text-align:right; white-space:nowrap;">
                         ${q.status === 'Ongoing' ? 
-                            '<button class="btn btn-secondary btn-sm" style="color:var(--sage-primary); font-size:0.75rem;" onclick="switchMainPage(\'cockpit\')">⚡ Live View</button>' : 
+                            '<button class="btn btn-secondary btn-sm" style="color:var(--sage-primary); font-size:0.75rem;" onclick="launchQuizDirectly(' + q.id + ')">⚡ Live View</button>' : 
                             '<button class="btn btn-primary btn-sm" style="font-size:0.75rem;" onclick="launchQuizDirectly(' + q.id + ')">🚀 Launch</button>'
                         }
-                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem; margin-left:0.25rem;" onclick="scheduleQuizPrompt(' + q.id + ')">⏱ Schedule</button>
+                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem; margin-left:0.25rem;" onclick="scheduleQuizPrompt(' + q.id + ')">${q.status === 'Scheduled' ? '⏱ Edit' : '⏱ Schedule'}</button>
                         <button class="btn btn-secondary btn-sm" style="font-size:0.75rem; margin-left:0.25rem;" onclick="openQrModal()">📱 QR</button>
                     </td>
                 `;
@@ -3153,12 +3537,22 @@
             }
         }
 
+        function jumpToBuilderStep(targetStep) {
+            const titleInput = document.getElementById('builder-q-title');
+            if (titleInput && !titleInput.value.trim()) {
+                titleInput.value = 'Quiz 03 : Virtual Memory & TLB Address Translation';
+            }
+            builderCurrentStep = targetStep;
+            if (builderCurrentStep < 1) builderCurrentStep = 1;
+            if (builderCurrentStep > 5) builderCurrentStep = 5;
+            updateBuilderStepView();
+        }
+
         function navigateBuilderStep(delta) {
+            const titleInput = document.getElementById('builder-q-title');
             if (delta > 0 && builderCurrentStep === 1) {
-                const title = document.getElementById('builder-q-title').value.trim();
-                if (!title) {
-                    alert('Please enter a Quiz Title to continue.');
-                    return;
+                if (titleInput && !titleInput.value.trim()) {
+                    titleInput.value = 'Quiz 03 : Virtual Memory & TLB Address Translation';
                 }
             }
             builderCurrentStep += delta;
@@ -3259,9 +3653,18 @@
             const quiz = quizzesRepository.find(q => q.id === quizId);
             if (!quiz) return;
 
-            quiz.status = 'Ongoing';
-            quiz.statusClass = 'pill-ongoing';
+            quizzesRepository.forEach(q => {
+                if (q.id === quizId) {
+                    q.status = 'Ongoing';
+                    q.statusClass = 'pill-ongoing';
+                } else if (q.status === 'Ongoing') {
+                    q.status = 'Completed';
+                    q.statusClass = 'pill-ready';
+                }
+            });
             renderQuizzesTable();
+
+            loadQuizIntoCockpit(quiz);
 
             socket.emit('new-notification', {
                 title: quiz.title,
@@ -3274,17 +3677,55 @@
                 title: quiz.title
             });
 
-            showToast('🚀 Published "' + quiz.title + '"! Students notified.');
+            showToast('🚀 Launching "' + quiz.title + '" in Live Cockpit!');
             switchMainPage('cockpit');
         }
 
         function scheduleQuizPrompt(quizId) {
             const quiz = quizzesRepository.find(q => q.id === quizId);
             if (!quiz) return;
-            const mins = prompt('Enter auto-publish delay in minutes for "' + quiz.title + '":', "10");
-            if (mins && parseInt(mins) > 0) {
-                showToast('⏱ Quiz "' + quiz.title + '" scheduled to auto-publish in ' + mins + ' minutes!');
-            }
+
+            const idInput = document.getElementById('schedule-target-quiz-id');
+            const titleEl = document.getElementById('schedule-quiz-title-display');
+            const cohortEl = document.getElementById('schedule-quiz-cohort-display');
+
+            if (idInput) idInput.value = quiz.id;
+            if (titleEl) titleEl.textContent = quiz.title;
+            if (cohortEl) cohortEl.textContent = 'Target: ' + quiz.cohort + ' · Module: ' + quiz.module + ' (' + quiz.questionsCount + ' Questions)';
+
+            const d = new Date();
+            d.setDate(d.getDate() + 1);
+            const dateStr = d.toISOString().split('T')[0];
+            const dateInput = document.getElementById('schedule-session-date');
+            if (dateInput) dateInput.value = dateStr;
+
+            const modal = document.getElementById('modal-schedule-quiz');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeScheduleModal() {
+            const modal = document.getElementById('modal-schedule-quiz');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function confirmScheduleQuiz() {
+            const quizId = parseInt(document.getElementById('schedule-target-quiz-id').value);
+            const quiz = quizzesRepository.find(q => q.id === quizId);
+            if (!quiz) return;
+
+            const date = document.getElementById('schedule-session-date').value || 'Tomorrow';
+            const time = document.getElementById('schedule-session-time').value || '08:30';
+            const room = document.getElementById('schedule-session-room').value;
+
+            quiz.status = 'Scheduled';
+            quiz.statusClass = 'pill-scheduled';
+            quiz.scheduledFor = date + ' at ' + time;
+            quiz.room = room;
+
+            renderQuizzesTable();
+            closeScheduleModal();
+
+            showToast('⏱ Quiz "' + quiz.title + '" successfully scheduled for ' + date + ' at ' + time + '!');
         }
 
         // ========================================================
