@@ -960,9 +960,16 @@
             position: relative;
         }
 
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-7px) rotate(3deg); }
+        }
+
         .avatar-crown {
             position: absolute;
-            top: -26px;
+            top: -28px;
+            animation: crownFloat 2.6s ease-in-out infinite;
+            filter: drop-shadow(0 4px 10px rgba(245, 194, 66, 0.5));
         }
 
         .podium-name {
@@ -1105,6 +1112,104 @@
             font-weight: 800;
             color: var(--gold-primary);
             font-family: 'JetBrains Mono', monospace;
+        }
+
+        .podium-metrics-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            margin-top: 0.65rem;
+        }
+
+        .podium-metric-chip {
+            background: rgba(18, 24, 36, 0.85);
+            border: 1px solid var(--border-subtle);
+            padding: 0.4rem 1.15rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .podium-metric-chip strong {
+            color: #FFFFFF;
+        }
+
+        .podium-ribbon {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.65rem;
+            border-radius: 9999px;
+            margin-top: 0.35rem;
+        }
+
+        .ribbon-gold {
+            background: rgba(245, 194, 66, 0.2);
+            color: #FEF08A;
+            border: 1px solid rgba(245, 194, 66, 0.4);
+        }
+
+        .ribbon-silver {
+            background: rgba(148, 163, 184, 0.2);
+            color: #E2E8F0;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .ribbon-bronze {
+            background: rgba(180, 83, 9, 0.2);
+            color: #FDE68A;
+            border: 1px solid rgba(180, 83, 9, 0.4);
+        }
+
+        .podium-actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-podium-action {
+            background: var(--surface-dark);
+            border: 1px solid var(--border-subtle);
+            color: #E2E8F0;
+            padding: 0.6rem 1.35rem;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-podium-action:hover {
+            background: var(--surface-card);
+            border-color: var(--sage-primary);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-podium-action.primary {
+            background: linear-gradient(135deg, var(--sage-primary), #2D5240);
+            border-color: rgba(167, 243, 208, 0.3);
+            color: #FFFFFF;
+        }
+
+        .btn-podium-action.primary:hover {
+            background: linear-gradient(135deg, #4A8569, var(--sage-primary));
+            box-shadow: 0 8px 25px rgba(62, 111, 88, 0.5);
         }
 
         /* ----------------- DISCREET PRESENTER DOCK ----------------- */
@@ -1474,8 +1579,29 @@
         <section id="view-podium" class="view-section">
             <div class="podium-section">
                 <div class="podium-header">
-                    <h1 class="podium-title">Classroom Performance Podium</h1>
-                    <p class="podium-sub">Top student performers ranked by score accuracy and response time.</p>
+                    <span class="academic-term-pill" style="margin-bottom: 0.75rem;">Session Concluded · Final Evaluation Ceremony</span>
+                    <h1 class="podium-title">Amphithéâtre A · Grand Podium κουίζυ</h1>
+                    <p class="podium-sub">Architecture des Ordinateurs · Cohort 1CP · Promotion 2026/2027</p>
+
+                    <!-- Session Stats Summary Strip -->
+                    <div class="podium-metrics-bar">
+                        <div class="podium-metric-chip">
+                            <span>🎓 Class Average:</span>
+                            <strong>16.2 / 20</strong>
+                        </div>
+                        <div class="podium-metric-chip">
+                            <span>👥 Evaluated Students:</span>
+                            <strong id="podium-students-count">42</strong>
+                        </div>
+                        <div class="podium-metric-chip">
+                            <span>🎯 Concept Mastery:</span>
+                            <strong>84%</strong>
+                        </div>
+                        <div class="podium-metric-chip">
+                            <span>⏱️ Avg Response:</span>
+                            <strong>2.1s</strong>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 3D Olympic Podium Pedestals -->
@@ -1486,24 +1612,26 @@
                             <div class="avatar-circle" id="podium-avatar-2">K</div>
                             <div class="podium-name" id="podium-name-2">Karim Benali</div>
                             <div class="podium-score" id="podium-score-2">18.0 / 20</div>
+                            <span class="podium-ribbon ribbon-silver">Magna Cum Laude</span>
                         </div>
                         <div class="pedestal-block">
                             <div class="pedestal-rank-num">2</div>
-                            <div class="pedestal-rank-label">Silver</div>
+                            <div class="pedestal-rank-label">Silver Laureate</div>
                         </div>
                     </div>
 
                     <!-- 1st Place (Gold) -->
                     <div class="podium-column podium-col-1">
                         <div class="podium-avatar-card">
-                            <span class="avatar-crown"><svg width="32" height="32" viewBox="0 0 24 24" fill="#f5c242" stroke="#d97706" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+                            <span class="avatar-crown"><svg width="34" height="34" viewBox="0 0 24 24" fill="#f5c242" stroke="#d97706" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
                             <div class="avatar-circle" id="podium-avatar-1">Y</div>
                             <div class="podium-name" id="podium-name-1">Yasmine Halag</div>
                             <div class="podium-score" id="podium-score-1">19.5 / 20</div>
+                            <span class="podium-ribbon ribbon-gold">Summa Cum Laude</span>
                         </div>
                         <div class="pedestal-block">
                             <div class="pedestal-rank-num">1</div>
-                            <div class="pedestal-rank-label">Gold Winner</div>
+                            <div class="pedestal-rank-label">Gold Laureate</div>
                         </div>
                     </div>
 
@@ -1513,15 +1641,16 @@
                             <div class="avatar-circle" id="podium-avatar-3">A</div>
                             <div class="podium-name" id="podium-name-3">Amina Saidi</div>
                             <div class="podium-score" id="podium-score-3">16.5 / 20</div>
+                            <span class="podium-ribbon ribbon-bronze">Cum Laude</span>
                         </div>
                         <div class="pedestal-block">
                             <div class="pedestal-rank-num">3</div>
-                            <div class="pedestal-rank-label">Bronze</div>
+                            <div class="pedestal-rank-label">Bronze Laureate</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Runners up (4th & 5th) -->
+                <!-- Runners up (4th to 7th) -->
                 <div class="runners-up-row" id="runners-up-container">
                     <div class="runner-card">
                         <span class="runner-rank">#4</span>
@@ -1533,6 +1662,34 @@
                         <span class="runner-name">Sara Bouzid</span>
                         <span class="runner-score">14.0 / 20</span>
                     </div>
+                    <div class="runner-card">
+                        <span class="runner-rank">#6</span>
+                        <span class="runner-name">Yacine Belkacem</span>
+                        <span class="runner-score">13.5 / 20</span>
+                    </div>
+                    <div class="runner-card">
+                        <span class="runner-rank">#7</span>
+                        <span class="runner-name">Lina Mansour</span>
+                        <span class="runner-score">13.0 / 20</span>
+                    </div>
+                </div>
+
+                <!-- Session Finale Actions Strip -->
+                <div class="podium-actions-bar">
+                    <button type="button" class="btn-podium-action primary" onclick="fireConfetti(); playVictoryFanfare();" title="Launch celebratory fireworks (Shortcut: C)">
+                        <span>🎉 Re-fire Fireworks (C)</span>
+                    </button>
+                    <a href="/api/result/export/1" class="btn-podium-action" target="_blank" title="Download Official CSV Gradebook">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Export CSV Gradebook</span>
+                    </a>
+                    <a href="/teacher" class="btn-podium-action" title="Open Teacher Psychometric Dashboard">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+                        <span>Open Teacher Cockpit</span>
+                    </a>
+                    <button type="button" class="btn-podium-action" onclick="switchView('view-lobby')" title="Return to Room Lobby (Shortcut: 1)">
+                        <span>🔄 Return to Lobby (1)</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -1723,6 +1880,7 @@
             } else if (viewId === 'view-podium') {
                 const b = document.getElementById('btn-stage-podium');
                 if (b) b.classList.add('active');
+                renderPodium();
             }
         }
 
@@ -2075,43 +2233,56 @@
                 { name: "Karim Benali", score: "18.0 / 20" },
                 { name: "Amina Saidi", score: "16.5 / 20" },
                 { name: "Mehdi Touati", score: "15.0 / 20" },
-                { name: "Sara Bouzid", score: "14.0 / 20" }
+                { name: "Sara Bouzid", score: "14.0 / 20" },
+                { name: "Yacine Belkacem", score: "13.5 / 20" },
+                { name: "Lina Mansour", score: "13.0 / 20" }
             ];
 
             // 1st Place
             if (leaders[0]) {
-                document.getElementById('podium-name-1').textContent = leaders[0].name;
-                document.getElementById('podium-score-1').textContent = leaders[0].score;
-                document.getElementById('podium-avatar-1').textContent = (leaders[0].name[0] || '1').toUpperCase();
+                const name1 = document.getElementById('podium-name-1');
+                const score1 = document.getElementById('podium-score-1');
+                const avatar1 = document.getElementById('podium-avatar-1');
+                if (name1) name1.textContent = leaders[0].name;
+                if (score1) score1.textContent = leaders[0].score;
+                if (avatar1) avatar1.textContent = (leaders[0].name[0] || 'Y').toUpperCase();
             }
 
             // 2nd Place
             if (leaders[1]) {
-                document.getElementById('podium-name-2').textContent = leaders[1].name;
-                document.getElementById('podium-score-2').textContent = leaders[1].score;
-                document.getElementById('podium-avatar-2').textContent = (leaders[1].name[0] || '2').toUpperCase();
+                const name2 = document.getElementById('podium-name-2');
+                const score2 = document.getElementById('podium-score-2');
+                const avatar2 = document.getElementById('podium-avatar-2');
+                if (name2) name2.textContent = leaders[1].name;
+                if (score2) score2.textContent = leaders[1].score;
+                if (avatar2) avatar2.textContent = (leaders[1].name[0] || 'K').toUpperCase();
             }
 
             // 3rd Place
             if (leaders[2]) {
-                document.getElementById('podium-name-3').textContent = leaders[2].name;
-                document.getElementById('podium-score-3').textContent = leaders[2].score;
-                document.getElementById('podium-avatar-3').textContent = (leaders[2].name[0] || '3').toUpperCase();
+                const name3 = document.getElementById('podium-name-3');
+                const score3 = document.getElementById('podium-score-3');
+                const avatar3 = document.getElementById('podium-avatar-3');
+                if (name3) name3.textContent = leaders[2].name;
+                if (score3) score3.textContent = leaders[2].score;
+                if (avatar3) avatar3.textContent = (leaders[2].name[0] || 'A').toUpperCase();
             }
 
-            // Runners up 4th & 5th
+            // Runners up 4th to 7th
             const runnersContainer = document.getElementById('runners-up-container');
-            runnersContainer.innerHTML = '';
-            leaders.slice(3, 7).forEach((runner, idx) => {
-                const card = document.createElement('div');
-                card.className = 'runner-card';
-                card.innerHTML = `
-                    <span class="runner-rank">#${idx + 4}</span>
-                    <span class="runner-name">${runner.name}</span>
-                    <span class="runner-score">${runner.score}</span>
-                `;
-                runnersContainer.appendChild(card);
-            });
+            if (runnersContainer) {
+                runnersContainer.innerHTML = '';
+                leaders.slice(3, 7).forEach((runner, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'runner-card';
+                    card.innerHTML = `
+                        <span class="runner-rank">#${idx + 4}</span>
+                        <span class="runner-name">${runner.name}</span>
+                        <span class="runner-score">${runner.score}</span>
+                    `;
+                    runnersContainer.appendChild(card);
+                });
+            }
         }
 
         // ================= TIMER LOGIC =================
@@ -2153,23 +2324,27 @@
         // ================= CONFETTI CELEBRATION =================
         function fireConfetti() {
             const canvas = document.getElementById('confetti-canvas');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
             const particles = [];
-            const colors = ['#f5c242', '#ef4444', '#3b82f6', '#10b981', '#f97316', '#a855f7'];
+            const colors = ['#F5C242', '#EF4444', '#3B82F6', '#10B981', '#F97316', '#A855F7', '#EC4899', '#14B8A6', '#FFFFFF'];
 
-            for (let i = 0; i < 160; i++) {
+            for (let i = 0; i < 220; i++) {
+                const isRibbon = Math.random() > 0.45;
+                const baseSize = Math.random() * 8 + 5;
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height - canvas.height,
-                    size: Math.random() * 9 + 4,
+                    w: baseSize,
+                    h: isRibbon ? (baseSize * 2.5) : baseSize,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    vx: (Math.random() - 0.5) * 4,
-                    vy: Math.random() * 4 + 3,
+                    vx: (Math.random() - 0.5) * 5,
+                    vy: Math.random() * 5 + 3.5,
                     rotation: Math.random() * 360,
-                    vRot: (Math.random() - 0.5) * 10
+                    vRot: (Math.random() - 0.5) * 12
                 });
             }
 
@@ -2186,11 +2361,11 @@
                     ctx.translate(p.x, p.y);
                     ctx.rotate((p.rotation * Math.PI) / 180);
                     ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
                     ctx.restore();
                 });
 
-                if (Date.now() - start < 7000) {
+                if (Date.now() - start < 7500) {
                     requestAnimationFrame(update);
                 } else {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -2362,7 +2537,7 @@
             }
         }
 
-        // Keyboard Shortcuts: 1/2/3 = Views, D = Demo Student, Space = Advance/Reveal, R = Reveal, N = Next Question, A = AI Demo, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
+        // Keyboard Shortcuts: 1/2/3 = Views, D = Demo Student, Space = Advance/Reveal, R = Reveal, N = Next Question, A = AI Demo, C = Confetti, F = Fullscreen, M = Mute, P = Podium, H = Hide/Show Controls
         window.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
@@ -2380,6 +2555,9 @@
                 triggerNextDemoQuestion();
             } else if (e.key === 'a' || e.key === 'A') {
                 triggerAiShortAnswerDemo();
+            } else if (e.key === 'c' || e.key === 'C') {
+                fireConfetti();
+                playVictoryFanfare();
             } else if (e.code === 'Space') {
                 e.preventDefault();
                 const questionView = document.getElementById('view-question');
