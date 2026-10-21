@@ -2399,38 +2399,13 @@
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.15rem;">
                                 <div>
                                     <div style="font-size:0.95rem; font-weight:800; color:var(--text-heading);">Questions Requiring Review</div>
-                                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Detected cognitive traps and misconceptions</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;" id="analytics-traps-subtitle">Detected cognitive traps and misconceptions</div>
                                 </div>
-                                <span class="pill-status" style="background:#FEF3C7; color:#92400E; font-size:0.68rem; border:1px solid #FDE68A;">2 Traps Flagged</span>
+                                <span class="pill-status" id="analytics-traps-badge" style="background:#FEF3C7; color:#92400E; font-size:0.68rem; border:1px solid #FDE68A;">2 Traps Flagged</span>
                             </div>
+                            <div id="difficult-questions-container"></div>
 
-                            <!-- Trap 1 -->
-                            <div class="difficult-q-card">
-                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.25rem;">
-                                    <span style="font-size:0.75rem; font-weight:700; color:#92400E;">Q3 · Direct-Mapped Line Index Formula</span>
-                                    <span style="font-size:0.7rem; font-family:var(--font-mono); color:var(--rose-danger); font-weight:700;">38% Correct</span>
-                                </div>
-                                <p style="font-size:0.78rem; color:var(--text-body); margin-bottom:0.4rem; line-height:1.4;">
-                                    <strong>Common Misconception:</strong> 44% of students picked <em>Index = Tag mod Offset</em> instead of <em>(Block Address) mod (Cache Lines)</em>.
-                                </p>
-                                <div style="font-size:0.72rem; color:var(--sage-primary); font-weight:600; background:var(--sage-light); padding:0.25rem 0.5rem; border-radius:3px;">
-                                    💡 <strong>Pedagogical Advice:</strong> Review bitfield extraction (Tag, Index, Offset) in next recitation before midterms.
-                                </div>
-                            </div>
 
-                            <!-- Trap 2 -->
-                            <div class="difficult-q-card" style="border-left-color:#F59E0B; margin-bottom:0;">
-                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.25rem;">
-                                    <span style="font-size:0.75rem; font-weight:700; color:#92400E;">Q4 · AMAT Latency Calculation</span>
-                                    <span style="font-size:0.7rem; font-family:var(--font-mono); color:var(--rose-danger); font-weight:700;">45% Correct</span>
-                                </div>
-                                <p style="font-size:0.78rem; color:var(--text-body); margin-bottom:0.4rem; line-height:1.4;">
-                                    <strong>Common Misconception:</strong> 31% forgot to multiply miss penalty (100ns) by miss rate (0.10), answering 101ns.
-                                </p>
-                                <div style="font-size:0.72rem; color:var(--sage-primary); font-weight:600; background:var(--sage-light); padding:0.25rem 0.5rem; border-radius:3px;">
-                                    💡 <strong>Pedagogical Advice:</strong> Practice weighted average formulas on the board.
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -3172,7 +3147,7 @@
             };
             if (pageId === 'classes') renderStudentsRoster();
             if (pageId === 'quizzes') renderQuizzesTable();
-            if (pageId === 'analytics') renderAnalyticsView();
+            if (pageId === 'analytics') { populateAnalyticsQuizDropdown(activeAnalyticsCohort); renderAnalyticsView(); }
             const titleElem = document.getElementById('topbar-title-text');
             if (titleElem) titleElem.textContent = titleMap[pageId] || 'Workspace';
 
@@ -4829,6 +4804,9 @@ let quizzesRepository = [
 
             // 3. Render IRT Table
             renderAnalyticsIrtTable(data.irtItems);
+
+            // 4. Render Difficult Questions Spotlight
+            renderDifficultQuestions(activeAnalyticsQuiz);
         }
 
         function renderAnalyticsScorecardsTable(studentsList) {
@@ -4907,15 +4885,140 @@ let quizzesRepository = [
             });
         }
 
+        const QUIZ_TRAPS_DATA = {
+            '1': [
+                {
+                    title: "Q2 · Direct-Mapped Line Index Formula",
+                    successRate: "38%",
+                    misconception: "44% of students picked 'Tag mod Offset' instead of '(Block Address) mod (Cache Lines)'.",
+                    advice: "Review bitfield slicing (Tag, Index, Offset) in next recitation before midterms."
+                },
+                {
+                    title: "Q4 · AMAT Latency Calculation",
+                    successRate: "45%",
+                    misconception: "31% forgot to multiply miss penalty (100ns) by miss rate (0.10), answering 101ns.",
+                    advice: "Practice weighted average formula step-by-step on the board."
+                }
+            ],
+            '2': [
+                {
+                    title: "Q3 · Branch Misprediction Cycles in 5-Stage RISC",
+                    successRate: "42%",
+                    misconception: "36% of students answered 1 cycle penalty instead of 2 cycles penalty.",
+                    advice: "Trace the IF, ID, EX pipeline stages on the board to illustrate branch resolution timing."
+                },
+                {
+                    title: "Q1 · RAW Data Hazard vs. Structural Hazard",
+                    successRate: "54%",
+                    misconception: "28% confused register operand dependencies with hardware memory port collisions.",
+                    advice: "Contrast data dependency with hardware resource competition."
+                }
+            ],
+            '3': [
+                {
+                    title: "Q2 · Hardware Page Fault Exception Handling",
+                    successRate: "34%",
+                    misconception: "48% of students assumed a Page Fault immediately terminates the process with a kernel panic.",
+                    advice: "Clarify that Page Faults are recoverable hardware traps triggering transparent on-demand paging."
+                },
+                {
+                    title: "Q3 · Multi-Level Page Tables Memory Allocation",
+                    successRate: "44%",
+                    misconception: "32% thought multi-level paging reduces lookup latency rather than saving physical RAM for unallocated regions.",
+                    advice: "Emphasize non-contiguous memory benefits of hierarchical page directories."
+                }
+            ],
+            '4': [
+                {
+                    title: "Q1 · Dynamic Dispatch via vtable Resolution",
+                    successRate: "46%",
+                    misconception: "38% of students confused dynamic runtime method overriding with compile-time method overloading.",
+                    advice: "Walk through the Virtual Method Table (vtable) pointer resolution diagram."
+                },
+                {
+                    title: "Q4 · Abstract Class Instantiation Rules",
+                    successRate: "52%",
+                    misconception: "29% confused Java abstract class blueprints with pure interface contracts.",
+                    advice: "Review concrete vs abstract class instantiation constraints."
+                }
+            ]
+        };
+
+        function populateAnalyticsQuizDropdown(cohortVal) {
+            const select = document.getElementById('analytics-quiz-select');
+            if (!select) return;
+
+            const cohortQuizzes = quizzesRepository.filter(q => q.cohort === cohortVal);
+            select.innerHTML = '';
+
+            const allOpt = document.createElement('option');
+            allOpt.value = 'all';
+            allOpt.textContent = 'All ' + cohortVal + ' Quizzes (' + cohortQuizzes.length + ' Total)';
+            select.appendChild(allOpt);
+
+            cohortQuizzes.forEach((q, idx) => {
+                const opt = document.createElement('option');
+                opt.value = String(q.id);
+                opt.textContent = q.title;
+                if (idx === 0) {
+                    opt.selected = true;
+                    activeAnalyticsQuiz = String(q.id);
+                }
+                select.appendChild(opt);
+            });
+
+            if (cohortQuizzes.length === 0) {
+                activeAnalyticsQuiz = 'all';
+            }
+        }
+
+        function renderDifficultQuestions(quizId) {
+            const container = document.getElementById('difficult-questions-container');
+            const badge = document.getElementById('analytics-traps-badge');
+            const subtitle = document.getElementById('analytics-traps-subtitle');
+            if (!container) return;
+
+            let traps = QUIZ_TRAPS_DATA[quizId];
+            if (!traps) {
+                // Aggregate from cohort quizzes
+                const cohortQuizzes = quizzesRepository.filter(q => q.cohort === activeAnalyticsCohort);
+                const firstQuizId = cohortQuizzes[0] ? String(cohortQuizzes[0].id) : '1';
+                traps = QUIZ_TRAPS_DATA[firstQuizId] || QUIZ_TRAPS_DATA['1'];
+            }
+
+            if (badge) badge.textContent = traps.length + ' Traps Flagged';
+            if (subtitle) {
+                const quizObj = quizzesRepository.find(q => String(q.id) === String(quizId));
+                subtitle.textContent = quizObj ? ('Detected cognitive traps for ' + quizObj.title) : 'Detected cognitive traps across cohort';
+            }
+
+            container.innerHTML = traps.map((t, idx) => `
+                <div class="difficult-q-card" style="${idx === traps.length - 1 ? 'margin-bottom:0;' : ''}">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.25rem;">
+                        <span style="font-size:0.75rem; font-weight:700; color:#92400E;">${t.title}</span>
+                        <span style="font-size:0.7rem; font-family:var(--font-mono); color:var(--rose-danger); font-weight:700;">${t.successRate} Correct</span>
+                    </div>
+                    <p style="font-size:0.78rem; color:var(--text-body); margin-bottom:0.4rem; line-height:1.4;">
+                        <strong>Common Misconception:</strong> ${t.misconception}
+                    </p>
+                    <div style="font-size:0.72rem; color:var(--sage-primary); font-weight:600; background:var(--sage-light); padding:0.25rem 0.5rem; border-radius:3px;">
+                        💡 <strong>Pedagogical Advice:</strong> ${t.advice}
+                    </div>
+                </div>
+            `).join('');
+        }
+
         function updateAnalyticsCohort(cohortVal) {
             activeAnalyticsCohort = cohortVal;
+            populateAnalyticsQuizDropdown(cohortVal);
             renderAnalyticsView();
-            showToast('Loaded analytics for ' + cohortVal);
+            showToast('Loaded analytics for ' + cohortVal + ' (Quizzes filtered)');
         }
 
         function updateAnalyticsQuiz(quizVal) {
             activeAnalyticsQuiz = quizVal;
-            showToast(quizVal === 'all' ? 'Displaying aggregated cohort results' : 'Filtering results for Quiz ' + quizVal);
+            renderDifficultQuestions(quizVal);
+            showToast(quizVal === 'all' ? 'Displaying aggregated cohort results' : 'Filtered analytics for Quiz ' + quizVal);
         }
 
         function filterAnalyticsGroupByButton(grp, btn) {
