@@ -2703,10 +2703,15 @@
                         <button class="btn btn-secondary btn-sm" onclick="window.print()">
                             <span>📄 Print Dossier</span>
                         </button>
-                        <button class="btn btn-primary btn-sm" onclick="saveTeacherProfile()">
+                        <button class="btn btn-primary btn-sm btn-update-profile" onclick="saveTeacherProfile(this)">
                             <span>Update Profile</span>
                         </button>
                     </div>
+                </div>
+
+                <!-- Instant Save Confirmation Banner -->
+                <div id="profile-save-banner" style="display:none; background:rgba(46, 125, 50, 0.1); border:1px solid rgba(46, 125, 50, 0.3); color:var(--mint-success); padding:0.85rem 1.25rem; border-radius:var(--radius-sm); font-weight:700; font-size:0.85rem; margin-bottom:1.25rem; align-items:center; gap:0.6rem;">
+                    <span>✓ Academic profile and coordinates successfully updated and synchronized across all views.</span>
                 </div>
 
                 <!-- 1. Hero Faculty Card -->
@@ -2896,6 +2901,16 @@
                         <div style="margin-top:1rem;">
                             <label style="font-size:0.75rem; font-weight:700; color:var(--text-heading); margin-bottom:0.35rem; display:block;">Syllabus Note for Students</label>
                             <input type="text" id="profile-input-welcome-note" class="form-input-field" value="Welcome to this semester's interactive sessions! Keep your smartphones ready for real-time formative checkpoints.">
+                        </div>
+
+                        <!-- Bottom Save Action Bar -->
+                        <div style="display:flex; justify-content:flex-end; align-items:center; gap:0.75rem; padding-top:1.25rem; border-top:1px solid var(--border-warm); margin-top:1.25rem;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="openStudentProfilePreview()">
+                                <span>👁 Preview Student Syllabus Card</span>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm btn-update-profile" onclick="saveTeacherProfile(this)">
+                                <span>Update Profile</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -5817,51 +5832,70 @@ let quizzesRepository = [
             showToast('✅ Preferences and default quiz rules saved successfully!');
         }
 
-        function saveTeacherProfile() {
-            const name = document.getElementById('profile-input-name').value.trim() || 'Dr. Amina Benali';
-            const email = document.getElementById('profile-input-email').value.trim() || 'a.benali@esi.dz';
-            const office = document.getElementById('profile-input-office').value.trim();
-            const hours = document.getElementById('profile-input-hours').value.trim();
-            const teams = document.getElementById('profile-input-teams').value.trim();
-            const dept = document.getElementById('profile-input-dept').value.trim();
-            const lab = document.getElementById('profile-input-lab').value.trim();
-            const axes = document.getElementById('profile-input-axes').value.trim();
-            const phd = document.getElementById('profile-input-phd').value.trim();
-            const orcid = document.getElementById('profile-input-orcid').value.trim();
-            const bio = document.getElementById('profile-input-bio').value.trim();
-            const welcomeNote = document.getElementById('profile-input-welcome-note').value.trim();
+        function extractInitials(fullName) {
+            if (!fullName) return 'AB';
+            const clean = fullName.replace(/^(Dr\.|Prof\.|Doctor|Professor|M\.|Mme)\s+/i, '').trim();
+            const parts = clean.split(/\s+/).filter(Boolean);
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+            } else if (parts.length === 1 && parts[0].length >= 2) {
+                return parts[0].slice(0, 2).toUpperCase();
+            } else if (parts.length === 1) {
+                return parts[0][0].toUpperCase();
+            }
+            return 'AB';
+        }
 
-            // Update DOM representations
+        function saveTeacherProfile(triggerBtn = null) {
+            const name = (document.getElementById('profile-input-name')?.value || '').trim() || 'Dr. Amina Benali';
+            const email = (document.getElementById('profile-input-email')?.value || '').trim() || 'a.benali@esi.dz';
+            const office = (document.getElementById('profile-input-office')?.value || '').trim();
+            const hours = (document.getElementById('profile-input-hours')?.value || '').trim();
+            const teams = (document.getElementById('profile-input-teams')?.value || '').trim();
+            const phone = (document.getElementById('profile-input-phone')?.value || '').trim();
+            const dept = (document.getElementById('profile-input-dept')?.value || '').trim() || 'Département Architecture & Systèmes';
+            const lab = (document.getElementById('profile-input-lab')?.value || '').trim();
+            const axes = (document.getElementById('profile-input-axes')?.value || '').trim();
+            const phd = (document.getElementById('profile-input-phd')?.value || '').trim();
+            const orcid = (document.getElementById('profile-input-orcid')?.value || '').trim();
+            const bio = (document.getElementById('profile-input-bio')?.value || '').trim();
+            const welcomeNote = (document.getElementById('profile-input-welcome-note')?.value || '').trim();
+
+            // 1. Update DOM representations in Profile view
             const profileDisplay = document.getElementById('profile-name-display');
             if (profileDisplay) profileDisplay.textContent = name;
 
             const deptDisplay = document.getElementById('profile-dept-display');
             if (deptDisplay) deptDisplay.textContent = dept + ' · ESI Algiers';
 
-            const initials = name.replace('Dr. ', '').split(' ').map(w => w[0]).slice(0, 2).join('');
+            const initials = extractInitials(name);
             const profileAvatar = document.getElementById('profile-avatar-display');
-            if (profileAvatar && !profileAvatar.style.backgroundImage.includes('url')) {
+            if (profileAvatar && (!profileAvatar.style.backgroundImage || !profileAvatar.style.backgroundImage.includes('url'))) {
                 profileAvatar.textContent = initials;
             }
 
-            // Update sidebar footer
-            const userMeta = document.querySelector('.sidebar-user-footer .user-meta-info h4');
-            if (userMeta) userMeta.textContent = name;
+            // 2. Update sidebar footer identity
+            const userMetaName = document.querySelector('.sidebar-user-footer .user-meta-info h4');
+            if (userMetaName) userMetaName.textContent = name;
+            const userMetaDept = document.querySelector('.sidebar-user-footer .user-meta-info p');
+            if (userMetaDept) userMetaDept.textContent = dept + ' · ESI';
+
             const userAvatar = document.querySelector('.sidebar-user-footer .user-avatar-circle');
-            if (userAvatar && !userAvatar.style.backgroundImage.includes('url')) {
+            if (userAvatar && (!userAvatar.style.backgroundImage || !userAvatar.style.backgroundImage.includes('url'))) {
                 userAvatar.textContent = initials;
             }
 
-            // Update topbar welcome text if present
+            // 3. Update topbar welcome text
             const welcomeGreeting = document.querySelector('.welcome-hero-intro h2');
             if (welcomeGreeting) welcomeGreeting.textContent = 'Welcome back, ' + name + '! 👋';
 
-            // Persist all fields to localStorage
+            // 4. Persist all profile fields to localStorage
             localStorage.setItem('bloom_profile_name', name);
             localStorage.setItem('bloom_profile_email', email);
             localStorage.setItem('bloom_profile_office', office);
             localStorage.setItem('bloom_profile_hours', hours);
             localStorage.setItem('bloom_profile_teams', teams);
+            localStorage.setItem('bloom_profile_phone', phone);
             localStorage.setItem('bloom_profile_dept', dept);
             localStorage.setItem('bloom_profile_lab', lab);
             localStorage.setItem('bloom_profile_axes', axes);
@@ -5870,6 +5904,41 @@ let quizzesRepository = [
             localStorage.setItem('bloom_profile_bio', bio);
             localStorage.setItem('bloom_profile_welcome_note', welcomeNote);
 
+            // Backward compatibility with legacy teacher_info object
+            const teacherInfo = {
+                firstName: name.replace(/^(Dr\.|Prof\.)\s+/i, '').split(/\s+/)[0] || 'Amina',
+                lastName: name.replace(/^(Dr\.|Prof\.)\s+/i, '').split(/\s+/).slice(1).join(' ') || 'Benali',
+                email: email,
+                office: office,
+                department: dept
+            };
+            localStorage.setItem('teacher_info', JSON.stringify(teacherInfo));
+
+            // 5. Visual button feedback: change ALL update profile buttons to green "✓ Saved!"
+            document.querySelectorAll('.btn-update-profile').forEach(btn => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<span>✓ Saved & Updated!</span>';
+                btn.style.background = 'var(--mint-success)';
+                btn.style.borderColor = 'var(--mint-success)';
+                btn.style.color = '#FFFFFF';
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 2200);
+            });
+
+            // 6. Show inline success banner
+            const banner = document.getElementById('profile-save-banner');
+            if (banner) {
+                banner.style.display = 'flex';
+                setTimeout(() => {
+                    banner.style.display = 'none';
+                }, 4000);
+            }
+
+            // 7. Toast alert
             showToast('✅ Faculty dossier updated and synced for ' + name);
         }
 
@@ -5892,7 +5961,7 @@ let quizzesRepository = [
                     if (document.getElementById('profile-input-name')) document.getElementById('profile-input-name').value = savedName;
                     const profileDisplay = document.getElementById('profile-name-display');
                     if (profileDisplay) profileDisplay.textContent = savedName;
-                    const initials = savedName.replace('Dr. ', '').split(' ').map(w => w[0]).slice(0, 2).join('');
+                    const initials = extractInitials(savedName);
                     const profileAvatar = document.getElementById('profile-avatar-display');
                     if (profileAvatar) profileAvatar.textContent = initials;
                     const userMeta = document.querySelector('.sidebar-user-footer .user-meta-info h4');
@@ -5903,6 +5972,15 @@ let quizzesRepository = [
                     if (welcomeGreeting) welcomeGreeting.textContent = 'Welcome back, ' + savedName + '! 👋';
                 }
 
+                const savedDept = localStorage.getItem('bloom_profile_dept');
+                if (savedDept) {
+                    if (document.getElementById('profile-input-dept')) document.getElementById('profile-input-dept').value = savedDept;
+                    const deptDisplay = document.getElementById('profile-dept-display');
+                    if (deptDisplay) deptDisplay.textContent = savedDept + ' · ESI Algiers';
+                    const userMetaDept = document.querySelector('.sidebar-user-footer .user-meta-info p');
+                    if (userMetaDept) userMetaDept.textContent = savedDept + ' · ESI';
+                }
+
                 const savedEmail = localStorage.getItem('bloom_profile_email');
                 if (savedEmail && document.getElementById('profile-input-email')) document.getElementById('profile-input-email').value = savedEmail;
                 const savedOffice = localStorage.getItem('bloom_profile_office');
@@ -5911,8 +5989,8 @@ let quizzesRepository = [
                 if (savedHours && document.getElementById('profile-input-hours')) document.getElementById('profile-input-hours').value = savedHours;
                 const savedTeams = localStorage.getItem('bloom_profile_teams');
                 if (savedTeams && document.getElementById('profile-input-teams')) document.getElementById('profile-input-teams').value = savedTeams;
-                const savedDept = localStorage.getItem('bloom_profile_dept');
-                if (savedDept && document.getElementById('profile-input-dept')) document.getElementById('profile-input-dept').value = savedDept;
+                const savedPhone = localStorage.getItem('bloom_profile_phone');
+                if (savedPhone && document.getElementById('profile-input-phone')) document.getElementById('profile-input-phone').value = savedPhone;
                 const savedLab = localStorage.getItem('bloom_profile_lab');
                 if (savedLab && document.getElementById('profile-input-lab')) document.getElementById('profile-input-lab').value = savedLab;
                 const savedAxes = localStorage.getItem('bloom_profile_axes');
