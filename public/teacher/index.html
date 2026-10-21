@@ -2397,60 +2397,106 @@
     </div>
 
     <!-- ========================================================
-         MODAL: AI QUIZ STUDIO (Integrated Lavender Workspace)
+         MODAL: AI QUIZ STUDIO (Course Documentation Powered)
          ======================================================== -->
     <div id="modal-ai-quiz-studio" class="modal-shade">
-        <div class="form-dialog" style="max-width:680px;">
+        <div class="form-dialog" style="max-width:720px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
                 <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <span style="font-size:1.25rem;">✨</span>
-                    <h3 style="font-size:1.15rem; font-weight:800; color:var(--ai-lavender);">Bloom AI Quiz Studio</h3>
+                    <span style="font-size:1.35rem;">✨</span>
+                    <div>
+                        <h3 style="font-size:1.15rem; font-weight:800; color:var(--ai-lavender); letter-spacing:-0.015em;">Bloom AI Quiz Studio</h3>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.1rem;">Synthesize calibrated quiz questions directly from your official Course Documentation</p>
+                    </div>
                 </div>
                 <button class="btn btn-secondary btn-sm" onclick="closeAiStudioModal()">✕</button>
             </div>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem;">
-                Synthesize structured formative questions from your course lecture notes or syllabus excerpt using Edge NLP.
-            </p>
 
-            <div class="form-group-item">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
-                    <label style="margin-bottom:0;">Lecture Notes or Slides Text</label>
-                    <button type="button" class="btn btn-secondary btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem;" onclick="loadSampleLectureNotes()">
-                        Load Sample Note
-                    </button>
+            <!-- Course Documentation Source Selection -->
+            <div style="background:var(--bg-canvas); border:1px solid var(--border-warm); border-radius:var(--radius-md); padding:1rem; margin:1rem 0 1.25rem;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.65rem;">
+                    <span style="font-size:0.78rem; font-weight:700; color:var(--text-heading); text-transform:uppercase; letter-spacing:0.04em;">1. Select Course Documentation Source</span>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <input type="file" id="ai-course-doc-upload" accept=".txt,.md,.pdf,.doc,.docx" onchange="handleCourseDocFileUpload(event)" style="display:none;">
+                        <button type="button" class="btn btn-secondary btn-sm" style="font-size:0.72rem; padding:0.25rem 0.6rem;" onclick="document.getElementById('ai-course-doc-upload').click()">
+                            <span>📁 Upload Document (PDF/TXT)</span>
+                        </button>
+                    </div>
                 </div>
-                <textarea id="ai-lecture-text" class="form-input-field" rows="4" placeholder="Paste your course notes or concept definitions here..."></textarea>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
+                    <div class="form-group-item" style="margin-bottom:0;">
+                        <label style="font-size:0.75rem;">Pre-Loaded Course Curriculum</label>
+                        <select id="ai-course-select" class="form-input-field" onchange="loadSelectedCourseDocumentation(this.value)">
+                            <option value="ARCHI" selected>🏛 Architecture des Ordinateurs (ARCHI - 1CP)</option>
+                            <option value="SYS">💻 Systèmes d'Exploitation 1 (SYS 1 - 2CP)</option>
+                            <option value="POO">☕ Programmation Orientée Objet (POO - 1CS)</option>
+                            <option value="RESEAU">🌐 Réseaux Informatiques & Télécoms (RESEAU - 1CS)</option>
+                            <option value="BD">🗄 Bases de Données Relationnelles (BD - 2CP)</option>
+                        </select>
+                    </div>
+                    <div class="form-group-item" style="margin-bottom:0;">
+                        <label style="font-size:0.75rem;">Curriculum Chapter / Topic</label>
+                        <select id="ai-chapter-select" class="form-input-field" onchange="loadSelectedChapterDocumentation()">
+                            <option value="ch1" selected>Chapter 3: Cache Memory & Direct Mappings</option>
+                            <option value="ch2">Chapter 4: CPU Pipelining & Hazard Resolution</option>
+                            <option value="ch3">Chapter 5: Memory Hierarchy & AMAT Latency</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Course Documentation Editor / Inspector -->
+                <div class="form-group-item" style="margin-bottom:0.5rem;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.3rem;">
+                        <label style="margin-bottom:0; font-size:0.75rem;">Course Documentation Excerpt (Used by Edge NLP)</label>
+                        <span id="ai-doc-char-count" style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-mono);">Loaded: 420 chars</span>
+                    </div>
+                    <textarea id="ai-lecture-text" class="form-input-field" rows="4" placeholder="Course syllabus or lecture text loaded here..." oninput="updateCourseDocStats()"></textarea>
+                </div>
+
+                <!-- Detected Concepts Tag Cloud -->
+                <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem;">
+                    <span style="font-size:0.68rem; font-weight:700; color:var(--text-muted);">Key Concepts Detected:</span>
+                    <span id="ai-detected-concepts-strip" style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                        <!-- Injected dynamically -->
+                    </span>
+                </div>
             </div>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
-                <div class="form-group-item">
-                    <label>Questions Count</label>
+            <!-- Quiz Generation Settings -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+                <div class="form-group-item" style="margin-bottom:0;">
+                    <label style="font-size:0.75rem;">Questions Count</label>
                     <select id="ai-count-select" class="form-input-field">
                         <option value="3" selected>3 Questions</option>
                         <option value="5">5 Questions</option>
+                        <option value="8">8 Questions</option>
                         <option value="10">10 Questions</option>
                     </select>
                 </div>
-                <div class="form-group-item">
-                    <label>Difficulty Level</label>
+                <div class="form-group-item" style="margin-bottom:0;">
+                    <label style="font-size:0.75rem;">Cognitive Depth & Difficulty</label>
                     <select id="ai-diff-select" class="form-input-field">
-                        <option value="easy">Easy (Definitions & Concepts)</option>
-                        <option value="medium" selected>Medium (Application & Analysis)</option>
-                        <option value="hard">Hard (Psychometric Edge Cases)</option>
+                        <option value="easy">Foundational (Definitions & Principles)</option>
+                        <option value="medium" selected>Application & Analysis (Formulas & Traps)</option>
+                        <option value="hard">Advanced (Diagnostic & Psychometric)</option>
                     </select>
                 </div>
             </div>
 
-            <button type="button" class="btn btn-ai btn-sm" id="btn-trigger-ai-gen" onclick="executeAiQuizGeneration()" style="width:100%; margin-top:0.25rem;">
-                <span>✨ Generate Questions with AI</span>
+            <button type="button" class="btn btn-ai btn-sm" id="btn-trigger-ai-gen" onclick="executeAiQuizGeneration()" style="width:100%; padding:0.6rem;">
+                <span>✨ Generate Quiz from Course Documentation</span>
             </button>
 
             <!-- Verification & Preview Section (Teacher must inspect before publishing!) -->
             <div id="ai-verification-box" style="display:none; margin-top:1.25rem; border-top:1px solid var(--border-warm); padding-top:1rem;">
-                <div style="font-size:0.82rem; font-weight:700; color:var(--ai-lavender); margin-bottom:0.75rem;">
-                    Generated Proposal (Verify & Edit Before Accepting):
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+                    <div style="font-size:0.82rem; font-weight:700; color:var(--ai-lavender);">
+                        Generated Proposal (Verify & Edit Before Accepting):
+                    </div>
+                    <span style="font-size:0.72rem; color:var(--text-muted);" id="ai-proposal-stats">3 Questions Generated</span>
                 </div>
-                <div id="ai-generated-cards-container" style="display:flex; flex-direction:column; gap:0.75rem; max-height:220px; overflow-y:auto;">
+                <div id="ai-generated-cards-container" style="display:flex; flex-direction:column; gap:0.75rem; max-height:260px; overflow-y:auto; padding-right:0.25rem;">
                     <!-- AI cards rendered here -->
                 </div>
 
@@ -3744,6 +3790,155 @@ let quizzesRepository = [
                 "Cache memory sits between the CPU and main RAM. Direct-mapped cache maps every memory block to line index = (Block Address) mod (Cache Lines). Conflict misses occur when multiple blocks map to the same line. Fully associative caches eliminate conflict misses completely.";
         }
 
+        
+        // ========================================================
+        // OFFICIAL COURSE DOCUMENTATION REPOSITORY (Domain Syllabi)
+        // ========================================================
+        const COURSE_DOCUMENTATION_LIBRARY = {
+            ARCHI: {
+                name: "Architecture des Ordinateurs",
+                level: "1CP",
+                chapters: {
+                    ch1: {
+                        name: "Chapter 3: Cache Memory & Direct Mappings",
+                        text: "Cache memory sits directly between the high-speed CPU registers and synchronous main RAM. Direct-mapped cache maps every memory block to line index = (Block Address) mod (Cache Lines). Conflict misses occur when multiple memory blocks contend for the exact same cache line. Fully associative cache eliminates conflict misses completely by searching all lines in parallel. Write-Through updates cache and RAM simultaneously, whereas Write-Back marks modified lines with a dirty bit.",
+                        concepts: ["Cache Memory", "Direct-Mapped", "Line Index Formula", "Conflict Misses", "Fully Associative", "Write-Through", "Dirty Bit"]
+                    },
+                    ch2: {
+                        name: "Chapter 4: CPU Pipelining & Hazard Resolution",
+                        text: "Instruction pipelining divides execution into 5 classic RISC stages: Instruction Fetch (IF), Instruction Decode (ID), Execute (EX), Memory Access (MEM), and Write Back (WB). Structural hazards occur when hardware resources cannot support overlapping execution. Data hazards occur when instructions exhibit Read-After-Write (RAW) dependencies. Data forwarding and register bypassing resolve RAW hazards without introducing stall cycles. Branch mispredictions introduce pipeline bubbles causing cycle penalties.",
+                        concepts: ["5-Stage RISC", "RAW Hazard", "Structural Hazard", "Data Forwarding", "Register Bypassing", "Pipeline Bubble", "Branch Penalty"]
+                    },
+                    ch3: {
+                        name: "Chapter 5: Memory Hierarchy & AMAT Latency",
+                        text: "The computer memory hierarchy organizes storage tiers from fastest to slowest: CPU Registers, L1 Cache, L2 Cache, L3 Cache, Main DRAM, and NVMe Flash Storage. Average Memory Access Time (AMAT) is computed as AMAT = Hit Time + (Miss Rate * Miss Penalty). Compulsory misses occur on the very first access to a block. Capacity misses occur when the working set exceeds total cache volume. Spatial locality groups adjacent memory words together into cache blocks.",
+                        concepts: ["AMAT Formula", "Memory Hierarchy", "Hit Time", "Miss Penalty", "Compulsory Misses", "Capacity Misses", "Spatial Locality"]
+                    }
+                }
+            },
+            SYS: {
+                name: "Systèmes d'Exploitation 1",
+                level: "2CP",
+                chapters: {
+                    ch1: {
+                        name: "Chapter 4: Virtual Memory & Page Tables",
+                        text: "Virtual memory decouples process virtual address spaces from physical DRAM using hardware paging. A Virtual Address is divided into a Virtual Page Number (VPN) and an Offset. The Translation Lookaside Buffer (TLB) acts as a high-speed hardware cache for page table mappings. When a referenced page is not resident in physical RAM, the CPU generates a hardware Page Fault exception trap to the OS kernel. The kernel retrieves the missing page from disk swap space into an available frame.",
+                        concepts: ["Virtual Memory", "Paging", "VPN & Offset", "TLB Translation", "Page Fault Trap", "Disk Swap Frame", "Page Table Entries"]
+                    },
+                    ch2: {
+                        name: "Chapter 5: Process Concurrency & Mutual Exclusion",
+                        text: "A Process possesses an isolated virtual address space and file descriptors, whereas Threads belonging to the same process share heap, code, and global data segments. A Critical Section is a region of code accessing shared mutable resources. Mutual exclusion prevents race conditions using atomic test-and-set instructions, spinlocks, and semaphores. A Deadlock occurs when Coffman's four conditions hold: Mutual Exclusion, Hold and Wait, No Preemption, and Circular Wait.",
+                        concepts: ["Process vs Thread", "Critical Section", "Race Conditions", "Atomic Test-and-Set", "Spinlocks & Semaphores", "Coffman Deadlock Conditions"]
+                    }
+                }
+            },
+            POO: {
+                name: "Programmation Orientée Objet",
+                level: "1CS",
+                chapters: {
+                    ch1: {
+                        name: "Chapter 2: Inheritance & Runtime Polymorphism",
+                        text: "In Object-Oriented Programming, Encapsulation hides object state behind private fields and exposes public accessors. Inheritance allows subclasses to inherit and extend superclass behavior using the 'extends' keyword. Dynamic Polymorphism (method overriding) resolves function calls at runtime through a Virtual Method Table (vtable). Method Overloading is compile-time polymorphism with identical names but distinct parameter signatures. An Interface defines an abstract contract of method signatures without implementation.",
+                        concepts: ["Encapsulation", "Inheritance (extends)", "Dynamic Polymorphism", "vtable Resolution", "Method Overloading", "Abstract Interfaces", "Single Responsibility"]
+                    }
+                }
+            },
+            RESEAU: {
+                name: "Réseaux Informatiques & Protocoles",
+                level: "1CS",
+                chapters: {
+                    ch1: {
+                        name: "Chapter 3: OSI Model & Transport Layer",
+                        text: "The OSI 7-Layer model categorizes communication into Physical, Data Link, Network, Transport, Session, Presentation, and Application layers. The Transmission Control Protocol (TCP) operates at Layer 4, providing connection-oriented, reliable byte-stream transmission with three-way handshakes (SYN, SYN-ACK, ACK) and flow control. The User Datagram Protocol (UDP) is connectionless and lightweight with zero transmission acknowledgment overhead, ideal for real-time media and DNS.",
+                        concepts: ["OSI 7 Layers", "Transport Layer 4", "TCP 3-Way Handshake", "Reliable Delivery", "UDP Datagrams", "Flow Control", "Port Multiplexing"]
+                    }
+                }
+            },
+            BD: {
+                name: "Bases de Données Relationnelles",
+                level: "2CP",
+                chapters: {
+                    ch1: {
+                        name: "Chapter 2: Relational Schema & ACID Transactions",
+                        text: "A relational database organizes data into tables consisting of rows (tuples) and columns (attributes). A Primary Key uniquely identifies each row in a relation, while a Foreign Key enforces referential integrity between tables. Relational normalization decomposes relations to eliminate update anomalies: 1NF requires atomic values, 2NF eliminates partial dependencies, and 3NF removes transitive dependencies. Database transactions enforce ACID properties: Atomicity, Consistency, Isolation, and Durability.",
+                        concepts: ["Relational Algebra", "Primary & Foreign Keys", "Referential Integrity", "1NF 2NF 3NF Normalization", "ACID Transactions", "Atomic Tuples"]
+                    }
+                }
+            }
+        };
+
+        function loadSelectedCourseDocumentation(courseCode) {
+            const course = COURSE_DOCUMENTATION_LIBRARY[courseCode];
+            if (!course) return;
+
+            // Populate chapters dropdown
+            const chapSelect = document.getElementById('ai-chapter-select');
+            chapSelect.innerHTML = '';
+            for (const [key, chap] of Object.entries(course.chapters)) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = chap.name;
+                chapSelect.appendChild(opt);
+            }
+
+            loadSelectedChapterDocumentation();
+        }
+
+        function loadSelectedChapterDocumentation() {
+            const courseCode = document.getElementById('ai-course-select').value;
+            const chapKey = document.getElementById('ai-chapter-select').value;
+            const course = COURSE_DOCUMENTATION_LIBRARY[courseCode];
+            if (!course || !course.chapters[chapKey]) return;
+
+            const chap = course.chapters[chapKey];
+            document.getElementById('ai-lecture-text').value = chap.text;
+            renderDetectedCourseConcepts(chap.concepts);
+            updateCourseDocStats();
+        }
+
+        function updateCourseDocStats() {
+            const text = document.getElementById('ai-lecture-text').value;
+            const charCountEl = document.getElementById('ai-doc-char-count');
+            if (charCountEl) charCountEl.textContent = 'Loaded: ' + text.length + ' chars';
+
+            // Auto-detect concepts dynamically if custom text
+            const words = text.match(/\b[A-Z][a-zA-Z0-9_-]{2,}\b/g) || [];
+            const unique = [...new Set(words)].slice(0, 6);
+            if (unique.length > 0) {
+                renderDetectedCourseConcepts(unique);
+            }
+        }
+
+        function renderDetectedCourseConcepts(concepts) {
+            const strip = document.getElementById('ai-detected-concepts-strip');
+            if (!strip) return;
+            strip.innerHTML = concepts.map(c => 
+                '<span class="pill-status" style="background:var(--sage-light); color:var(--sage-primary); font-size:0.65rem; border:1px solid var(--sage-border); padding:0.12rem 0.45rem;">' + c + '</span>'
+            ).join('');
+        }
+
+        function handleCourseDocFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                document.getElementById('ai-lecture-text').value = content;
+                showToast('📁 Loaded course document: ' + file.name + ' (' + content.length + ' chars)');
+                updateCourseDocStats();
+            };
+            reader.readAsText(file);
+        }
+
+        // Initialize course docs when opening AI Studio
+        const originalOpenAiStudioModal = openAiStudioModal;
+        openAiStudioModal = function() {
+            document.getElementById('modal-ai-quiz-studio').classList.add('active');
+            loadSelectedCourseDocumentation('ARCHI');
+        };
+
+
         let pendingAiGeneratedQuestions = [];
 
         function getAiQuestionPrompt(q) {
@@ -3779,13 +3974,18 @@ let quizzesRepository = [
         function executeAiQuizGeneration() {
             const text = document.getElementById('ai-lecture-text').value.trim();
             if (!text) {
-                alert('Please enter or paste lecture notes first.');
+                alert('Please enter, select, or upload course documentation first.');
                 return;
             }
 
+            const courseCode = document.getElementById('ai-course-select') ? document.getElementById('ai-course-select').value : 'ARCHI';
+            const courseMeta = (typeof COURSE_DOCUMENTATION_LIBRARY !== 'undefined' && COURSE_DOCUMENTATION_LIBRARY[courseCode]) 
+                ? COURSE_DOCUMENTATION_LIBRARY[courseCode] 
+                : { name: 'ARCHI', level: '1CP' };
+
             const btn = document.getElementById('btn-trigger-ai-gen');
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳ Synthesizing with Edge AI...</span>';
+            btn.innerHTML = '<span>⏳ Synthesizing from Course Documentation...</span>';
 
             fetch('/api/ai/generate-quiz', {
                 method: 'POST',
@@ -3793,8 +3993,8 @@ let quizzesRepository = [
                 body: JSON.stringify({
                     mode: 'notes',
                     notesText: text,
-                    moduleName: 'ARCHI',
-                    level: '1CP',
+                    moduleName: courseMeta.name,
+                    level: courseMeta.level,
                     questionCount: parseInt(document.getElementById('ai-count-select').value) || 3,
                     difficulty: document.getElementById('ai-diff-select').value,
                     includeShortAnswer: false
