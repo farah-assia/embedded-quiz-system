@@ -12,20 +12,30 @@
 
     <style>
         :root {
-            --bg-stage: #0A0E17;
-            --surface-dark: #121824;
-            --surface-card: #182232;
-            --surface-elevated: #202D42;
-            --navy-primary: #153247;
-            --sage-primary: #3E6F58;
-            --sage-light: rgba(62, 111, 88, 0.2);
-            --gold-primary: #E5A83B;
-            --gold-light: #FDE68A;
-            --text-main: #F8FAFC;
-            --text-heading: #FFFFFF;
-            --text-muted: #94A3B8;
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-highlight: rgba(62, 111, 88, 0.45);
+            --bg-stage: #F8FAFC;
+            --surface-white: #FFFFFF;
+            --surface-subtle: #F1F5F9;
+            --surface-card: #FFFFFF;
+            --surface-elevated: #FFFFFF;
+            --surface-dark: #FFFFFF;
+            --navy-primary: #0F172A;
+            --sage-primary: #1E5D42;
+            --sage-light: #ECFDF5;
+            --sage-border: #A7F3D0;
+            --gold-primary: #D97706;
+            --gold-light: #FEF3C7;
+            --gold-border: #FDE68A;
+            --blue-primary: #2563EB;
+            --blue-light: #EFF6FF;
+            --crimson-primary: #DC2626;
+            --text-main: #334155;
+            --text-heading: #0F172A;
+            --text-muted: #64748B;
+            --border-subtle: #E2E8F0;
+            --border-highlight: #CBD5E1;
+            --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+            --shadow-card: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+            --shadow-pop: 0 20px 45px -8px rgba(15, 23, 42, 0.12);
             --color-a: #E11D48;
             --color-b: #2563EB;
             --color-c: #D97706;
@@ -49,9 +59,9 @@
             flex-direction: column;
             overflow: hidden;
             background-image: 
-                radial-gradient(circle at 10% 10%, rgba(245, 194, 66, 0.05) 0%, transparent 45%),
-                radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.06) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.6) 0%, transparent 75%);
+                radial-gradient(circle at 10% 10%, rgba(30, 93, 66, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.04) 0%, transparent 45%),
+                linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%);
         }
 
         /* Confetti Canvas */
@@ -65,15 +75,15 @@
             z-index: 999;
         }
 
-        /* ----------------- CINEMATIC TOP NAV ----------------- */
+        /* ----------------- CLEAN LIGHT AUDITORIUM NAV ----------------- */
         .projector-nav {
             padding: 0.85rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-subtle);
-            background: rgba(7, 12, 20, 0.92);
-            backdrop-filter: blur(16px);
+            background: #FFFFFF;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
             z-index: 20;
             flex-shrink: 0;
         }
@@ -94,21 +104,21 @@
             font-size: 1.85rem;
             font-weight: 900;
             letter-spacing: -0.03em;
-            color: #ffffff;
+            color: #0F172A;
             display: flex;
             align-items: center;
             gap: 0.15rem;
         }
 
         .brand-name span {
-            color: var(--gold-primary);
+            color: var(--sage-primary);
         }
 
         .pi-badge {
-            background: rgba(245, 194, 66, 0.12);
-            border: 1px solid rgba(245, 194, 66, 0.35);
-            color: var(--gold-light);
-            padding: 0.3rem 0.8rem;
+            background: var(--sage-light);
+            border: 1px solid var(--sage-border);
+            color: #065F46;
+            padding: 0.35rem 0.85rem;
             border-radius: 9999px;
             font-size: 0.8rem;
             font-weight: 700;
@@ -122,8 +132,8 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 8px #10b981;
+            background: #10B981;
+            box-shadow: 0 0 6px #10B981;
         }
 
         .network-bar {
@@ -133,7 +143,7 @@
         }
 
         .network-pill {
-            background: var(--surface-dark);
+            background: #F1F5F9;
             padding: 0.4rem 1rem;
             border-radius: 9999px;
             border: 1px solid var(--border-subtle);
@@ -141,15 +151,16 @@
             align-items: center;
             gap: 0.55rem;
             font-size: 0.88rem;
-            color: #e2e8f0;
+            color: #1E293B;
+            font-weight: 600;
         }
 
         .status-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 8px #10b981;
+            background: #10B981;
+            box-shadow: 0 0 6px #10B981;
             animation: pulseDot 2s infinite;
         }
 
@@ -165,9 +176,9 @@
         }
 
         .btn-ctrl {
-            background: var(--surface-dark);
+            background: #FFFFFF;
             border: 1px solid var(--border-subtle);
-            color: #e2e8f0;
+            color: #334155;
             padding: 0.45rem 0.85rem;
             border-radius: 8px;
             font-size: 0.82rem;
@@ -177,18 +188,19 @@
             align-items: center;
             gap: 0.4rem;
             transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
         }
 
         .btn-ctrl:hover {
-            background: var(--surface-card);
-            border-color: var(--sage-primary);
-            color: #ffffff;
+            background: #F8FAFC;
+            border-color: #CBD5E1;
+            color: #0F172A;
         }
 
         .stage-switcher-group {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.35);
+            background: #F1F5F9;
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
             padding: 3px;
@@ -199,7 +211,7 @@
             background: transparent;
             border: none;
             color: var(--text-muted);
-            padding: 0.35rem 0.85rem;
+            padding: 0.4rem 0.95rem;
             border-radius: 7px;
             font-size: 0.82rem;
             font-weight: 700;
@@ -211,14 +223,14 @@
         }
 
         .btn-stage-switch:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.06);
+            color: #0F172A;
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .btn-stage-switch.active {
-            background: var(--sage-primary);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(62, 111, 88, 0.4);
+            background: #0F172A;
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
         }
 
         .academic-term-pill {
@@ -226,12 +238,12 @@
             align-items: center;
             gap: 0.5rem;
             background: var(--sage-light);
-            border: 1px solid rgba(62, 111, 88, 0.4);
-            color: #A7F3D0;
+            border: 1px solid var(--sage-border);
+            color: #065F46;
             padding: 0.35rem 1rem;
             border-radius: 9999px;
             font-size: 0.82rem;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.05em;
             text-transform: uppercase;
             margin-bottom: 0.75rem;
@@ -241,23 +253,24 @@
             display: inline-flex;
             align-items: center;
             gap: 0.65rem;
-            background: var(--surface-dark);
+            background: #FFFFFF;
             border: 1px solid var(--border-subtle);
             padding: 0.45rem 1.25rem;
             border-radius: 9999px;
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-top: 0.85rem;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
         }
         .faculty-lead-pill strong {
-            color: var(--text-heading);
+            color: #0F172A;
         }
         .faculty-lead-pill .faculty-avatar {
             width: 26px;
             height: 26px;
             border-radius: 50%;
-            background: var(--sage-primary);
-            color: #ffffff;
+            background: #0F172A;
+            color: #FFFFFF;
             font-size: 0.75rem;
             font-weight: 800;
             display: inline-flex;
@@ -266,10 +279,10 @@
         }
 
         .pin-badge-box {
-            background: #F1F5F9;
+            background: #F8FAFC;
             border: 2px dashed #CBD5E1;
             border-radius: 16px;
-            padding: 0.85rem 1.25rem;
+            padding: 0.85rem 1.5rem;
             margin-top: 1rem;
             width: 100%;
             display: flex;
@@ -286,9 +299,9 @@
         }
         .pin-digits {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 2.3rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.12em;
             color: #0F172A;
             line-height: 1;
         }
@@ -298,15 +311,17 @@
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            background: rgba(18, 24, 36, 0.9);
+            background: #FFFFFF;
             border: 1px solid var(--border-subtle);
             padding: 0.85rem 1.85rem;
             border-radius: 9999px;
             font-size: 0.95rem;
-            color: var(--text-muted);
+            color: #475569;
+            font-weight: 600;
             margin-top: 1.25rem;
             max-width: 900px;
             width: 100%;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
         }
         .pulse-ring {
             width: 10px;
@@ -350,7 +365,7 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* ================= 1. CINEMATIC LOBBY VIEW ================= */
+        /* ================= 1. CLEAN LIGHT AUDITORIUM LOBBY VIEW ================= */
         .lobby-container {
             width: 100%;
             display: flex;
@@ -365,20 +380,18 @@
         }
 
         .lobby-title {
-            font-size: 3.2rem;
+            font-size: 3.4rem;
             font-weight: 900;
             letter-spacing: -0.03em;
             line-height: 1.15;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #0F172A;
         }
 
         .lobby-subtitle {
             font-size: 1.25rem;
             color: var(--text-muted);
-            max-width: 720px;
+            max-width: 760px;
             font-weight: 500;
         }
 
@@ -393,31 +406,32 @@
 
         /* Framed QR Code Stage */
         .qr-card {
-            background: #ffffff;
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
             border-radius: 28px;
             padding: 2.25rem 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--surface-dark);
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.65), 0 0 0 2px rgba(245, 194, 66, 0.5);
+            color: #0F172A;
+            box-shadow: var(--shadow-card);
             position: relative;
-            min-width: 320px;
+            min-width: 330px;
         }
 
         .qr-card-tag {
             position: absolute;
             top: -14px;
-            background: var(--navy-primary);
-            color: var(--gold-primary);
+            background: #0F172A;
+            color: #FFFFFF;
             font-weight: 800;
             font-size: 0.78rem;
-            padding: 0.35rem 1rem;
+            padding: 0.35rem 1.1rem;
             border-radius: 9999px;
             letter-spacing: 0.06em;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
         }
 
         .qr-frame {
@@ -426,10 +440,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffffff;
+            background: #FFFFFF;
             border-radius: 16px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.85rem;
             overflow: hidden;
+            border: 1px solid #E2E8F0;
         }
 
         .qr-frame svg, .qr-frame img {
@@ -441,28 +456,28 @@
         .qr-caption {
             font-weight: 800;
             font-size: 1.15rem;
-            color: var(--navy-primary);
+            color: #0F172A;
             margin-bottom: 0.25rem;
         }
 
         .qr-url-sub {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.88rem;
-            color: #64748b;
-            font-weight: 600;
+            color: #2563EB;
+            font-weight: 700;
         }
 
         /* Instructions Card */
         .instructions-card {
             flex: 1;
-            background: var(--surface-dark);
+            background: #FFFFFF;
             border: 1px solid var(--border-subtle);
             border-radius: 28px;
             padding: 2.5rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6);
+            box-shadow: var(--shadow-card);
         }
 
         .step-item {
@@ -475,9 +490,9 @@
             width: 46px;
             height: 46px;
             border-radius: 50%;
-            background: rgba(245, 194, 66, 0.12);
-            border: 2px solid var(--gold-primary);
-            color: var(--gold-primary);
+            background: #F1F5F9;
+            border: 2px solid #0F172A;
+            color: #0F172A;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -488,53 +503,54 @@
         }
 
         .step-content h3 {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 800;
-            color: #ffffff;
+            color: #0F172A;
             margin-bottom: 0.25rem;
         }
 
         .step-content p {
-            font-size: 1rem;
-            color: var(--text-muted);
+            font-size: 1.02rem;
+            color: #475569;
             line-height: 1.45;
         }
 
         .step-content code {
             font-family: 'JetBrains Mono', monospace;
-            background: rgba(0, 0, 0, 0.4);
+            background: #F1F5F9;
             padding: 0.2rem 0.55rem;
             border-radius: 6px;
-            color: var(--gold-light);
+            color: #0F172A;
             font-weight: 700;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #CBD5E1;
         }
 
         /* Lobby Roster */
         .roster-area {
             width: 100%;
             max-width: 1100px;
-            background: rgba(15, 23, 42, 0.65);
-            border: 1px dashed var(--border-subtle);
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
             border-radius: 24px;
             padding: 1.5rem 2rem;
             text-align: center;
+            box-shadow: var(--shadow-card);
         }
 
         .roster-count {
             font-size: 1.15rem;
-            color: var(--text-muted);
+            color: #475569;
             margin-bottom: 1.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .roster-count strong {
             font-size: 2.2rem;
-            color: #10b981;
+            color: #059669;
             font-family: 'JetBrains Mono', monospace;
             font-weight: 900;
         }
@@ -550,25 +566,25 @@
         }
 
         .student-chip {
-            background: var(--surface-card);
-            border: 1px solid var(--border-subtle);
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
             padding: 0.55rem 1.25rem;
             border-radius: 9999px;
             font-size: 0.98rem;
             font-weight: 700;
-            color: #ffffff;
+            color: #0F172A;
             display: flex;
             align-items: center;
             gap: 0.55rem;
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
         }
 
         .student-chip .chip-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--gold-primary);
+            background: #10B981;
         }
 
         @keyframes popIn {
@@ -1218,14 +1234,14 @@
             bottom: 1.25rem;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.94);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #CBD5E1;
             border-radius: 9999px;
             padding: 0.45rem 1.25rem;
             display: flex;
             align-items: center;
             gap: 0.65rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
             backdrop-filter: blur(16px);
             z-index: 100;
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
@@ -1242,9 +1258,9 @@
         }
 
         .presenter-toggle-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
+            color: #475569;
             padding: 0.35rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.78rem;
@@ -1257,14 +1273,14 @@
         }
 
         .presenter-toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
+            background: #E2E8F0;
+            color: #0F172A;
         }
 
         .presenter-btn {
-            background: var(--surface-card);
-            border: 1px solid var(--border-subtle);
-            color: #ffffff;
+            background: #F8FAFC;
+            border: 1px solid #CBD5E1;
+            color: #1E293B;
             padding: 0.45rem 1rem;
             border-radius: 9999px;
             font-size: 0.84rem;
@@ -1278,15 +1294,15 @@
         }
 
         .presenter-btn:hover {
-            background: var(--gold-primary);
-            color: var(--bg-stage);
-            border-color: var(--gold-primary);
+            background: #0F172A;
+            color: #FFFFFF;
+            border-color: #0F172A;
         }
 
         .presenter-btn.accent {
-            background: var(--gold-primary);
-            color: var(--bg-stage);
-            border-color: var(--gold-primary);
+            background: #0F172A;
+            color: #FFFFFF;
+            border-color: #0F172A;
         }
     </style>
 </head>
@@ -1361,11 +1377,11 @@
                 <div class="lobby-cards-row">
                     <!-- QR Code Card -->
                     <div class="qr-card">
-                        <span class="qr-card-tag" style="background:var(--sage-primary); color:#FFFFFF;">Scan to Join</span>
+                        <span class="qr-card-tag">Scan to Join</span>
                         <div class="qr-frame" id="qr-code-container">
                             <div style="font-size:0.9rem; color:#64748b;">Loading QR Code...</div>
                         </div>
-                        <div class="qr-caption" style="color:var(--surface-dark);">Instant Camera Join</div>
+                        <div class="qr-caption">Instant Camera Join</div>
                         <div class="qr-url-sub" id="qr-direct-link">http://192.168.4.1:7000/student</div>
 
                         <!-- Big Session PIN Code -->
@@ -1374,7 +1390,7 @@
                             <span class="pin-digits">884 219</span>
                         </div>
 
-                        <button type="button" class="btn-ctrl" style="margin-top:0.75rem; font-size:0.72rem; padding:0.25rem 0.65rem;" onclick="simulateDemoStudentJoin()">
+                        <button type="button" class="btn-ctrl" style="margin-top:0.75rem; font-size:0.8rem; padding:0.4rem 0.85rem; font-weight:700;" onclick="simulateDemoStudentJoin()">
                             <span>➕ Simulate Student Join (+1)</span>
                         </button>
                     </div>
@@ -1382,7 +1398,7 @@
                     <!-- Instructions -->
                     <div class="instructions-card">
                         <div class="step-item">
-                            <div class="step-num" style="background:var(--sage-light); border-color:var(--sage-primary); color:#A7F3D0;">1</div>
+                            <div class="step-num">1</div>
                             <div class="step-content">
                                 <h3>Connect to Amphitheater Wi-Fi</h3>
                                 <p>Select the Wi-Fi network <code>κουίζυ-Amphi-A</code> on your smartphone. No internet or cellular data required (local edge server).</p>
@@ -1390,7 +1406,7 @@
                         </div>
 
                         <div class="step-item">
-                            <div class="step-num" style="background:var(--sage-light); border-color:var(--sage-primary); color:#A7F3D0;">2</div>
+                            <div class="step-num">2</div>
                             <div class="step-content">
                                 <h3>Scan QR or Open Browser</h3>
                                 <p>Point your smartphone camera at the QR code, or navigate to <code id="instruction-url">http://192.168.4.1:7000/student</code>.</p>
@@ -1398,7 +1414,7 @@
                         </div>
 
                         <div class="step-item">
-                            <div class="step-num" style="background:var(--sage-light); border-color:var(--sage-primary); color:#A7F3D0;">3</div>
+                            <div class="step-num">3</div>
                             <div class="step-content">
                                 <h3>Sign In & Keep Ready!</h3>
                                 <p>Select your student name from the roster. As soon as Dr. Benali launches Question 1, your smartphone screen will activate.</p>
