@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>κουίζυ - Student Quiz Application | ClassQuiz</title>
+    <title>κουίζυ - Student Quiz Application | ClassQuiz · Bloom Campus</title>
     <!-- PWA Primary Meta Tags -->
-    <meta name="theme-color" content="#153247">
+    <meta name="theme-color" content="#FAF9F6">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="κουίζυ">
     <link rel="manifest" href="/student/manifest.json">
     <link rel="apple-touch-icon" href="/student/icons/icon-192.svg">
@@ -21,136 +21,233 @@
 
     <style>
         :root {
-            /* Pitch Slate & Elevated Navy Dark Palette (Stitch Pro) */
-            --bg-canvas: #090d16;
-            --bg-card: #131b2e;
-            --bg-card-hover: #1c263f;
-            --border-subtle: #1e293b;
-            --border-focus: #6366f1;
-            --brand-primary: #6366f1;
-            --brand-cyan: #06b6d4;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            /* ========================================================
+               THEME: Warm Nordic & Paper Pastel (Craft / Notion Style)
+               Exact match with Bloom Campus Teacher Portal
+               ======================================================== */
+            --bg-canvas: #FAF9F6;         /* Soft warm ivory / paper workspace */
+            --bg-sidebar: #F4F2ED;        /* Warm stone subtle navigation */
+            --bg-surface: #FFFFFF;        /* Pure crisp card surface */
+            --bg-subtle: #ECE9E2;         /* Warm neutral hover / tint */
+            --bg-muted: #E2DFD7;          /* Soft border & dividers */
+            
+            --border-warm: #E6E3DB;       /* Delicate warm border */
+            --border-hover: #D5D1C7;      /* Slightly deeper on hover */
 
-            /* Compatibility mappings */
-            --navy-dark: #090d16;
-            --navy-primary: #6366f1;
-            --navy-card: #131b2e;
-            --gold-primary: #06b6d4;
-            --gold-light: rgba(6, 182, 212, 0.15);
-            --gold-hover: #0891b2;
-            --bg-app: #090d16;
-            --card-surface: #131b2e;
-            --text-dark: #f8fafc;
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-xl: 32px;
-            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
-            --shadow-gold: 0 4px 15px rgba(99, 102, 241, 0.35);
+            /* Typography: Warm charcoal (never harsh pitch black) */
+            --text-heading: #2D3134;      /* Warm dark slate/charcoal */
+            --text-body: #4A5055;         /* Comfortable reading slate */
+            --text-muted: #7A8086;        /* Secondary captions */
+            --text-light: #9DA3A8;        /* Subtle timestamps / pills */
 
-            /* Shape-Coded Option Colors */
-            --opt-a-color: #f43f5e;
-            --opt-a-bg: rgba(244, 63, 94, 0.10);
-            --opt-b-color: #3b82f6;
-            --opt-b-bg: rgba(59, 130, 246, 0.10);
-            --opt-c-color: #f59e0b;
-            --opt-c-bg: rgba(245, 158, 11, 0.10);
-            --opt-d-color: #10b981;
-            --opt-d-bg: rgba(16, 185, 129, 0.10);
+            /* Semantic Accents: Soft & Calming */
+            --sage-primary: #3E6F58;      /* Warm Sage Green */
+            --sage-hover: #315A47;
+            --sage-light: #EBF3EE;        /* Pastel Sage Tint */
+            --sage-border: #C4DEC8;
+
+            --ai-lavender: #7C3AED;       /* Pastel AI Lilac */
+            --ai-light: #F5F3FF;
+            --ai-border: #DDD6FE;
+
+            --mint-success: #2E7D32;      /* Gentle Mint */
+            --mint-light: #E8F5E9;
+            --mint-border: #C8E6C9;
+
+            --peach-warning: #D97706;     /* Warm Apricot / Honey */
+            --peach-light: #FFFBEB;
+            --peach-border: #FDE68A;
+
+            --rose-danger: #E11D48;       /* Soft Rose Coral */
+            --rose-light: #FFF1F2;
+            --rose-border: #FECDD3;
+
+            /* Soft Paper Shadows */
+            --shadow-subtle: 0 1px 3px rgba(45, 49, 52, 0.04), 0 1px 2px rgba(45, 49, 52, 0.02);
+            --shadow-card: 0 2px 6px -1px rgba(45, 49, 52, 0.05), 0 1px 4px -1px rgba(45, 49, 52, 0.03);
+            --shadow-hover: 0 6px 12px -2px rgba(45, 49, 52, 0.08), 0 3px 6px -2px rgba(45, 49, 52, 0.04);
+            --shadow-modal: 0 16px 32px -4px rgba(45, 49, 52, 0.12), 0 6px 12px -4px rgba(45, 49, 52, 0.06);
+
+            --radius-xs: 6px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-pill: 9999px;
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            /* Backward compatibility aliases for screens 2-7 during progressive upgrade */
+            --bg-card: var(--bg-surface);
+            --bg-card-hover: var(--bg-subtle);
+            --border-subtle: var(--border-warm);
+            --border-focus: var(--sage-primary);
+            --brand-primary: var(--sage-primary);
+            --brand-cyan: var(--sage-primary);
+            --text-main: var(--text-heading);
+            --success: var(--mint-success);
+            --warning: var(--peach-warning);
+            --danger: var(--rose-danger);
+            --navy-dark: var(--bg-canvas);
+            --navy-primary: var(--sage-primary);
+            --navy-card: var(--bg-surface);
+            --gold-primary: var(--sage-primary);
+            --gold-light: var(--sage-light);
+            --gold-hover: var(--sage-hover);
+            --bg-app: var(--bg-canvas);
+            --card-surface: var(--bg-surface);
+            --text-dark: var(--text-heading);
+            --shadow-gold: 0 4px 15px rgba(62, 111, 88, 0.25);
+
+            /* Shape-Coded Option Colors for Live Quizzes */
+            --opt-a-color: #E11D48;
+            --opt-a-bg: #FFF1F2;
+            --opt-b-color: #2563EB;
+            --opt-b-bg: #EFF6FF;
+            --opt-c-color: #D97706;
+            --opt-c-bg: #FFFBEB;
+            --opt-d-color: #3E6F58;
+            --opt-d-bg: #EBF3EE;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: var(--font-sans);
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
         }
 
         body {
-            background-color: #060910;
+            background-color: #F4F2ED;
+            background-image: radial-gradient(#E2DFD7 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--text-main);
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 55%);
+            color: var(--text-body);
+            padding: 1rem 0;
         }
 
-        /* Desktop Controls Strip */
+        /* Desktop Controls Strip - Notion / Paper Pastel style */
         .preview-controls {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
             margin-bottom: 0.85rem;
             z-index: 10;
+            max-width: 720px;
+            padding: 0 0.5rem;
         }
 
         .toggle-view-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #e2e8f0;
-            padding: 0.4rem 0.9rem;
-            border-radius: 9999px;
-            font-size: 0.78rem;
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm);
+            color: var(--text-heading);
+            padding: 0.42rem 0.9rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.76rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            backdrop-filter: blur(8px);
-            transition: all 0.2s;
+            gap: 0.35rem;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .toggle-view-btn:hover {
-            background: rgba(255, 255, 255, 0.16);
-            color: #ffffff;
+            background: var(--bg-subtle);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .toggle-view-btn.primary-pill {
+            background: var(--sage-primary);
+            color: #FFFFFF;
+            border-color: var(--sage-primary);
+        }
+
+        .toggle-view-btn.primary-pill:hover {
+            background: var(--sage-hover);
         }
 
         /* Mobile Device Frame */
         .phone-frame {
             width: 100%;
-            max-width: 412px;
+            max-width: 420px;
             height: 860px;
             max-height: 94vh;
             max-height: 94dvh;
-            background: #090d16;
-            border-radius: 40px;
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 10px #131b2e, 0 0 0 12px #1e293b;
+            background: var(--bg-canvas);
+            border-radius: 42px;
+            box-shadow: 0 20px 50px -10px rgba(45, 49, 52, 0.12), 0 0 0 10px #F4F2ED, 0 0 0 11px var(--border-warm);
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            color: #f8fafc;
+            color: var(--text-body);
+            border: 1px solid var(--border-warm);
         }
 
         /* Speaker Slot */
         .device-speaker-slit {
-            width: 64px;
+            width: 56px;
             height: 4.5px;
-            background: #2d3b4d;
+            background: #D5D1C7;
             border-radius: 9999px;
             position: absolute;
-            top: 10px;
+            top: 9px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 60;
         }
 
+        /* Phone Status Bar */
+        .phone-status-bar {
+            height: 38px;
+            padding: 10px 20px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            background: transparent;
+            z-index: 55;
+            flex-shrink: 0;
+            letter-spacing: -0.01em;
+            transition: color 0.2s;
+        }
+
+        .phone-status-bar.dark-theme {
+            color: var(--text-heading);
+        }
+
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
         /* Fullscreen Mobile override */
         body.fullscreen-mode {
             padding: 0;
-            background: #ffffff;
+            background: var(--bg-canvas);
         }
 
         body.fullscreen-mode .preview-controls {
@@ -178,7 +275,7 @@
         @media (max-width: 480px) {
             body {
                 padding: 0;
-                background: #ffffff;
+                background: var(--bg-canvas);
             }
             .preview-controls {
                 display: none;
@@ -205,7 +302,7 @@
             flex-direction: column;
             overflow-y: auto;
             position: relative;
-            background: var(--bg-app);
+            background: var(--bg-canvas);
         }
 
         .app-viewport::-webkit-scrollbar {
@@ -231,191 +328,589 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* SCREEN 1: SPLASH SCREEN */
+        /* SCREEN 1: SPLASH SCREEN (Warm Nordic) */
         #screen-splash {
-            background: var(--navy-primary);
+            background: var(--bg-canvas);
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: #ffffff;
-            padding: 2rem;
+            padding: 2.5rem 1.5rem;
         }
 
         .splash-logo-wrap {
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: splashPulse 1.8s infinite ease-in-out;
+            animation: splashPulse 2s infinite ease-in-out;
         }
 
-        @keyframes splashPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-
-        /* SCREEN 2: WELCOME SCREEN */
-        #screen-welcome {
-            background: #ffffff;
-            padding: 3rem 1.75rem 2.25rem;
-            align-items: center;
-            justify-content: space-between;
-            text-align: center;
-        }
-
-        .welcome-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: auto 0;
-        }
-
-        .welcome-cap-wrap {
-            width: 96px;
-            height: 96px;
+        .splash-icon-circle {
+            width: 88px;
+            height: 88px;
+            border-radius: 26px;
+            background: var(--sage-light);
+            border: 1.5px solid var(--sage-border);
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--sage-primary);
+            box-shadow: var(--shadow-card);
             margin-bottom: 1.25rem;
-            filter: drop-shadow(0 8px 16px rgba(245, 194, 66, 0.35));
         }
 
-        .welcome-logo-text {
+        .splash-brand-title {
             font-size: 2.4rem;
-            font-weight: 900;
+            font-weight: 800;
+            color: var(--text-heading);
             letter-spacing: -0.03em;
-            color: var(--navy-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
         }
 
-        .welcome-subtitle {
-            font-size: 0.98rem;
-            color: var(--text-muted);
-            max-width: 270px;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        .welcome-buttons-row {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-            margin-top: auto;
-        }
-
-        .btn-welcome-primary {
-            width: 100%;
-            height: 50px;
-            background: var(--navy-primary);
-            color: #ffffff;
-            border: none;
-            border-radius: 9999px;
-            font-size: 0.98rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(21, 50, 71, 0.25);
-            transition: all 0.2s;
-        }
-
-        .btn-welcome-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-welcome-secondary {
-            width: 100%;
-            height: 50px;
-            background: #ffffff;
-            color: var(--navy-primary);
-            border: 2px solid var(--navy-primary);
-            border-radius: 9999px;
-            font-size: 0.98rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-welcome-secondary:active {
-            transform: scale(0.98);
-        }
-
-        /* AUTH SCREENS: SIGN IN & SIGN UP (Curved Navy Container) */
-        .auth-screen-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background: #ffffff;
-        }
-
-        .auth-top-header {
-            padding: 1.25rem 1.25rem 0.85rem;
-            display: flex;
+        .splash-pill-badge {
+            display: inline-flex;
             align-items: center;
+            gap: 0.4rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-warm);
+            color: var(--text-body);
+            padding: 0.3rem 0.85rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+        }
+
+        .splash-tagline {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            max-width: 250px;
+            line-height: 1.45;
+        }
+
+        /* SCREEN 2: WELCOME SCREEN (Warm Nordic & Paper Pastel) */
+        #screen-welcome {
+            background: var(--bg-canvas);
+            padding: 1.25rem 1.35rem 1.75rem;
+            overflow-y: auto;
             justify-content: space-between;
         }
 
-        .auth-brand-title {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--navy-primary);
-            letter-spacing: -0.02em;
+        .welcome-top-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
         }
 
-        .auth-curved-card {
-            background: var(--navy-primary);
+        .welcome-campus-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.3rem 0.75rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-body);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .welcome-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--mint-success);
+            box-shadow: 0 0 0 2px var(--mint-border);
+            animation: dotPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+
+        .welcome-hero-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-lg);
+            padding: 1.65rem 1.35rem 1.45rem;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.15rem;
+        }
+
+        .welcome-icon-box {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 1.1rem;
+            border-radius: 22px;
+            background: var(--sage-light);
+            border: 1px solid var(--sage-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sage-primary);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .welcome-brand-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-heading);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .welcome-tagline-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--sage-primary);
+            margin-bottom: 0.45rem;
+        }
+
+        .welcome-body-text {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            max-width: 290px;
+            margin: 0 auto 1rem;
+        }
+
+        .welcome-props-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .welcome-prop-pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-pill);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-warm);
+            color: var(--text-body);
+        }
+
+        .welcome-prop-pill.lilac {
+            background: var(--ai-light);
+            border-color: var(--ai-border);
+            color: var(--ai-lavender);
+        }
+
+        .welcome-prop-pill.sage {
+            background: var(--sage-light);
+            border-color: var(--sage-border);
+            color: var(--sage-primary);
+        }
+
+        /* Live PIN Code Box */
+        .welcome-pin-card {
+            background: var(--bg-surface);
+            border: 1px dashed var(--border-warm);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.15rem;
+            margin-bottom: 1.15rem;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .welcome-pin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.65rem;
+        }
+
+        .welcome-pin-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .welcome-pin-hint {
+            font-size: 0.72rem;
+            color: var(--text-light);
+        }
+
+        .pin-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pin-code-field {
             flex: 1;
-            border-radius: 32px 32px 0 0;
-            padding: 2rem 1.75rem 1.75rem;
-            color: #ffffff;
+            height: 42px;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-sm);
+            padding: 0 0.85rem;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            letter-spacing: 0.15em;
+            text-align: center;
+            color: var(--text-heading);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .pin-code-field:focus {
+            border-color: var(--sage-primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(62, 111, 88, 0.15);
+        }
+
+        .pin-join-btn {
+            height: 42px;
+            padding: 0 1rem;
+            background: var(--sage-light);
+            border: 1px solid var(--sage-border);
+            color: var(--sage-primary);
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.2s;
+        }
+
+        .pin-join-btn:hover {
+            background: var(--sage-primary);
+            color: #FFFFFF;
+        }
+
+        /* Buttons & Actions in Welcome */
+        .welcome-actions-stack {
             display: flex;
             flex-direction: column;
-            box-shadow: 0 -10px 30px rgba(21, 50, 71, 0.2);
-            overflow-y: auto;
+            gap: 0.65rem;
         }
 
-        .auth-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 1.35rem;
-            letter-spacing: 0.04em;
+        .btn-sage-hero {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--sage-primary);
+            color: #FFFFFF;
+            border: 1px solid var(--sage-primary);
+            border-radius: var(--radius-md);
+            font-size: 0.94rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(62, 111, 88, 0.22);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.15rem;
             text-align: center;
         }
 
+        .btn-sage-hero:hover {
+            background: var(--sage-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-sage-hero:active {
+            transform: scale(0.99);
+        }
+
+        .btn-sage-hero-sub {
+            font-size: 0.73rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .btn-outline-warm {
+            width: 100%;
+            height: 44px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            color: var(--text-heading);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s;
+        }
+
+        .btn-outline-warm:hover {
+            background: var(--bg-subtle);
+            border-color: var(--border-hover);
+        }
+
+        .btn-text-warm {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.4rem;
+            text-align: center;
+            transition: color 0.2s;
+        }
+
+        .btn-text-warm:hover {
+            color: var(--sage-primary);
+        }
+
+        /* AUTH SCREENS: SIGN IN & SIGN UP (Warm Nordic & Paper Pastel) */
+        .auth-screen-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: var(--bg-canvas);
+            padding: 1.15rem 1.25rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .auth-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.15rem;
+        }
+
+        .auth-back-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .auth-back-btn:hover {
+            background: var(--bg-subtle);
+            border-color: var(--border-hover);
+        }
+
+        .auth-brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+        }
+
+        .auth-card-surface {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-lg);
+            padding: 1.6rem 1.35rem 1.5rem;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.1rem;
+        }
+
+        .auth-card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            background: var(--sage-light);
+            border: 1px solid var(--sage-border);
+            color: var(--sage-primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            margin-bottom: 0.65rem;
+        }
+
+        .auth-card-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.35rem;
+        }
+
+        .auth-card-sub {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-bottom: 1.25rem;
+        }
+
+        .paper-form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .paper-form-label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 0.35rem;
+        }
+
+        .paper-input {
+            width: 100%;
+            height: 44px;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-sm);
+            padding: 0 0.85rem;
+            font-size: 0.88rem;
+            color: var(--text-heading);
+            outline: none;
+            transition: all 0.2s;
+            font-family: var(--font-sans);
+        }
+
+        .paper-input:focus {
+            background: #FFFFFF;
+            border-color: var(--sage-primary);
+            box-shadow: 0 0 0 3px rgba(62, 111, 88, 0.15);
+        }
+
+        .paper-input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+        }
+
+        .auth-forgot-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -0.4rem;
+            margin-bottom: 1.15rem;
+        }
+
+        .auth-forgot-link {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .auth-forgot-link:hover {
+            color: var(--sage-primary);
+        }
+
+        .btn-auth-submit {
+            width: 100%;
+            height: 46px;
+            background: var(--sage-primary);
+            color: #FFFFFF;
+            border: 1px solid var(--sage-primary);
+            border-radius: var(--radius-sm);
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(62, 111, 88, 0.25);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .btn-auth-submit:hover {
+            background: var(--sage-hover);
+        }
+
+        .btn-auth-submit:active {
+            transform: scale(0.99);
+        }
+
+        .auth-demo-shortcut {
+            margin-top: 1.15rem;
+            padding-top: 1.15rem;
+            border-top: 1px dashed var(--border-warm);
+            text-align: center;
+        }
+
+        .auth-footer-prompt {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer-prompt a {
+            color: var(--sage-primary);
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            margin-left: 0.25rem;
+        }
+
+        .auth-footer-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* Backward compatibility for .pill-input and .btn-gold-pill */
         .pill-input {
             width: 100%;
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-dark);
-            border-radius: 9999px;
-            padding: 0.85rem 1.25rem;
-            font-size: 0.92rem;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-warm);
+            color: var(--text-heading);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            font-size: 0.88rem;
             margin-bottom: 0.85rem;
             outline: none;
             transition: all 0.2s;
         }
 
         .pill-input:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 0 3px rgba(245, 194, 66, 0.35);
+            border-color: var(--sage-primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(62, 111, 88, 0.15);
         }
 
         .btn-gold-pill {
             width: 100%;
-            height: 48px;
-            background: var(--gold-primary);
-            color: var(--navy-primary);
+            height: 46px;
+            background: var(--sage-primary);
+            color: #FFFFFF;
             border: none;
-            border-radius: 9999px;
-            font-size: 0.98rem;
-            font-weight: 800;
+            border-radius: var(--radius-sm);
+            font-size: 0.92rem;
+            font-weight: 700;
             cursor: pointer;
             margin-top: 0.5rem;
-            box-shadow: var(--shadow-gold);
+            box-shadow: 0 2px 8px rgba(62, 111, 88, 0.25);
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.4rem;
+        }
+
+        .btn-gold-pill:hover {
+            background: var(--sage-hover);
         }
 
         .btn-gold-pill:active {
@@ -1775,20 +2270,39 @@
 </head>
 <body>
 
-    <!-- Desktop Preview Controls -->
+    <!-- Desktop Preview Controls - Warm Nordic & Paper Pastel -->
     <div class="preview-controls">
-        <button class="toggle-view-btn" onclick="launchTakeQuiz(sampleQuizData)" style="background: #6366f1; color: #ffffff; font-weight: 800; border: none; box-shadow: 0 2px 12px rgba(99,102,241,0.5);">
-            🚀 Launch Live Quiz (Stitch Pro)
+        <button class="toggle-view-btn primary-pill" onclick="launchTakeQuiz(sampleQuizData)">
+            <span>⚡</span>
+            <span>Launch Live Quiz Demo</span>
         </button>
         <button class="toggle-view-btn" onclick="togglePhoneMode()">
             <span id="mode-icon">📱</span>
             <span id="mode-text">Switch to Full Screen View</span>
         </button>
-        <button class="toggle-view-btn" onclick="simulateIncomingQuiz()">
-            🔔 Test Incoming Quiz Notification
+        <button class="toggle-view-btn" onclick="navigateToScreen('screen-welcome')">
+            <span>👋</span>
+            <span>Screen 1: Welcome</span>
         </button>
-        <button class="toggle-view-btn" id="btn-desktop-install" onclick="triggerPwaInstall()" style="display:none; background: var(--gold-primary); color: var(--navy-primary); font-weight: 800;">
-            📲 Install PWA App
+        <button class="toggle-view-btn" onclick="navigateToScreen('screen-signin')">
+            <span>🔑</span>
+            <span>Sign In</span>
+        </button>
+        <button class="toggle-view-btn" onclick="navigateToScreen('screen-signup')">
+            <span>📝</span>
+            <span>Sign Up</span>
+        </button>
+        <button class="toggle-view-btn" onclick="quickStudentDemoLogin()">
+            <span>⚡</span>
+            <span>1-Click Demo Login</span>
+        </button>
+        <button class="toggle-view-btn" onclick="logoutStudent()">
+            <span>🔄</span>
+            <span>Reset Auth</span>
+        </button>
+        <button class="toggle-view-btn" id="btn-desktop-install" onclick="triggerPwaInstall()" style="display:none;">
+            <span>📲</span>
+            <span>Install PWA</span>
         </button>
     </div>
 
@@ -1796,110 +2310,222 @@
     <div class="phone-frame" id="phone-chassis">
         <div class="device-speaker-slit"></div>
 
+        <!-- Phone Status Bar -->
+        <div class="phone-status-bar" id="phone-status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-notch-space"></div>
+            <div class="status-icons">
+                <svg viewBox="0 0 24 24" class="status-svg"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.2 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.83-1.83C8.93 19.64 10.4 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7 0 1.62-.55 3.11-1.48 4.31L7.69 6.48C8.89 5.55 10.38 5 12 5zm-5.52 3.69l9.83 9.83C15.11 19.45 13.62 20 12 20c-3.87 0-7-3.13-7-7 0-1.62.55-3.11 1.48-4.31z"/></svg>
+                <svg viewBox="0 0 24 24" class="status-svg"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
+                <svg viewBox="0 0 24 24" class="status-svg"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+        </div>
+
         <!-- ================= APP VIEWPORT ================= -->
         <div class="app-viewport">
 
-            <!-- SCREEN 1: SPLASH SCREEN -->
+            <!-- SCREEN 1: SPLASH SCREEN (Warm Nordic) -->
             <div id="screen-splash" class="screen active">
                 <div class="splash-logo-wrap">
-                    <svg style="width: 80px; height: 80px;" viewBox="0 0 100 100" fill="none">
-                        <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/>
-                        <path d="M50 55V78C50 78 75 72 75 52V42.5L50 55Z" fill="#e0ac2b"/>
-                        <path d="M50 55V78C50 78 25 72 25 52V42.5L50 55Z" fill="#f5c242"/>
-                        <circle cx="20" cy="38" r="4" fill="#f5c242"/>
-                        <path d="M20 42V65" stroke="#f5c242" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                    <h1 style="font-size: 2.6rem; font-weight: 900; color: #ffffff; margin-top: 0.75rem; letter-spacing: -0.03em;">κουίζυ</h1>
-                </div>
-            </div>
-
-            <!-- SCREEN 2: WELCOME ONBOARDING SCREEN -->
-            <div id="screen-welcome" class="screen">
-                <div class="welcome-center">
-                    <div class="welcome-cap-wrap">
-                        <svg style="width: 90px; height: 90px;" viewBox="0 0 100 100" fill="none">
-                            <path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/>
-                            <path d="M50 55V78C50 78 75 72 75 52V42.5L50 55Z" fill="#e0ac2b"/>
-                            <path d="M50 55V78C50 78 25 72 25 52V42.5L50 55Z" fill="#f5c242"/>
-                            <circle cx="20" cy="38" r="4" fill="#f5c242"/>
-                            <path d="M20 42V65" stroke="#f5c242" stroke-width="3" stroke-linecap="round"/>
+                    <div class="splash-icon-circle">
+                        <svg class="splash-cap-svg" style="width: 48px; height: 48px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                         </svg>
                     </div>
-                    <h1 class="welcome-logo-text">κουίζυ</h1>
-                    <p class="welcome-subtitle">Test your knowledge, quiz your way to the top!</p>
+                    <h1 class="splash-brand-title">κουίζυ</h1>
+                    <div class="splash-pill-badge">Bloom Campus · Student Portal</div>
+                    <p class="splash-tagline">Academic Synchronous & Offline Quiz Platform</p>
+                </div>
+            </div>
+
+            <!-- SCREEN 2: WELCOME ONBOARDING SCREEN (Warm Nordic & Paper Pastel) -->
+            <div id="screen-welcome" class="screen">
+                <div class="welcome-top-meta">
+                    <span class="welcome-campus-badge">
+                        <span class="welcome-pulse-dot"></span>
+                        Bloom Campus · ClassQuiz Network
+                    </span>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">v1.2 Live</span>
                 </div>
 
-                <div style="margin-bottom: 0.75rem; width: 100%;">
-                    <button class="btn-welcome-primary" style="background: #6366f1; color: #ffffff; width: 100%; box-shadow: 0 4px 15px rgba(99,102,241,0.4);" onclick="launchTakeQuiz(sampleQuizData)">
-                        🚀 Start Live Quiz Demo (Stitch UI)
+                <!-- Hero Identity Card -->
+                <div class="welcome-hero-card">
+                    <div class="welcome-icon-box">
+                        <svg style="width: 42px; height: 42px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
+                    <h1 class="welcome-brand-name">κουίζυ</h1>
+                    <div class="welcome-tagline-text">Student Quiz Application</div>
+                    <p class="welcome-body-text">
+                        Connect with your classroom cohort, answer amphitheater live questions, and track your Bloom's taxonomy mastery.
+                    </p>
+
+                    <!-- Feature Badges -->
+                    <div class="welcome-props-row">
+                        <span class="welcome-prop-pill sage">🎓 1-Click Fast Auth</span>
+                        <span class="welcome-prop-pill">⚡ Amphitheater Sync</span>
+                        <span class="welcome-prop-pill lilac">🤖 Instant AI Review</span>
+                    </div>
+                </div>
+
+                <!-- Quick PIN Code Direct Join -->
+                <div class="welcome-pin-card">
+                    <div class="welcome-pin-header">
+                        <span class="welcome-pin-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            Live Session PIN
+                        </span>
+                        <span class="welcome-pin-hint">Enter 6-digit session PIN</span>
+                    </div>
+                    <form onsubmit="handlePinJoin(event)" class="pin-input-group">
+                        <input type="text" id="welcome-session-pin" class="pin-code-field" placeholder="842109" maxlength="6" inputmode="numeric">
+                        <button type="submit" class="pin-join-btn">
+                            <span>Join</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Action Stack -->
+                <div class="welcome-actions-stack">
+                    <button class="btn-sage-hero" onclick="quickStudentDemoLogin()">
+                        <span style="font-weight: 800; display: flex; align-items: center; gap: 0.35rem;">
+                            <span>⚡</span> 1-Click Student Demo Login
+                        </span>
+                        <span class="btn-sage-hero-sub">Yasmine Halag · 1CP (Section 1 • Group G1)</span>
                     </button>
-                </div>
 
-                <div class="welcome-buttons-row">
-                    <button class="btn-welcome-primary" onclick="quickStudentDemoLogin()">1-Click Demo Login</button>
-                    <button class="btn-welcome-secondary" onclick="navigateToScreen('screen-signin')">Sign In</button>
-                </div>
+                    <button class="btn-outline-warm" onclick="navigateToScreen('screen-signin')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                        Sign In with University ID
+                    </button>
 
-                <div style="margin-top: 1.25rem; width: 100%;">
-                    <button onclick="quickStudentDemoLogin()" style="background: none; border: none; color: #38bdf8; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
-                        ⚡ 1-Click Demo Login (Yasmine Halag)
+                    <button class="btn-text-warm" onclick="navigateToScreen('screen-signup')">
+                        New student? Create an account →
                     </button>
                 </div>
             </div>
 
-            <!-- SCREEN 3: SIGN UP (Curved Navy Container) -->
+            <!-- SCREEN 3: SIGN UP (Warm Nordic & Paper Pastel) -->
             <div id="screen-signup" class="screen">
-                <div class="auth-screen-container">
-                    <div class="auth-top-header">
-                        <button onclick="navigateToScreen('screen-welcome')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--navy-primary);">←</button>
-                        <span class="auth-brand-title">κουίζυ</span>
-                        <div style="width: 24px;"></div>
-                    </div>
-                    <div class="auth-curved-card">
-                        <h2 class="auth-title">SIGN UP</h2>
-                        <form onsubmit="handleStudentRegister(event)">
-                            <input type="text" id="reg-name" class="pill-input" placeholder="Name" required value="Yasmine Halag">
-                            <input type="email" id="reg-email" class="pill-input" placeholder="Email" required value="yasmine.halag@univ.dz">
-                            <input type="text" id="reg-section" class="pill-input" placeholder="Section" required value="Section 1">
-                            <input type="text" id="reg-group" class="pill-input" placeholder="Group" required value="G1">
-                            <input type="text" id="reg-level" class="pill-input" placeholder="Level / Division" required value="1CP">
-                            <input type="password" id="reg-pass" class="pill-input" placeholder="Password" required value="Password123!">
-
-                            <button type="submit" class="btn-gold-pill">Sign Up</button>
-                        </form>
-                        <div style="text-align: center; margin-top: 1.25rem;">
-                            <a onclick="navigateToScreen('screen-signin')" style="color: #cbd5e1; font-size: 0.82rem; text-decoration: underline; cursor: pointer;">Already have an account? Sign In</a>
+                <div class="auth-screen-layout">
+                    <div class="auth-nav-header">
+                        <button class="auth-back-btn" onclick="navigateToScreen('screen-welcome')" title="Back">
+                            ←
+                        </button>
+                        <div class="auth-brand-pill">
+                            <span>κουίζυ</span>
                         </div>
+                        <div style="width: 36px;"></div>
                     </div>
-                </div>
-            </div>
 
-            <!-- SCREEN 4: SIGN IN (Curved Navy Container) -->
-            <div id="screen-signin" class="screen">
-                <div class="auth-screen-container">
-                    <div class="auth-top-header">
-                        <button onclick="navigateToScreen('screen-welcome')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--navy-primary);">←</button>
-                        <span class="auth-brand-title">κουίζυ</span>
-                        <div style="width: 24px;"></div>
-                    </div>
-                    <div class="auth-curved-card">
-                        <h2 class="auth-title">SIGN IN</h2>
-                        <form onsubmit="handleStudentLogin(event)">
-                            <input type="email" id="login-email" class="pill-input" placeholder="Email" required value="yasmine.halag@univ.dz">
-                            <input type="password" id="login-pass" class="pill-input" placeholder="Password" required value="Password123!">
+                    <div class="auth-card-surface">
+                        <span class="auth-card-badge">Student Enrollment</span>
+                        <h2 class="auth-card-title">Create Account</h2>
+                        <p class="auth-card-sub">Join your university division & class group for live classroom assessments.</p>
 
-                            <div style="text-align: right; margin-bottom: 0.85rem;">
-                                <a style="color: #94a3b8; font-size: 0.8rem; text-decoration: none;">Forgotten your password?</a>
+                        <form onsubmit="handleStudentRegister(event)">
+                            <div class="paper-form-group">
+                                <label class="paper-form-label" for="reg-name">Full Name</label>
+                                <input type="text" id="reg-name" class="paper-input" placeholder="e.g. Yasmine Halag" required value="Yasmine Halag">
                             </div>
 
-                            <button type="submit" class="btn-gold-pill">Sign In</button>
+                            <div class="paper-form-group">
+                                <label class="paper-form-label" for="reg-email">Institutional Email</label>
+                                <input type="email" id="reg-email" class="paper-input" placeholder="name@univ.dz" required value="yasmine.halag@univ.dz">
+                            </div>
+
+                            <div class="paper-input-row paper-form-group">
+                                <div>
+                                    <label class="paper-form-label" for="reg-section">Section</label>
+                                    <input type="text" id="reg-section" class="paper-input" placeholder="Section 1" required value="Section 1">
+                                </div>
+                                <div>
+                                    <label class="paper-form-label" for="reg-group">Group</label>
+                                    <input type="text" id="reg-group" class="paper-input" placeholder="G1" required value="G1">
+                                </div>
+                            </div>
+
+                            <div class="paper-form-group">
+                                <label class="paper-form-label" for="reg-level">Academic Level / Division</label>
+                                <input type="text" id="reg-level" class="paper-input" placeholder="1CP, 2CP, 1CS..." required value="1CP">
+                            </div>
+
+                            <div class="paper-form-group">
+                                <label class="paper-form-label" for="reg-pass">Password</label>
+                                <input type="password" id="reg-pass" class="paper-input" placeholder="Password" required value="Password123!">
+                            </div>
+
+                            <button type="submit" class="btn-auth-submit">
+                                <span>Complete Registration</span>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
                         </form>
 
-                        <div style="text-align: center; margin-top: 1.25rem;">
-                            <button onclick="quickStudentDemoLogin()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; padding: 0.65rem 1.25rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 700; cursor: pointer; width: 100%;">
-                                CONTINUE WITHOUT ACCOUNT
+                        <div class="auth-demo-shortcut">
+                            <button type="button" class="btn-outline-warm" style="font-size: 0.8rem; height: 38px;" onclick="quickStudentDemoLogin()">
+                                ⚡ Skip with 1-Click Demo Login
                             </button>
                         </div>
+                    </div>
+
+                    <div class="auth-footer-prompt">
+                        Already have an account? <a onclick="navigateToScreen('screen-signin')">Sign In</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 4: SIGN IN (Warm Nordic & Paper Pastel) -->
+            <div id="screen-signin" class="screen">
+                <div class="auth-screen-layout">
+                    <div class="auth-nav-header">
+                        <button class="auth-back-btn" onclick="navigateToScreen('screen-welcome')" title="Back">
+                            ←
+                        </button>
+                        <div class="auth-brand-pill">
+                            <span>κουίζυ</span>
+                        </div>
+                        <div style="width: 36px;"></div>
+                    </div>
+
+                    <div class="auth-card-surface">
+                        <span class="auth-card-badge">Student Portal</span>
+                        <h2 class="auth-card-title">Welcome Back</h2>
+                        <p class="auth-card-sub">Sign in with your university credentials to access live classroom quizzes and grades.</p>
+
+                        <form onsubmit="handleStudentLogin(event)">
+                            <div class="paper-form-group">
+                                <label class="paper-form-label" for="login-email">Institutional Email</label>
+                                <input type="email" id="login-email" class="paper-input" placeholder="name@univ.dz" required value="yasmine.halag@univ.dz">
+                            </div>
+
+                            <div class="paper-form-group">
+                                <label class="paper-form-label" for="login-pass">Password</label>
+                                <input type="password" id="login-pass" class="paper-input" placeholder="Password" required value="Password123!">
+                            </div>
+
+                            <div class="auth-forgot-row">
+                                <a class="auth-forgot-link" onclick="alert('Password reset link has been dispatched to your institutional email.')">Forgotten password?</a>
+                            </div>
+
+                            <button type="submit" class="btn-auth-submit">
+                                <span>Sign In to Bloom Campus</span>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </form>
+
+                        <div class="auth-demo-shortcut">
+                            <button type="button" class="btn-outline-warm" style="font-size: 0.8rem; height: 38px;" onclick="quickStudentDemoLogin()">
+                                ⚡ Quick 1-Click Demo Login (Yasmine Halag)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="auth-footer-prompt">
+                        Don't have an account yet? <a onclick="navigateToScreen('screen-signup')">Create Account</a>
                     </div>
                 </div>
             </div>
@@ -2903,19 +3529,47 @@
             if (target) target.classList.add('active');
 
             const isAuthOrSplash = ['screen-splash', 'screen-welcome', 'screen-signup', 'screen-signin', 'screen-take-quiz', 'screen-correction'].includes(screenId);
-            document.getElementById('app-bottom-nav').style.display = isAuthOrSplash ? 'none' : 'flex';
+            const bottomNav = document.getElementById('app-bottom-nav');
+            if (bottomNav) bottomNav.style.display = isAuthOrSplash ? 'none' : 'flex';
 
             // Status bar styling
             const statusBar = document.getElementById('phone-status-bar');
-            if (screenId === 'screen-splash' || screenId === 'screen-signup' || screenId === 'screen-signin') {
-                statusBar.classList.add('dark-theme');
-            } else {
-                statusBar.classList.remove('dark-theme');
+            if (statusBar) {
+                if (screenId === 'screen-splash' || screenId === 'screen-signup' || screenId === 'screen-signin') {
+                    statusBar.classList.add('dark-theme');
+                } else {
+                    statusBar.classList.remove('dark-theme');
+                }
             }
 
             if (screenId === 'screen-home') {
                 renderQuizzesList('all');
             }
+        }
+
+        function handlePinJoin(e) {
+            if (e) e.preventDefault();
+            const pinInput = document.getElementById('welcome-session-pin');
+            const pin = pinInput ? pinInput.value.trim() : '';
+            if (!pin) {
+                alert('Please enter a 6-digit session PIN to join.');
+                return;
+            }
+            if (!localStorage.getItem('student_token')) {
+                const demo = {
+                    name: 'Yasmine Halag',
+                    email: 'yasmine.halag@univ.dz',
+                    level: '1CP',
+                    section: 'Section 1',
+                    group: 'G1'
+                };
+                localStorage.setItem('student_token', 'demo-student-token-xyz');
+                localStorage.setItem('student_info', JSON.stringify(demo));
+                currentStudent = demo;
+                applyStudentProfile(demo);
+            }
+            alert(`Joining Live Amphitheater Session PIN: ${pin}...`);
+            launchTakeQuiz(sampleQuizData);
         }
 
         function navigateFromBottomNav(tabName, btn) {
