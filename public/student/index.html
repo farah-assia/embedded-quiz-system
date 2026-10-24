@@ -2001,40 +2001,448 @@
         /* Backward compatibility aliases */
         .module-pastel-card { display: none; }
 
-        /* SCREEN 10: MY GRADES */
+        /* SCREEN 10: MY GRADES - WARM NORDIC REDESIGN */
         .grades-screen-scroll {
-            padding: 1.25rem 1.25rem 6.5rem;
+            padding: 1.15rem 1rem 6.5rem;
             overflow-y: auto;
+            max-height: calc(844px - 44px);
+            scrollbar-width: thin;
         }
 
-        .grade-item-row {
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 1.1rem 1.25rem;
+        .grades-institutional-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.3rem 0.75rem;
+            background: var(--bg-subtle, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text-muted, #7A8086);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .grades-main-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading, #2D3134);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.2rem;
+        }
+
+        .grades-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted, #7A8086);
+            line-height: 1.35;
             margin-bottom: 0.85rem;
+        }
+
+        /* Academic Standing Paper Card */
+        .academic-standing-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-top: 3.5px solid var(--sage-primary, #3E6F58);
+            border-radius: 16px;
+            padding: 1.1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-card);
+            position: relative;
+        }
+
+        .standing-card-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            cursor: pointer;
-            transition: all 0.2s;
+            margin-bottom: 0.75rem;
+            font-size: 0.72rem;
+            color: var(--text-muted, #7A8086);
+            font-weight: 600;
         }
 
-        .grade-item-row:hover {
-            border-color: #cbd5e1;
+        .standing-ects-chip {
+            background: var(--sage-light, #EBF3EE);
+            color: var(--sage-primary, #3E6F58);
+            border: 1px solid var(--sage-border, #C4DEC8);
+            border-radius: var(--radius-pill, 9999px);
+            padding: 0.2rem 0.55rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: var(--font-mono, monospace);
+        }
+
+        .gpa-display-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid #F1EFEA;
+        }
+
+        .gpa-number-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 0.3rem;
+        }
+
+        .gpa-big-number {
+            font-size: 2.25rem;
+            font-weight: 900;
+            font-family: var(--font-mono, monospace);
+            color: var(--text-heading, #2D3134);
+            line-height: 1;
+        }
+
+        .gpa-denominator {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-muted, #7A8086);
+        }
+
+        .gpa-badges-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.35rem;
+        }
+
+        .gpa-mention-badge {
+            background: var(--mint-light, #E8F5E9);
+            color: var(--mint-success, #2E7D32);
+            border: 1px solid var(--mint-border, #C8E6C9);
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.74rem;
+            font-weight: 800;
+            padding: 0.22rem 0.65rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .gpa-rank-pill {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted, #7A8086);
+        }
+
+        .standing-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .standing-metric-cell {
+            background: var(--bg-subtle, #F4F2ED);
+            border: 1px solid var(--border-subtle, #ECE9E2);
+            border-radius: 10px;
+            padding: 0.55rem 0.4rem;
+        }
+
+        .standing-metric-val {
+            font-size: 0.95rem;
+            font-weight: 800;
+            font-family: var(--font-mono, monospace);
+            color: var(--text-heading, #2D3134);
+            display: block;
+        }
+
+        .standing-metric-lbl {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted, #7A8086);
+            margin-top: 0.15rem;
+            display: block;
+        }
+
+        /* Course Selector Tabs */
+        .grades-module-tabs {
+            display: flex;
+            gap: 0.4rem;
+            overflow-x: auto;
+            padding-bottom: 0.25rem;
+            margin-bottom: 0.85rem;
+            scrollbar-width: none;
+        }
+
+        .grades-module-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .grades-mod-tab {
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.74rem;
+            font-weight: 700;
+            font-family: var(--font-mono, monospace);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            background: #FFFFFF;
+            color: var(--text-muted, #7A8086);
+        }
+
+        .grades-mod-tab:hover {
+            border-color: var(--text-muted, #7A8086);
+            color: var(--text-heading, #2D3134);
+        }
+
+        .grades-mod-tab.active {
+            background: var(--sage-primary, #3E6F58);
+            color: #FFFFFF;
+            border-color: var(--sage-primary, #3E6F58);
+            box-shadow: 0 2px 6px rgba(62, 111, 88, 0.25);
+        }
+
+        /* Current Module Focus Strip */
+        .grades-focus-strip {
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: 12px;
+            padding: 0.75rem 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .grades-focus-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-heading, #2D3134);
+            line-height: 1.25;
+        }
+
+        .grades-focus-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted, #7A8086);
+            margin-top: 0.15rem;
+        }
+
+        .grades-focus-avg-wrap {
+            text-align: right;
+            padding-left: 0.75rem;
+            border-left: 1px solid #F1EFEA;
+            flex-shrink: 0;
+        }
+
+        .grades-focus-avg {
+            font-size: 1.15rem;
+            font-weight: 800;
+            font-family: var(--font-mono, monospace);
+            color: var(--sage-primary, #3E6F58);
+            line-height: 1.1;
+        }
+
+        .grades-focus-rank {
+            font-size: 0.65rem;
+            color: var(--text-muted, #7A8086);
+            margin-top: 0.15rem;
+        }
+
+        /* Quiz Evaluation Card */
+        .grade-eval-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: 14px;
+            padding: 0.95rem 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .grade-eval-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--sage-primary, #3E6F58);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .grade-eval-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .grade-eval-info {
+            flex: 1;
+        }
+
+        .grade-eval-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-heading, #2D3134);
+            line-height: 1.3;
+            margin-bottom: 0.25rem;
+        }
+
+        .grade-eval-meta {
+            font-size: 0.72rem;
+            color: var(--text-muted, #7A8086);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .grade-eval-score-wrap {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .grade-score-pill-nordic {
+            background: var(--mint-light, #E8F5E9);
+            color: var(--mint-success, #2E7D32);
+            border: 1px solid var(--mint-border, #C8E6C9);
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.88rem;
+            font-weight: 800;
+            font-family: var(--font-mono, monospace);
+            display: inline-block;
+        }
+
+        .grade-score-pill-nordic.warning {
+            background: var(--peach-light, #FFFBEB);
+            color: var(--peach-warning, #D97706);
+            border-color: var(--peach-border, #FDE68A);
+        }
+
+        .grade-eval-pct {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-muted, #7A8086);
+            margin-top: 0.15rem;
+        }
+
+        .grade-eval-feedback {
+            font-size: 0.74rem;
+            color: var(--text-body, #4A5055);
+            background: var(--bg-subtle, #F4F2ED);
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.35;
+        }
+
+        .grade-eval-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--sage-primary, #3E6F58);
+            padding-top: 0.4rem;
+            border-top: 1px solid #F1EFEA;
+        }
+
+        .grade-eval-card:hover .grade-eval-action span:last-child {
+            transform: translateX(3px);
+        }
+
+        /* Competency Radar Widget */
+        .competency-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: 16px;
+            padding: 1.05rem;
+            margin-top: 1.15rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .competency-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .competency-header-title {
+            font-size: 0.86rem;
+            font-weight: 800;
+            color: var(--text-heading, #2D3134);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .competency-row {
+            margin-bottom: 0.65rem;
+        }
+
+        .competency-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .competency-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-body, #4A5055);
+            margin-bottom: 0.25rem;
+        }
+
+        .competency-bar-track {
+            background: var(--bg-subtle, #F4F2ED);
+            border-radius: 9999px;
+            height: 6px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .competency-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.4s ease;
+        }
+
+        /* Official Certified Export Banner */
+        .transcript-export-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--bg-subtle, #F4F2ED) 100%);
+            border: 1px dashed var(--border-warm, #E6E3DB);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .transcript-export-btn {
+            background: var(--sage-primary, #3E6F58);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(62, 111, 88, 0.25);
+        }
+
+        .transcript-export-btn:hover {
+            background: var(--sage-hover, #315A47);
             transform: translateY(-1px);
         }
 
-        .grade-score-pill {
-            background: var(--navy-primary);
-            color: var(--gold-primary);
-            padding: 0.35rem 0.85rem;
-            border-radius: 9999px;
-            font-size: 0.86rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }
+        /* Legacy backward compatibility aliases */
+        .grade-item-row { display: none; }
+        .grade-score-pill { display: none; }
 
         /* SCREEN 11: PROFILE */
         .profile-screen-scroll {
@@ -3854,65 +4262,109 @@
                 </div>
             </div>
 
-            <!-- SCREEN 10: MY GRADES -->
+            <!-- SCREEN 10: MY GRADES (Warm Nordic & Paper Pastel) -->
             <div id="screen-grades" class="screen">
                 <div class="grades-screen-scroll">
-                    <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.35rem;">My Grades</h2>
-                    <p id="grades-module-subtitle" style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 1.25rem;">POO - Object Oriented Programming</p>
-
-                    <div class="grade-item-row" onclick="viewQuizCorrectionFromGrades(1)">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.3rem;">📄</span>
-                            <div>
-                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 01 : Classes and Objects</strong>
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
-                            </div>
-                        </div>
-                        <span class="grade-score-pill">18/20</span>
+                    <!-- Institutional Badge -->
+                    <div class="grades-institutional-badge">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--sage-primary); display: inline-block;"></span>
+                        <span>RELEVÉ DE NOTES CONTINU · ACCRÉDITATION LMD</span>
                     </div>
 
-                    <div class="grade-item-row" onclick="viewQuizCorrectionFromGrades(2)">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.3rem;">📄</span>
-                            <div>
-                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 02 : Inheritance</strong>
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
-                            </div>
-                        </div>
-                        <span class="grade-score-pill">16/20</span>
+                    <!-- Header -->
+                    <div style="margin-bottom: 0.85rem;">
+                        <h2 class="grades-main-title">Notes & Évaluations</h2>
+                        <p class="grades-subtitle">Synthèse officielle des quiz en amphi, moyenne pondérée et corrigés détaillés</p>
                     </div>
 
-                    <div class="grade-item-row">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.3rem;">📄</span>
-                            <div>
-                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 03 : Overloading</strong>
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                    <!-- Academic Standing Paper Card -->
+                    <div class="academic-standing-card">
+                        <div class="standing-card-top">
+                            <span>SEMESTRE 2 · 1CP INFORMATIQUE (2025/2026)</span>
+                            <span class="standing-ects-chip">30 ECTS</span>
+                        </div>
+                        <div class="gpa-display-row">
+                            <div class="gpa-number-wrap">
+                                <span class="gpa-big-number">16.4</span>
+                                <span class="gpa-denominator">/ 20</span>
+                            </div>
+                            <div class="gpa-badges-wrap">
+                                <span class="gpa-mention-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:11px;height:11px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Mention Très Bien
+                                </span>
+                                <span class="gpa-rank-pill">Rang promo: <strong>3e / 148</strong> · Top 2%</span>
                             </div>
                         </div>
-                        <span class="grade-score-pill">14/20</span>
+                        <div class="standing-metrics-grid">
+                            <div class="standing-metric-cell">
+                                <span class="standing-metric-val" style="color: var(--sage-primary);">100%</span>
+                                <span class="standing-metric-lbl">Assiduité</span>
+                            </div>
+                            <div class="standing-metric-cell">
+                                <span class="standing-metric-val">14 / 15</span>
+                                <span class="standing-metric-lbl">Quiz Faits</span>
+                            </div>
+                            <div class="standing-metric-cell">
+                                <span class="standing-metric-val" style="color: var(--mint-success);">+2.6</span>
+                                <span class="standing-metric-lbl">vs Moy. Promo</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grade-item-row">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.3rem;">📄</span>
-                            <div>
-                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 04 : Overriding</strong>
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
-                            </div>
-                        </div>
-                        <span class="grade-score-pill">15/20</span>
+                    <!-- Course Switcher Tabs -->
+                    <div class="grades-module-tabs">
+                        <button type="button" class="grades-mod-tab active" data-mod="POO" onclick="switchGradesModule('POO', this)">POO201</button>
+                        <button type="button" class="grades-mod-tab" data-mod="ARCH" onclick="switchGradesModule('ARCH', this)">ARCH101</button>
+                        <button type="button" class="grades-mod-tab" data-mod="ANAL" onclick="switchGradesModule('ANAL', this)">ANAL401</button>
+                        <button type="button" class="grades-mod-tab" data-mod="LOGM" onclick="switchGradesModule('LOGM', this)">LOGM102</button>
+                        <button type="button" class="grades-mod-tab" data-mod="ANG" onclick="switchGradesModule('ANG', this)">ANG301</button>
                     </div>
 
-                    <div class="grade-item-row">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.3rem;">📄</span>
+                    <!-- Current Module Focus Strip -->
+                    <div class="grades-focus-strip" id="grades-focus-strip">
+                        <div>
+                            <div class="grades-focus-title" id="grades-focus-title">POO201 · Programmation Orientée Objet</div>
+                            <div class="grades-focus-sub" id="grades-focus-sub">Prof. Karim Meziane · Coeff 4 · 6 ECTS</div>
+                        </div>
+                        <div class="grades-focus-avg-wrap">
+                            <div class="grades-focus-avg" id="grades-focus-avg">16.4</div>
+                            <div class="grades-focus-rank" id="grades-focus-rank">Rang: 3e / 148</div>
+                        </div>
+                    </div>
+
+                    <!-- Container for Quizzes Evaluations List -->
+                    <div id="grades-quizzes-list">
+                        <!-- Populated by renderGradesForModule() -->
+                    </div>
+
+                    <!-- Item Response Theory (IRT) Competencies Card -->
+                    <div class="competency-card">
+                        <div class="competency-header">
+                            <span class="competency-header-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--sage-primary);"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                                Compétences IRT (Psychométrie)
+                            </span>
+                            <span style="font-size: 0.68rem; font-weight: 700; color: var(--sage-primary);" id="competency-module-tag">POO201</span>
+                        </div>
+                        <div id="competency-bars-container">
+                            <!-- Populated by renderGradesForModule() -->
+                        </div>
+                    </div>
+
+                    <!-- Official Certified Transcript Export Banner -->
+                    <div class="transcript-export-card">
+                        <div style="display: flex; align-items: center; gap: 0.55rem;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;color:var(--sage-primary);flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                             <div>
-                                <strong style="font-size: 0.95rem; color: var(--navy-primary); display: block;">Quiz 05 : Encapsulation</strong>
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">Completed</span>
+                                <strong style="font-size: 0.78rem; color: var(--text-heading); display: block;">Relevé officiel certifié</strong>
+                                <span style="font-size: 0.68rem; color: var(--text-muted);">Horodaté avec signature numérique SHA-256</span>
                             </div>
                         </div>
-                        <span class="grade-score-pill">19/20</span>
+                        <button type="button" class="transcript-export-btn" onclick="exportStudentTranscript()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export CSV
+                        </button>
                     </div>
                 </div>
             </div>
@@ -4667,6 +5119,10 @@
             if (screenId === 'screen-home') {
                 renderQuizzesList('all');
             }
+            if (screenId === 'screen-grades') {
+                if (!window.currentGradesModule) window.currentGradesModule = 'POO';
+                renderGradesForModule(window.currentGradesModule);
+            }
         }
 
         function handlePinJoin(e) {
@@ -4707,20 +5163,197 @@
             navigateToScreen(map[tabName] || 'screen-home');
         }
 
-        // Modules Screen Interactivity
-        function openModuleGrades(moduleCode) {
-            navigateToScreen('screen-grades');
-            const titleEl = document.getElementById('grades-module-subtitle');
-            const names = {
-                'POO': 'POO201 · Programmation Orientée Objet (1CP)',
-                'ARCH': 'ARCH101 · Architecture des Ordinateurs & Systèmes (1CP)',
-                'ANAL': 'ANAL401 · Analyse Mathématique & Séries (2CP)',
-                'LOGM': 'LOGM102 · Logique Mathématique & Formelle (Section A)',
-                'ANG': 'ANG301 · Anglais Technique & Communication (2CP)'
-            };
-            if (titleEl && names[moduleCode]) {
-                titleEl.textContent = names[moduleCode];
+        // Modules & Grades Interactivity - Warm Nordic Dataset
+        window.currentGradesModule = 'POO';
+
+        const gradesModuleData = {
+            'POO': {
+                code: 'POO201',
+                title: 'POO201 · Programmation Orientée Objet',
+                sub: 'Prof. Karim Meziane · Coeff 4 · 6 ECTS',
+                avg: '16.4',
+                rank: 'Rang: 3e / 148',
+                competencies: [
+                    { label: 'Abstraction & Encapsulation', score: 95, color: 'var(--sage-primary)' },
+                    { label: 'Héritage & Liaison Dynamique', score: 88, color: '#2563EB' },
+                    { label: 'Gestion Mémoire & Références', score: 82, color: 'var(--peach-warning)' },
+                    { label: 'Débogage & Traçage d\'Erreurs', score: 90, color: 'var(--mint-success)' }
+                ],
+                quizzes: [
+                    { id: 1, title: 'Quiz 01 : Classes, Objets & Constructeurs', date: '12 Fév 2026', questions: 10, score: 18, total: 20, feedback: 'Excellente maîtrise des constructeurs et des modificateurs d\'accès.' },
+                    { id: 2, title: 'Quiz 02 : Héritage & Polymorphisme Dynamique', date: '26 Fév 2026', questions: 8, score: 16, total: 20, feedback: 'Bonne compréhension du mot-clé super et de la liaison tardive.' },
+                    { id: 3, title: 'Quiz 03 : Surcharge & Redéfinition (Overload)', date: '12 Mar 2026', questions: 6, score: 14, total: 20, feedback: 'Attention à la covariance des types de retour.' },
+                    { id: 4, title: 'Quiz 04 : Classes Abstraites & Interfaces', date: '26 Mar 2026', questions: 8, score: 15, total: 20, feedback: 'Contrat d\'interface respecté, syntaxe correcte.' },
+                    { id: 5, title: 'Quiz 05 : Encapsulation & Robustesse Mémoire', date: '09 Avr 2026', questions: 12, score: 19, total: 20, feedback: 'Score remarquable sur les invariants de classe et accesseurs.' }
+                ]
+            },
+            'ARCH': {
+                code: 'ARCH101',
+                title: 'ARCH101 · Architecture des Systèmes',
+                sub: 'Dr. Amina Benali · Coeff 3 · 4 ECTS',
+                avg: '16.0',
+                rank: 'Rang: 5e / 148',
+                competencies: [
+                    { label: 'Circuits Combinatoires & Booléen', score: 92, color: 'var(--rose-danger)' },
+                    { label: 'Jeu d\'Instructions & Assembleur MIPS', score: 85, color: '#2563EB' },
+                    { label: 'Pipeline 5 Étages & Aléas', score: 80, color: 'var(--peach-warning)' },
+                    { label: 'Hiérarchie Mémoire & Cache L1/L2', score: 88, color: 'var(--mint-success)' }
+                ],
+                quizzes: [
+                    { id: 1, title: 'Quiz 01 : Portes Logiques & Tables de Karnaugh', date: '10 Fév 2026', questions: 10, score: 17, total: 20, feedback: 'Simplification booléenne rigoureuse et rapide.' },
+                    { id: 2, title: 'Quiz 02 : Arithmétique Binaire & Conception ALU', date: '24 Fév 2026', questions: 8, score: 15, total: 20, feedback: 'Additionneurs Carry-Lookahead bien assimilés.' },
+                    { id: 3, title: 'Quiz 03 : Architecture & Pipeline MIPS', date: '17 Mar 2026', questions: 10, score: 16, total: 20, feedback: 'Excellente gestion des aléas structurels et de données.' }
+                ]
+            },
+            'ANAL': {
+                code: 'ANAL401',
+                title: 'ANAL401 · Analyse Mathématique & Séries',
+                sub: 'Dr. Yacine Haddad · Coeff 3 · 5 ECTS',
+                avg: '16.5',
+                rank: 'Rang: 4e / 148',
+                competencies: [
+                    { label: 'Suites & Séries Numériques', score: 90, color: '#2563EB' },
+                    { label: 'Séries Entières & Convergence', score: 86, color: 'var(--sage-primary)' },
+                    { label: 'Intégrales Multiples & Fubini', score: 84, color: 'var(--peach-warning)' },
+                    { label: 'Transformée de Fourier & Laplace', score: 88, color: 'var(--mint-success)' }
+                ],
+                quizzes: [
+                    { id: 1, title: 'Quiz 01 : Suites & Séries Numériques', date: '16 Fév 2026', questions: 8, score: 16, total: 20, feedback: 'Critères de d\'Alembert et Riemann parfaitement maîtrisés.' },
+                    { id: 2, title: 'Quiz 02 : Intégrales Doubles & Changement de Variables', date: '02 Mar 2026', questions: 8, score: 17, total: 20, feedback: 'Calcul jacobien et coordonnées polaires réussis sans faute.' }
+                ]
+            },
+            'LOGM': {
+                code: 'LOGM102',
+                title: 'LOGM102 · Logique Mathématique & Formelle',
+                sub: 'Pr. Leila Kasmi · Coeff 2 · 3 ECTS',
+                avg: '14.5',
+                rank: 'Rang: 12e / 148',
+                competencies: [
+                    { label: 'Calcul Propositionnel & SAT', score: 86, color: 'var(--peach-warning)' },
+                    { label: 'Logique des Prédicats du 1er Ordre', score: 80, color: '#2563EB' },
+                    { label: 'Formes Normales (CNF / DNF)', score: 78, color: 'var(--rose-danger)' },
+                    { label: 'Théorie des Modèles & Résolution', score: 82, color: 'var(--mint-success)' }
+                ],
+                quizzes: [
+                    { id: 1, title: 'Quiz 01 : Calcul Propositionnel & Tables de Vérité', date: '18 Fév 2026', questions: 10, score: 14, total: 20, feedback: 'Bon raisonnement sur la satisfiabilité propositionnelle.' },
+                    { id: 2, title: 'Quiz 02 : Logique des Prédicats & Formes Normales', date: '11 Mar 2026', questions: 8, score: 15, total: 20, feedback: 'Skolémisation et algorithme de Davis-Putnam bien posés.' }
+                ]
+            },
+            'ANG': {
+                code: 'ANG301',
+                title: 'ANG301 · Anglais Technique & Communication',
+                sub: 'Mme. Lina Mansour · Coeff 1 · 2 ECTS',
+                avg: '18.0',
+                rank: 'Rang: 1re / 148',
+                competencies: [
+                    { label: 'Technical Reading Comprehension', score: 95, color: 'var(--mint-success)' },
+                    { label: 'Scientific Writing & Paper Abstracts', score: 90, color: 'var(--sage-primary)' },
+                    { label: 'Computer Science Terminology', score: 96, color: '#2563EB' },
+                    { label: 'Oral Presentation in English', score: 88, color: 'var(--peach-warning)' }
+                ],
+                quizzes: [
+                    { id: 1, title: 'Quiz 01 : Technical Documentation & CS Vocabulary', date: '20 Fév 2026', questions: 10, score: 18, total: 20, feedback: 'Excellent technical vocabulary and precise conceptual synthesis.' }
+                ]
             }
+        };
+
+        function openModuleGrades(moduleCode) {
+            window.currentGradesModule = moduleCode || 'POO';
+            navigateToScreen('screen-grades');
+            renderGradesForModule(window.currentGradesModule);
+        }
+
+        function switchGradesModule(modKey, btn) {
+            window.currentGradesModule = modKey;
+            document.querySelectorAll('.grades-mod-tab').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderGradesForModule(modKey);
+        }
+
+        function renderGradesForModule(modKey) {
+            const data = gradesModuleData[modKey] || gradesModuleData['POO'];
+            
+            // Focus strip
+            const titleEl = document.getElementById('grades-focus-title');
+            const subEl = document.getElementById('grades-focus-sub');
+            const avgEl = document.getElementById('grades-focus-avg');
+            const rankEl = document.getElementById('grades-focus-rank');
+            const tagEl = document.getElementById('competency-module-tag');
+
+            if (titleEl) titleEl.textContent = data.title;
+            if (subEl) subEl.textContent = data.sub;
+            if (avgEl) avgEl.textContent = data.avg;
+            if (rankEl) rankEl.textContent = data.rank;
+            if (tagEl) tagEl.textContent = data.code;
+
+            // Highlight corresponding button
+            document.querySelectorAll('.grades-mod-tab').forEach(b => {
+                if (b.getAttribute('data-mod') === modKey) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+
+            // Render quizzes
+            const listContainer = document.getElementById('grades-quizzes-list');
+            if (listContainer) {
+                listContainer.innerHTML = '';
+                data.quizzes.forEach(q => {
+                    const pct = Math.round((q.score / q.total) * 100);
+                    const isWarn = q.score < 15;
+                    const card = document.createElement('div');
+                    card.className = 'grade-eval-card';
+                    card.onclick = () => viewQuizCorrectionFromGrades(q.id);
+                    card.innerHTML = `
+                        <div class="grade-eval-head">
+                            <div class="grade-eval-info">
+                                <h4 class="grade-eval-title">${q.title}</h4>
+                                <div class="grade-eval-meta">
+                                    <span>📅 ${q.date}</span>
+                                    <span>•</span>
+                                    <span>${q.questions} questions</span>
+                                    <span>•</span>
+                                    <span>Amphi interactif</span>
+                                </div>
+                            </div>
+                            <div class="grade-eval-score-wrap">
+                                <span class="grade-score-pill-nordic ${isWarn ? 'warning' : ''}">${q.score}/${q.total}</span>
+                                <div class="grade-eval-pct">${pct}% · ${q.score >= 18 ? 'Excellent' : (q.score >= 15 ? 'Très Bien' : 'Bien')}</div>
+                            </div>
+                        </div>
+                        <div class="grade-eval-feedback">
+                            "${q.feedback}"
+                        </div>
+                        <div class="grade-eval-action">
+                            <span>Consulter le corrigé et explications détaillées</span>
+                            <span style="transition: transform 0.15s ease;">→</span>
+                        </div>
+                    `;
+                    listContainer.appendChild(card);
+                });
+            }
+
+            // Render competencies
+            const compContainer = document.getElementById('competency-bars-container');
+            if (compContainer) {
+                compContainer.innerHTML = '';
+                data.competencies.forEach(c => {
+                    const row = document.createElement('div');
+                    row.className = 'competency-row';
+                    row.innerHTML = `
+                        <div class="competency-label-row">
+                            <span>${c.label}</span>
+                            <span style="font-family: var(--font-mono); font-weight: 700;">${c.score}%</span>
+                        </div>
+                        <div class="competency-bar-track">
+                            <div class="competency-bar-fill" style="width: ${c.score}%; background: ${c.color};"></div>
+                        </div>
+                    `;
+                    compContainer.appendChild(row);
+                });
+            }
+        }
+
+        function exportStudentTranscript() {
+            window.open('/api/result/export/1', '_blank');
         }
 
         function filterModulesCategory(cat, btn) {
