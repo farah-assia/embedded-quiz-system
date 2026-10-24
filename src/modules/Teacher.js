@@ -1,12 +1,11 @@
 import mysql from 'mysql2';
 import pool from '../config/dbConfig.js';
 //| id | name     |surname         | email               | password_hash | created_at  
-// IMEN : export async function create.. 
 class Teacher {
     static async create(name,surname,email,password_hash) {
         try {
             const [row] = await pool.execute(`INSERT INTO teachers (name , surname , email , password_hash) VALUES (?,?,?,?)`,[name , surname , email ,password_hash]);
-            return row.insertId ;// Imen: After inserting we get the id of the teacher
+            return row.insertId;
         }catch(error) {
             throw new Error(`Error creating teacher by ID: ${error.message}`);
         }
@@ -14,9 +13,7 @@ class Teacher {
     static async updateName(id,name){
         try {
             const [result] = await pool.execute(`UPDATE teachers SET name = ? WHERE id = ?`,[name , id]);
-            return result.affectedRows ;
-            //Imen: this shows how many rows where affected by my query
-            //Imen: We can do also result.changedRows 
+            return result.affectedRows;
         }catch (error){
             throw new Error(`Error fetching teacher by ID: ${error.message}`);
         }

@@ -20,7 +20,7 @@
     "embedded",
     "classroom-evaluation"
   ],
-  "author": "Imen Chouat",
+  "author": "Farah Assia",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.2",

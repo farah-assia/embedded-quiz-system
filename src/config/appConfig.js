@@ -4,7 +4,7 @@ import morgan from 'morgan';
 
 const appConfig = (app) => {
     app.use(express.json());
-    app.use(cors()); //Imen : It allows cross-platform request 
+    app.use(cors()); // Allow cross-platform requests 
     app.use(morgan("dev"));
 };
 

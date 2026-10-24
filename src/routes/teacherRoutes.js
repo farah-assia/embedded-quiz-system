@@ -11,7 +11,7 @@ router.post('/login',teacherControllers.loginTeacher);
 router.get('/getFirstName',authTeacherMiddleware,teacherControllers.getFirstName);
 router.get('/getLastName',authTeacherMiddleware,teacherControllers.getLastName);
 router.get('/getEmail',authTeacherMiddleware,teacherControllers.getEmail);
-router.patch('/modifyName',authTeacherMiddleware,teacherControllers.modifyName);// Imen : updating the name feild 
+router.patch('/modifyName',authTeacherMiddleware,teacherControllers.modifyName); // Update teacher first name 
 router.patch('/modifySurName',authTeacherMiddleware,teacherControllers.modifySurName);
 router.patch('/modifyPassword',authTeacherMiddleware,teacherControllers.modifyPassword);
 router.post('/refresh',authController.refreshAccessToken);

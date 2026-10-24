@@ -127,7 +127,7 @@ Make sure [Docker Desktop](https://www.docker.com/) is installed and running, th
 
 ```bash
 # Clone the repository
-git clone https://github.com/Imen-Chouat/embedded-quiz-system.git
+git clone https://github.com/farah-assia/embedded-quiz-system.git
 cd embedded-quiz-system
 
 # Start MySQL 8.0 and the Quiz Application
@@ -273,9 +273,9 @@ npm test
 
 ## 👤 Author
 
-**Imen Chouat**  
-- Computer Science Student Project  
-- GitHub: [@Imen-Chouat](https://github.com/Imen-Chouat)
+**Farah Assia**  
+- Computer Science & Embedded Systems Project  
+- GitHub: [@farah-assia](https://github.com/farah-assia)
 
 ## 📄 License
 

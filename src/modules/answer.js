@@ -93,7 +93,7 @@ static async getStudentAnswerForQuestion({ student_id, quiz_id, question_id }) {
         }
     }
 
-//Imen: Get correct Answer for specific question
+    // Get correct Answer for specific question
     static async getCorrectAnswerByQuestionId(question_id){
         try {
             const [answers] = await pool.query(

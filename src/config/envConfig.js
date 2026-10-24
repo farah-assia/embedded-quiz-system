@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config();//Imen : getting variables from .env
+dotenv.config(); // Load variables from .env
 
 const envConfig  = {
     PORT : process.env.PORT ,

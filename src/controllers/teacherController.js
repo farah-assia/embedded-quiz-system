@@ -7,7 +7,7 @@ import authController from './authController.js';
 import fs from 'fs';
 import csv from 'csv-parser';
 import pool from '../config/dbConfig.js';
-//Imen : this is to register a teacher for the first time
+// Register a teacher for the first time
 const registerTeacher = async (req,res)=>{
     try {
         const {name , surname , email , password} = req.body ;
@@ -32,7 +32,7 @@ const registerTeacher = async (req,res)=>{
         return res.status(500).send({"message":"problem registering a teacher"});
     }
 };
-//Imen :Login a teacher , it returns its token
+// Login a teacher, returns JWT token
 const loginTeacher = async (req,res)=>{
     try {
         const {email, password} = req.body ;
@@ -138,7 +138,7 @@ const getEmail = async (req,res) =>{
         return res.status(500).json({"message":"error in the system !"}); 
     }
 }
-//Imen :update the name in the settings
+// Update teacher name in settings
 const modifyName = async (req,res) =>{
     try {
         const name= req.body.name ;
@@ -223,7 +223,7 @@ const modifyPassword = async (req,res) => {
         
     }
 }
-//Imen :
+// Associate teacher with a module
 const addTeacherModule = async (req,res)=> {
     //try { 
         const id = req.teacher.id;
@@ -249,7 +249,7 @@ const addTeacherModule = async (req,res)=> {
         return res.status(500).json({message:"error adding a new module to the teacher "});
     }*/
 }
-//Imen :
+// Delete module from teacher list
 const deleteTeacherModule = async (req,res) => {
     try {
         const id = req.teacher.id;
@@ -264,7 +264,7 @@ const deleteTeacherModule = async (req,res) => {
         return res.status(501).json({message:"error deleting the module from the teachers list !"});
     }
 }
-//Imen :
+// Update module level
 const updateModuleLevel = async (req,res) => {
     try {
         const id = req.teacher.id;  
@@ -285,7 +285,7 @@ const updateModuleLevel = async (req,res) => {
         return res.status(500).json({message:"Error in updating the module's level ."});
     }
 }
-//Imen :
+// Update module name
 const updateModuleName = async (req,res) => {
     try {
         const id = req.teacher.id;
@@ -302,7 +302,7 @@ const updateModuleName = async (req,res) => {
         return res.status(500).json({message:"Error in updating the module's name ."});
     }
 }
-//Imen :
+// Bulk upload student roster CSV
 const uploadStudentFile = async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
@@ -326,7 +326,7 @@ const uploadStudentFile = async (req, res) => {
             }
         });
 };
-//Imen :
+// Delete teacher account
 const deleteAccount = async (req,res) => {
     try {
         const id = req.teacher.id;
@@ -341,9 +341,7 @@ const deleteAccount = async (req,res) => {
         return res.status(500).json({message:"Error in deleting the account ."});
     }
 }
-//Imen:
-
-  
+// Get all classes assigned to teacher
 const getTeacherClasses = async (req, res) => {
     try {
    console.log("the req teach :"+req.teacher);
