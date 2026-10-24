@@ -2444,36 +2444,307 @@
         .grade-item-row { display: none; }
         .grade-score-pill { display: none; }
 
-        /* SCREEN 11: PROFILE */
+        /* SCREEN 11: PROFILE & SETTINGS - WARM NORDIC REDESIGN */
         .profile-screen-scroll {
-            padding: 2rem 1.5rem 6.5rem;
+            padding: 1.15rem 1rem 6.5rem;
+            overflow-y: auto;
+            max-height: calc(844px - 44px);
+            scrollbar-width: thin;
+            text-align: left;
+        }
+
+        .profile-institutional-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.3rem 0.75rem;
+            background: var(--bg-subtle, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text-muted, #7A8086);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.65rem;
+        }
+
+        /* Student Identity Paper Card */
+        .profile-student-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-top: 3.5px solid var(--sage-primary, #3E6F58);
+            border-radius: 16px;
+            padding: 1.15rem 1.1rem;
+            margin-bottom: 0.85rem;
+            box-shadow: var(--shadow-card);
+            position: relative;
+        }
+
+        .profile-id-watermark {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            font-family: var(--font-mono, monospace);
+            color: var(--text-muted, #7A8086);
+            background: var(--bg-subtle, #F4F2ED);
+            border: 1px solid var(--border-subtle, #ECE9E2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .profile-avatar-row {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .profile-avatar-frame {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-avatar-circle {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--sage-light, #EBF3EE);
+            border: 2px solid var(--sage-border, #C4DEC8);
+            color: var(--sage-primary, #3E6F58);
+            font-size: 1.45rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(62, 111, 88, 0.15);
+        }
+
+        .profile-verified-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--mint-success, #2E7D32);
+            border: 2px solid #FFFFFF;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-info-block {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-name-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-heading, #2D3134);
+            line-height: 1.2;
+            margin-bottom: 0.15rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-email-text {
+            font-size: 0.72rem;
+            color: var(--text-muted, #7A8086);
+            margin-bottom: 0.4rem;
+            word-break: break-all;
+        }
+
+        .profile-cohort-pills {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+        }
+
+        .cohort-chip {
+            padding: 0.18rem 0.5rem;
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .cohort-level { background: var(--sage-light, #EBF3EE); color: var(--sage-primary, #3E6F58); border: 1px solid var(--sage-border, #C4DEC8); }
+        .cohort-section { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+        .cohort-group { background: var(--bg-subtle, #F4F2ED); color: var(--text-body, #4A5055); border: 1px solid var(--border-warm, #E6E3DB); }
+
+        /* 3-cell Academic Vitals Strip */
+        .profile-vitals-card {
+            background: var(--bg-subtle, #F4F2ED);
+            border: 1px solid var(--border-subtle, #ECE9E2);
+            border-radius: 12px;
+            padding: 0.65rem 0.5rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.35rem;
+            text-align: center;
+        }
+
+        .profile-vital-cell {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            overflow-y: auto;
         }
 
-        .profile-menu-btn {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 1.1rem 1.25rem;
+        .profile-vital-val {
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: var(--font-mono, monospace);
+            color: var(--text-heading, #2D3134);
+            line-height: 1.1;
+        }
+
+        .profile-vital-lbl {
+            font-size: 0.62rem;
+            font-weight: 600;
+            color: var(--text-muted, #7A8086);
+            margin-top: 0.18rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* Amphi Edge & Hardware Status Card */
+        .profile-telemetry-box {
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
             margin-bottom: 0.85rem;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--navy-primary);
-            text-align: left;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            transition: all 0.2s;
+            box-shadow: var(--shadow-subtle);
         }
 
-        .profile-menu-btn:hover {
-            border-color: #cbd5e1;
-            transform: translateY(-1px);
+        .telemetry-box-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-heading, #2D3134);
         }
+
+        .telemetry-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-muted, #7A8086);
+            padding: 0.32rem 0;
+            border-bottom: 1px solid #F6F4EF;
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .telemetry-val {
+            font-weight: 700;
+            font-family: var(--font-mono, monospace);
+            color: var(--text-heading, #2D3134);
+        }
+
+        /* Action Menu Options */
+        .profile-section-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted, #7A8086);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.45rem;
+            margin-top: 0.75rem;
+        }
+
+        .profile-action-btn {
+            width: 100%;
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: 12px;
+            padding: 0.75rem 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-subtle);
+            text-align: left;
+        }
+
+        .profile-action-btn:hover {
+            transform: translateY(-1px);
+            border-color: var(--sage-primary, #3E6F58);
+            box-shadow: var(--shadow-card);
+        }
+
+        .profile-action-btn.danger {
+            background: var(--rose-light, #FFF1F2);
+            border-color: var(--rose-border, #FECDD3);
+            color: var(--rose-danger, #E11D48);
+        }
+
+        .profile-action-btn.danger:hover {
+            border-color: var(--rose-danger, #E11D48);
+            background: #FFE4E6;
+        }
+
+        .action-icon-pill {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .action-text-wrap {
+            flex: 1;
+        }
+
+        .action-main-label {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading, #2D3134);
+            display: block;
+            line-height: 1.25;
+        }
+
+        .profile-action-btn.danger .action-main-label {
+            color: var(--rose-danger, #E11D48);
+        }
+
+        .action-sub-label {
+            font-size: 0.68rem;
+            color: var(--text-muted, #7A8086);
+            display: block;
+            margin-top: 0.15rem;
+        }
+
+        .action-chevron {
+            color: var(--text-muted, #7A8086);
+            transition: transform 0.15s ease;
+        }
+
+        .profile-action-btn:hover .action-chevron {
+            transform: translateX(3px);
+            color: var(--sage-primary, #3E6F58);
+        }
+
+        /* Backward compatibility aliases */
+        .profile-menu-btn { display: none; }
 
         /* FLOATING BOTTOM DOCK NAVIGATION - WARM NORDIC CAPSULE */
         .bottom-nav {
@@ -4369,19 +4640,150 @@
                 </div>
             </div>
 
-            <!-- SCREEN 11: PROFILE & SETTINGS -->
+            <!-- SCREEN 11: PROFILE & SETTINGS (Warm Nordic & Paper Pastel) -->
             <div id="screen-profile" class="screen">
                 <div class="profile-screen-scroll">
-                    <div style="width: 86px; height: 86px; border-radius: 50%; border: 3px solid var(--gold-primary); background: var(--navy-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; box-shadow: 0 6px 18px rgba(245, 194, 66, 0.3);">
-                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <!-- Institutional Badge -->
+                    <div class="profile-institutional-badge">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--sage-primary); display: inline-block;"></span>
+                        <span>CARTE ÉTUDIANT NUMÉRIQUE · IDENTITÉ LMD</span>
                     </div>
 
-                    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-primary);" id="profile-student-name">Yasmine Halag</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 2rem;" id="profile-student-class">1CP • Section 1 • G1</p>
+                    <!-- Student Identity Paper Card -->
+                    <div class="profile-student-card">
+                        <span class="profile-id-watermark">STU-2025-08492</span>
 
-                    <button class="profile-menu-btn" onclick="openEditInfoModal()">⚙️ Settings & Edit Profile</button>
-                    <button class="profile-menu-btn" onclick="showContactModal()">📇 Contact Informations</button>
-                    <button class="profile-menu-btn" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; margin-top: 1rem;" onclick="logoutStudent()">🚪 Sign Out</button>
+                        <div class="profile-avatar-row">
+                            <div class="profile-avatar-frame">
+                                <div class="profile-avatar-circle" id="profile-avatar-initials">Y</div>
+                                <div class="profile-verified-badge" title="Identité Universitaire Vérifiée">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:11px;height:11px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-block">
+                                <h3 class="profile-name-text" id="profile-student-name">Yasmine Halag</h3>
+                                <div class="profile-email-text" id="profile-student-email">yasmine.halag@univ.dz</div>
+                                <div class="profile-cohort-pills" id="profile-cohort-tags">
+                                    <span class="cohort-chip cohort-level" id="profile-tag-level">1CP</span>
+                                    <span class="cohort-chip cohort-section" id="profile-tag-section">Section 1</span>
+                                    <span class="cohort-chip cohort-group" id="profile-tag-group">Groupe 1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3-cell Academic Summary Strip -->
+                        <div class="profile-vitals-card">
+                            <div class="profile-vital-cell">
+                                <span class="profile-vital-val" style="color: var(--sage-primary);">16.4</span>
+                                <span class="profile-vital-lbl">Moyenne</span>
+                            </div>
+                            <div class="profile-vital-cell" style="border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle);">
+                                <span class="profile-vital-val">30 / 30</span>
+                                <span class="profile-vital-lbl">ECTS Validés</span>
+                            </div>
+                            <div class="profile-vital-cell">
+                                <span class="profile-vital-val" style="color: var(--mint-success);">3e / 148</span>
+                                <span class="profile-vital-lbl">Rang Promo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Amphi Edge Node & Local Hardware Telemetry -->
+                    <div class="profile-telemetry-box">
+                        <div class="telemetry-box-head">
+                            <span style="display:flex; align-items:center; gap:0.4rem; color:var(--text-heading);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--sage-primary);"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                                Nœud Autonome d'Amphithéâtre
+                            </span>
+                            <span style="display:inline-flex; align-items:center; gap:0.35rem; color:var(--mint-success); font-weight:700; font-size:0.7rem;">
+                                <span style="width:6px;height:6px;border-radius:50%;background:var(--mint-success);"></span>
+                                En Ligne
+                            </span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span>Point d'Accès Local Wi-Fi</span>
+                            <span class="telemetry-val">Bloom-Campus-Amphi3</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span>Passerelle Embarquée (IP)</span>
+                            <span class="telemetry-val">192.168.4.1 (Raspberry Pi 4)</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span>Latence Socket.io</span>
+                            <span class="telemetry-val" style="color:var(--sage-primary);">1.8 ms</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span>File d'Attente Hors-Ligne (Outbox)</span>
+                            <span class="telemetry-val" style="color:var(--mint-success);">0 paquet · Synchronisé</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span>Politique de Verrouillage</span>
+                            <span class="telemetry-val">1 Appareil / Étudiant (Actif)</span>
+                        </div>
+                    </div>
+
+                    <!-- Hidden legacy holder for compatibility -->
+                    <p style="display: none;" id="profile-student-class">1CP • Section 1 • G1</p>
+
+                    <!-- Profile Action Menu -->
+                    <div class="profile-section-title">Paramètres & Scolarité</div>
+
+                    <!-- Action 1: Edit Cohort -->
+                    <button type="button" class="profile-action-btn" onclick="openEditInfoModal()">
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <div class="action-icon-pill" style="background:var(--sage-light); color:var(--sage-primary); border:1px solid var(--sage-border);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div class="action-text-wrap">
+                                <span class="action-main-label">Modifier le profil & la cohorte</span>
+                                <span class="action-sub-label">Nom, niveau (1CP), section et sous-groupe TD</span>
+                            </div>
+                        </div>
+                        <span class="action-chevron">→</span>
+                    </button>
+
+                    <!-- Action 2: Academic Contact -->
+                    <button type="button" class="profile-action-btn" onclick="showContactModal()">
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <div class="action-icon-pill" style="background:#EFF6FF; color:#2563EB; border:1px solid #BFDBFE;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </div>
+                            <div class="action-text-wrap">
+                                <span class="action-main-label">Coordonnées de scolarité</span>
+                                <span class="action-sub-label">Service pédagogique, bureau des examens et contact</span>
+                            </div>
+                        </div>
+                        <span class="action-chevron">→</span>
+                    </button>
+
+                    <!-- Action 3: View Mode Toggle -->
+                    <button type="button" class="profile-action-btn" onclick="togglePhoneMode()">
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <div class="action-icon-pill" style="background:var(--peach-light); color:var(--peach-warning); border:1px solid var(--peach-border);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            </div>
+                            <div class="action-text-wrap">
+                                <span class="action-main-label">Mode d'affichage d'interface</span>
+                                <span class="action-sub-label">Basculer entre vue plein écran et châssis smartphone</span>
+                            </div>
+                        </div>
+                        <span class="action-chevron">→</span>
+                    </button>
+
+                    <!-- Action 4: Logout -->
+                    <button type="button" class="profile-action-btn danger" onclick="logoutStudent()">
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <div class="action-icon-pill" style="background:var(--rose-light); color:var(--rose-danger); border:1px solid var(--rose-border);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            </div>
+                            <div class="action-text-wrap">
+                                <span class="action-main-label">Déconnexion de la session</span>
+                                <span class="action-sub-label">Effacer le jeton local et revenir à l'accueil d'amphi</span>
+                            </div>
+                        </div>
+                        <span class="action-chevron">→</span>
+                    </button>
                 </div>
             </div>
 
@@ -4536,34 +4938,40 @@
             </div>
         </div>
 
-        <!-- ================= MODAL: EDIT INFO ================= -->
+        <!-- ================= MODAL: EDIT INFO (Warm Nordic) ================= -->
         <div id="modal-edit-info" class="modal-popup-container">
-            <div class="score-popup-card" style="padding: 2rem 1.5rem; text-align: left;">
-                <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 1.25rem;">Edit Student Information</h3>
+            <div class="score-popup-card" style="padding: 1.75rem 1.4rem; text-align: left; background: #FFFFFF; border: 1px solid var(--border-warm); border-radius: 20px; box-shadow: var(--shadow-modal);">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.15rem; border-bottom: 1px solid #F1EFEA; padding-bottom: 0.65rem;">
+                    <div>
+                        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.15rem;">Modifier le Profil Étudiant</h3>
+                        <p style="font-size: 0.72rem; color: var(--text-muted);">Mise à jour de l'identité et de l'affectation de TD</p>
+                    </div>
+                    <button type="button" onclick="closeEditInfoModal()" style="background:var(--bg-subtle); border:1px solid var(--border-warm); width:28px; height:28px; border-radius:50%; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;">&times;</button>
+                </div>
                 
                 <div style="margin-bottom: 0.75rem;">
-                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Full Name</label>
-                    <input type="text" id="edit-name" class="pill-input" style="border: 1px solid var(--border-subtle);" value="Yasmine Halag">
+                    <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-heading); display: block; margin-bottom: 0.25rem;">Nom & Prénom</label>
+                    <input type="text" id="edit-name" style="width:100%; padding:0.55rem 0.75rem; background:#FFFFFF; border:1px solid var(--border-warm); border-radius:10px; font-size:0.82rem; color:var(--text-heading); outline:none;" value="Yasmine Halag">
                 </div>
 
                 <div style="margin-bottom: 0.75rem;">
-                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Division / Level</label>
-                    <input type="text" id="edit-level" class="pill-input" style="border: 1px solid var(--border-subtle);" value="1CP">
+                    <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-heading); display: block; margin-bottom: 0.25rem;">Niveau / Promotion</label>
+                    <input type="text" id="edit-level" style="width:100%; padding:0.55rem 0.75rem; background:#FFFFFF; border:1px solid var(--border-warm); border-radius:10px; font-size:0.82rem; color:var(--text-heading); outline:none;" value="1CP">
                 </div>
 
                 <div style="margin-bottom: 0.75rem;">
-                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Section</label>
-                    <input type="text" id="edit-section" class="pill-input" style="border: 1px solid var(--border-subtle);" value="Section 1">
+                    <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-heading); display: block; margin-bottom: 0.25rem;">Section</label>
+                    <input type="text" id="edit-section" style="width:100%; padding:0.55rem 0.75rem; background:#FFFFFF; border:1px solid var(--border-warm); border-radius:10px; font-size:0.82rem; color:var(--text-heading); outline:none;" value="Section 1">
                 </div>
 
                 <div style="margin-bottom: 1.25rem;">
-                    <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 0.25rem;">Group</label>
-                    <input type="text" id="edit-group" class="pill-input" style="border: 1px solid var(--border-subtle);" value="G1">
+                    <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-heading); display: block; margin-bottom: 0.25rem;">Sous-Groupe TD</label>
+                    <input type="text" id="edit-group" style="width:100%; padding:0.55rem 0.75rem; background:#FFFFFF; border:1px solid var(--border-warm); border-radius:10px; font-size:0.82rem; color:var(--text-heading); outline:none;" value="G1">
                 </div>
 
-                <div style="display: flex; gap: 0.75rem;">
-                    <button type="button" class="btn-prev-question" onclick="closeEditInfoModal()">Cancel</button>
-                    <button type="button" class="btn-gold-pill" style="margin-top:0;" onclick="saveStudentInfo()">Save Details</button>
+                <div style="display: flex; gap: 0.65rem;">
+                    <button type="button" style="flex:1; padding:0.6rem 0.85rem; background:var(--bg-subtle); border:1px solid var(--border-warm); border-radius:var(--radius-pill); font-size:0.78rem; font-weight:700; color:var(--text-body); cursor:pointer;" onclick="closeEditInfoModal()">Annuler</button>
+                    <button type="button" style="flex:1.5; padding:0.6rem 0.85rem; background:var(--sage-primary); border:1px solid var(--sage-primary); border-radius:var(--radius-pill); font-size:0.78rem; font-weight:700; color:#FFFFFF; cursor:pointer; box-shadow:0 2px 6px rgba(62,111,88,0.25);" onclick="saveStudentInfo()">Enregistrer</button>
                 </div>
             </div>
         </div>
@@ -5443,21 +5851,37 @@
         }
 
         function applyStudentProfile(student) {
-            document.getElementById('home-student-name').textContent = student.name;
-            document.getElementById('home-student-class').textContent = student.level + ' • ' + student.section + ' • ' + student.group;
-            document.getElementById('home-avatar-initials').textContent = (student.name[0] || 'Y').toUpperCase();
+            if (!student) return;
+            const homeName = document.getElementById('home-student-name');
+            const homeClass = document.getElementById('home-student-class');
+            const homeInitials = document.getElementById('home-avatar-initials');
 
-            document.getElementById('profile-student-name').textContent = student.name;
-            document.getElementById('profile-student-class').textContent = student.level + ' • ' + student.section + ' • ' + student.group;
+            if (homeName) homeName.textContent = student.name || 'Yasmine Halag';
+            if (homeClass) homeClass.textContent = (student.level || '1CP') + ' • ' + (student.section || 'Section 1') + ' • ' + (student.group || 'G1');
+            if (homeInitials) homeInitials.textContent = ((student.name || 'Y')[0] || 'Y').toUpperCase();
 
-            if (student) {
-                socket.emit('quiz:join', {
-                    quizId: 1,
-                    role: 'student',
-                    name: student.name || 'Student',
-                    email: student.email || 'student@univ.dz'
-                });
-            }
+            const profileName = document.getElementById('profile-student-name');
+            const profileClass = document.getElementById('profile-student-class');
+            const profileEmail = document.getElementById('profile-student-email');
+            const profileInitials = document.getElementById('profile-avatar-initials');
+            const tagLevel = document.getElementById('profile-tag-level');
+            const tagSection = document.getElementById('profile-tag-section');
+            const tagGroup = document.getElementById('profile-tag-group');
+
+            if (profileName) profileName.textContent = student.name || 'Yasmine Halag';
+            if (profileClass) profileClass.textContent = (student.level || '1CP') + ' • ' + (student.section || 'Section 1') + ' • ' + (student.group || 'G1');
+            if (profileEmail) profileEmail.textContent = student.email || 'yasmine.halag@univ.dz';
+            if (profileInitials) profileInitials.textContent = ((student.name || 'Y')[0] || 'Y').toUpperCase();
+            if (tagLevel) tagLevel.textContent = student.level || '1CP';
+            if (tagSection) tagSection.textContent = student.section || 'Section 1';
+            if (tagGroup) tagGroup.textContent = student.group || 'Groupe 1';
+
+            socket.emit('quiz:join', {
+                quizId: 1,
+                role: 'student',
+                name: student.name || 'Student',
+                email: student.email || 'student@univ.dz'
+            });
         }
 
         function logoutStudent() {
@@ -6275,7 +6699,7 @@
         }
 
         function showContactModal() {
-            alert('Student Academic Records & Contact:\nEmail: ' + (currentStudent ? currentStudent.email : 'student@univ.dz') + '\nCampus: Algiers University');
+            alert('Coordonnées Académiques & Scolarité :\n\n• Étudiant : ' + (currentStudent ? currentStudent.name : 'Yasmine Halag') + '\n• Email institutionnel : ' + (currentStudent ? currentStudent.email : 'yasmine.halag@univ.dz') + '\n• Département : Informatique & Systèmes Embarqués\n• Campus : Université des Sciences & Technologies\n• Support amphi : support-amphi@univ.dz');
         }
 
         // Desktop chassis / fullscreen mode toggle
