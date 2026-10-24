@@ -4516,6 +4516,14 @@ let quizzesRepository = [
         // ========================================================
         // 5-STEP GUIDED BUILDER METHODS
         // ========================================================
+        function openCreateQuizModal() {
+            openQuizBuilderFlow();
+        }
+
+        function openAiQuizStudioModal() {
+            openAiStudioModal();
+        }
+
         function openQuizBuilderFlow() {
             builderCurrentStep = 1;
             updateBuilderStepView();
