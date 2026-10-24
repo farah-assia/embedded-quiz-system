@@ -2430,35 +2430,36 @@
             color: var(--text-muted, #7A8086);
         }
 
-        /* ------------------ SCREEN 3: TELEMETRY RESULTS MODAL ------------------ */
+        /* ------------------ SCREEN 3: TELEMETRY RESULTS MODAL - WARM NORDIC & PAPER PASTEL ------------------ */
         .telemetry-results-modal {
-            background: #090d16 !important;
-            border: 1.5px solid #1e293b !important;
-            color: #f8fafc !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-warm, #E6E3DB) !important;
+            color: var(--text-heading, #2D3134) !important;
             max-height: 90vh !important;
             overflow-y: auto !important;
-            padding: 1.25rem !important;
+            padding: 1.35rem 1.25rem !important;
             display: flex !important;
             flex-direction: column !important;
             gap: 0.85rem !important;
-            border-radius: 28px !important;
+            border-radius: 24px !important;
+            box-shadow: 0 24px 60px rgba(45, 49, 52, 0.2) !important;
         }
 
         .results-header-tag {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             font-weight: 800;
-            color: #94a3b8;
-            letter-spacing: 0.06em;
+            color: var(--text-heading, #2D3134);
+            letter-spacing: 0.04em;
             text-transform: uppercase;
         }
 
         .edge-connection-banner {
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
             padding: 0.65rem 0.85rem;
             display: flex;
             align-items: center;
@@ -2469,7 +2470,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.35rem;
             margin: 0.2rem 0;
         }
 
@@ -2479,18 +2480,19 @@
         }
 
         .results-avatar-circle {
-            width: 62px;
-            height: 62px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            background: #131b2e;
-            border: 2px solid #06b6d4;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+            background: var(--sage-light, #EBF3EE);
+            border: 2px solid var(--sage-border, #C4DEC8);
+            box-shadow: 0 3px 10px rgba(62, 111, 88, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.45rem;
             font-weight: 900;
-            color: #f8fafc;
+            color: var(--sage-primary, #3E6F58);
+            font-family: var(--font-sans, system-ui);
         }
 
         .rank-trophy-badge {
@@ -2498,14 +2500,16 @@
             bottom: -6px;
             left: 50%;
             transform: translateX(-50%);
-            background: #f59e0b;
-            color: #090d16;
+            background: var(--honey-light, #FFFDF0);
+            border: 1px solid var(--honey-border, #FDE68A);
+            color: var(--honey-warning, #D97706);
             font-size: 0.65rem;
-            font-weight: 900;
-            padding: 0.15rem 0.5rem;
+            font-weight: 800;
+            padding: 0.15rem 0.55rem;
             border-radius: 9999px;
             white-space: nowrap;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.03em;
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.12);
         }
 
         .gauge-hero-container {
@@ -2515,15 +2519,15 @@
         }
 
         .gauge-circle-outer {
-            width: 130px;
-            height: 130px;
+            width: 125px;
+            height: 125px;
             border-radius: 50%;
-            border: 6px solid #10b981;
-            box-shadow: 0 0 24px rgba(16, 185, 129, 0.35), inset 0 0 15px rgba(16, 185, 129, 0.15);
+            border: 5px solid var(--mint-success, #2E7D32);
+            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #131b2e;
+            background: var(--mint-light, #E8F5E9);
         }
 
         .gauge-inner-content {
@@ -2533,33 +2537,33 @@
         }
 
         .gauge-score-big {
-            font-size: 1.9rem;
+            font-size: 1.85rem;
             font-weight: 900;
-            color: #f8fafc;
-            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-heading, #2D3134);
+            font-family: var(--font-sans, system-ui);
             line-height: 1;
         }
 
         .gauge-denom {
-            font-size: 1rem;
-            color: #94a3b8;
+            font-size: 0.95rem;
+            color: var(--text-muted, #7A8086);
             font-weight: 600;
         }
 
         .gauge-xp-badge {
             font-size: 0.72rem;
             font-weight: 800;
-            color: #34d399;
-            margin-top: 0.25rem;
+            color: var(--mint-success, #2E7D32);
+            margin-top: 0.2rem;
         }
 
         .session-grade-pill {
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #34d399;
-            padding: 0.35rem 0.75rem;
+            background: var(--mint-light, #E8F5E9);
+            border: 1px solid var(--mint-border, #A5D6A7);
+            color: var(--mint-success, #2E7D32);
+            padding: 0.38rem 0.85rem;
             border-radius: 9999px;
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -2574,34 +2578,35 @@
         }
 
         .stat-card {
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
             padding: 0.65rem 0.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             gap: 0.2rem;
+            box-shadow: 0 1px 3px rgba(45, 49, 52, 0.03);
         }
 
         .stat-val {
             font-size: 1.05rem;
             font-weight: 900;
-            color: #f8fafc;
-            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-heading, #2D3134);
         }
 
         .stat-lbl {
-            font-size: 0.64rem;
-            color: #94a3b8;
+            font-size: 0.65rem;
+            color: var(--text-muted, #7A8086);
             line-height: 1.25;
+            font-weight: 600;
         }
 
         .round-breakdown-card {
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
             padding: 0.75rem 0.85rem;
         }
 
@@ -2615,22 +2620,31 @@
 
         .breakdown-tick-chip {
             flex: 1;
-            height: 24px;
+            height: 26px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 800;
         }
 
-        .tick-pass { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
-        .tick-fail { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+        .tick-pass { 
+            background: var(--mint-light, #E8F5E9); 
+            color: var(--mint-success, #2E7D32); 
+            border: 1px solid var(--mint-border, #A5D6A7); 
+        }
+
+        .tick-fail { 
+            background: var(--coral-light, #FFF5F5); 
+            color: var(--coral-accent, #E11D48); 
+            border: 1px solid var(--coral-border, #FECDD3); 
+        }
 
         .edge-reconcile-note {
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            border-radius: 10px;
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
             padding: 0.55rem 0.75rem;
             display: flex;
             align-items: center;
@@ -2639,9 +2653,10 @@
         }
 
         .instructor-quote-card {
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-left: 3px solid var(--sage-primary, #3E6F58);
+            border-radius: var(--radius-md, 10px);
             padding: 0.65rem 0.85rem;
             display: flex;
             align-items: center;
@@ -2652,7 +2667,8 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: #1e293b;
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2663,45 +2679,170 @@
         .results-actions-col {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.55rem;
             margin-top: 0.25rem;
         }
 
         .btn-review-corrections {
-            background: #131b2e;
-            color: #f8fafc;
-            border: 1.5px solid #1e293b;
-            border-radius: 12px;
-            padding: 0.75rem;
+            background: var(--sage-primary, #3E6F58);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-md, 10px);
+            padding: 0.75rem 1rem;
+            font-size: 0.86rem;
             font-weight: 800;
-            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.4rem;
+            box-shadow: 0 4px 14px rgba(62, 111, 88, 0.25);
             transition: all 0.2s;
         }
 
         .btn-review-corrections:hover {
-            border-color: #6366f1;
-            background: #1c263f;
+            background: var(--sage-hover, #335c49);
+            transform: translateY(-1px);
         }
 
         .btn-return-hub {
-            background: #6366f1;
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 0.85rem;
-            font-weight: 800;
-            font-size: 0.88rem;
+            background: #FFFFFF;
+            color: var(--text-heading, #2D3134);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
+            padding: 0.7rem 1rem;
+            font-size: 0.84rem;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
             transition: all 0.2s;
         }
 
-        .btn-return-hub:active { transform: scale(0.98); }
+        .btn-return-hub:hover {
+            background: var(--bg-sidebar, #F4F2ED);
+            border-color: var(--border-hover, #D1CDC4);
+        }
+
+        /* ------------------ SCREEN 8: CORRECTION SCREEN (WARM NORDIC) ------------------ */
+        .correction-screen {
+            padding: 1.15rem 1.15rem 6.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: var(--bg-canvas, #FAF9F6);
+        }
+
+        .correction-numbers-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.45rem;
+            margin-bottom: 1.15rem;
+            overflow-x: auto;
+            padding-bottom: 0.25rem;
+        }
+
+        .correction-num-pill {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-warm, #E6E3DB);
+            color: var(--text-body, #4A5055);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(45, 49, 52, 0.03);
+            flex-shrink: 0;
+        }
+
+        .correction-num-pill.active {
+            border-color: var(--sage-primary, #3E6F58);
+            box-shadow: 0 0 0 3px rgba(62, 111, 88, 0.2);
+            transform: scale(1.08);
+        }
+
+        .correction-num-pill.num-correct {
+            background: var(--mint-light, #E8F5E9);
+            border-color: var(--mint-border, #A5D6A7);
+            color: var(--mint-success, #2E7D32);
+        }
+
+        .correction-num-pill.num-wrong {
+            background: var(--coral-light, #FFF5F5);
+            border-color: var(--coral-border, #FECDD3);
+            color: var(--coral-accent, #E11D48);
+        }
+
+        .correction-status-tag {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 0.95rem;
+        }
+
+        .correction-status-tag.tag-correct {
+            background: var(--mint-light, #E8F5E9);
+            border: 1px solid var(--mint-border, #A5D6A7);
+            color: var(--mint-success, #2E7D32);
+        }
+
+        .correction-status-tag.tag-wrong {
+            background: var(--coral-light, #FFF5F5);
+            border: 1px solid var(--coral-border, #FECDD3);
+            color: var(--coral-accent, #E11D48);
+        }
+
+        .correction-question-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg, 16px);
+            padding: 1.25rem;
+            margin-bottom: 1.15rem;
+            border: 1.5px solid var(--border-warm, #E6E3DB);
+            box-shadow: 0 4px 18px rgba(45, 49, 52, 0.05);
+        }
+
+        .correction-question-card.card-border-correct {
+            border-left: 4px solid var(--mint-success, #2E7D32);
+        }
+
+        .correction-question-card.card-border-wrong {
+            border-left: 4px solid var(--coral-accent, #E11D48);
+        }
+
+        .correction-option-item {
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-heading, #2D3134);
+            transition: all 0.15s;
+        }
+
+        .correction-option-item.opt-correct {
+            background: var(--mint-light, #E8F5E9);
+            border-color: var(--mint-border, #A5D6A7);
+            color: var(--mint-success, #2E7D32);
+            font-weight: 700;
+        }
+
+        .correction-option-item.opt-wrong-picked {
+            background: var(--coral-light, #FFF5F5);
+            border-color: var(--coral-border, #FECDD3);
+            color: var(--coral-accent, #E11D48);
+            font-weight: 700;
+        }
 
     </style>
 </head>
@@ -3150,37 +3291,45 @@
 
             <!-- SCREEN 8: CORRECTION OF THE QUIZ -->
             <div id="screen-correction" class="screen">
-                <div class="take-quiz-header">
-                    <button onclick="navigateToScreen('screen-home')" style="background: none; border: none; font-size: 1.35rem; cursor: pointer; color: var(--navy-primary);">←</button>
-                    <span style="font-weight: 800; font-size: 0.95rem; color: var(--navy-primary);">Correction of the Quiz</span>
-                    <div style="width: 20px;"></div>
+                <div class="stitch-live-header">
+                    <div class="stitch-top-brand-row">
+                        <button class="btn-quiz-exit" onclick="navigateToScreen('screen-home')" title="Retour au tableau de bord">←</button>
+                        <div class="brand-pill-wrap">
+                            <span class="brand-logo-text">κουίζυ</span>
+                            <span class="stage-badge-pill">Correction Officielle</span>
+                        </div>
+                        <span class="course-live-badge">Corrigé & Barème</span>
+                    </div>
                 </div>
 
                 <div class="correction-screen">
+                    <!-- Progress Stepper for Correction -->
                     <div class="correction-numbers-bar" id="correction-numbers-container">
                         <!-- 1..N numbers with green/yellow/red circles -->
                     </div>
 
                     <div style="text-align: center;">
-                        <span class="correction-status-tag tag-correct" id="correction-status-badge">Correct</span>
+                        <span class="correction-status-tag tag-correct" id="correction-status-badge">Bonne réponse (+1.0 pt)</span>
                     </div>
 
                     <div class="correction-question-card" id="correction-card">
-                        <div class="question-number-title" id="correction-q-num">Question 01</div>
-                        <div class="question-text-main" id="correction-q-text" style="margin-bottom: 1rem;">In Java we will use which keyword to declare an inheritance relationship between classes?</div>
+                        <div class="question-number-title" id="correction-q-num" style="font-size:0.78rem; font-weight:800; color:var(--sage-primary); text-transform:uppercase; margin-bottom:0.35rem;">Question 01</div>
+                        <div class="question-text-main" id="correction-q-text" style="margin-bottom: 1rem; font-size:1.05rem; font-weight:800; color:var(--text-heading);">
+                            In direct-mapped cache architecture, which address field is used to select the specific cache line / index?
+                        </div>
 
-                        <div id="correction-options-container">
+                        <div id="correction-options-container" style="display:flex; flex-direction:column; gap:0.5rem;">
                             <!-- Answer options with checkmark and red cross -->
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 0.75rem; margin-top: auto;">
-                        <button class="btn-prev-question" onclick="prevCorrectionQuestion()">Previous</button>
-                        <button class="btn-next-question" onclick="nextCorrectionQuestion()">Next</button>
+                    <div style="display: flex; gap: 0.65rem; margin-top: auto;">
+                        <button class="btn-prev-question" onclick="prevCorrectionQuestion()" style="flex:1;">← Précédent</button>
+                        <button class="btn-next-question" onclick="nextCorrectionQuestion()" style="flex:2;">Suivant →</button>
                     </div>
 
                     <div style="margin-top: 0.85rem;">
-                        <button class="btn-gold-pill" onclick="navigateToScreen('screen-home')">Finish Review</button>
+                        <button class="btn-return-hub" style="width:100%;" onclick="navigateToScreen('screen-home')">Terminer la consultation ➔</button>
                     </div>
                 </div>
             </div>
@@ -3333,17 +3482,17 @@
             </button>
         </nav>
 
-        <!-- ================= MODAL: SCORE POPUP (Round Telemetry Results - Stitch Pro) ================= -->
+        <!-- ================= MODAL: SCORE POPUP (Round Telemetry Results - Warm Nordic) ================= -->
         <div id="modal-score-popup" class="modal-popup-container">
             <div class="score-popup-card telemetry-results-modal">
-                <button onclick="closeScorePopup()" style="position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 1.5rem; color: #94a3b8; cursor: pointer; z-index: 10;">&times;</button>
+                <button onclick="closeScorePopup()" style="position: absolute; top: 14px; right: 18px; background: var(--bg-sidebar); border: 1px solid var(--border-warm); width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; color: var(--text-body); cursor: pointer; z-index: 10; display:flex; align-items:center; justify-content:center;">&times;</button>
                 
                 <!-- Header -->
                 <div class="results-header-tag">
-                    <span style="display:flex; align-items:center; gap:0.35rem; color:#f8fafc;">
-                        <span class="hotspot-dot"></span> ROUND TELEMETRY RESULTS
+                    <span style="display:flex; align-items:center; gap:0.4rem; color:var(--sage-primary); font-weight:800;">
+                        <span class="hotspot-dot"></span> RÉSULTATS D'ÉVALUATION EN DIRECT
                     </span>
-                    <span class="course-live-badge">CS-401 Live</span>
+                    <span class="course-live-badge">Amphi A · Live</span>
                 </div>
 
                 <!-- Top Edge Card -->
@@ -3351,21 +3500,21 @@
                     <div style="display:flex; align-items:center; gap:0.45rem;">
                         <span class="hotspot-dot"></span>
                         <div>
-                            <strong style="font-size:0.78rem; color:#f8fafc; display:block;">Connected to Pi Hotspot</strong>
-                            <span style="font-size:0.66rem; color:#94a3b8;">192.168.4.1 • Classroom edge verified</span>
+                            <strong style="font-size:0.78rem; color:var(--text-heading); display:block;">Connecté au Hotspot Raspberry Pi</strong>
+                            <span style="font-size:0.68rem; color:var(--text-muted);">192.168.4.1 • Nœud autonome amphi vérifié</span>
                         </div>
                     </div>
-                    <span style="font-size:0.72rem; font-weight:700; color:#06b6d4; font-family:'JetBrains Mono',monospace;">⚡ 1.8ms</span>
+                    <span style="font-size:0.72rem; font-weight:800; color:var(--sage-primary);">⚡ 1.8ms</span>
                 </div>
 
                 <!-- Hero Avatar & Rank -->
                 <div class="results-hero-section">
                     <div class="results-avatar-wrap">
                         <div class="results-avatar-circle" id="results-avatar-init">Y</div>
-                        <span class="rank-trophy-badge">🏆 2ND PLACE</span>
+                        <span class="rank-trophy-badge">🏆 2e PLACE</span>
                     </div>
-                    <div style="font-size:0.75rem; color:#94a3b8; margin-top:0.25rem;">
-                        Out of 48 active students • <span style="color:#10b981; font-weight:700;">Top 4%</span>
+                    <div style="font-size:0.74rem; color:var(--text-muted); margin-top:0.35rem;">
+                        Parmi 48 étudiants actifs • <span style="color:var(--mint-success); font-weight:800;">Top 4% de la promotion</span>
                     </div>
                 </div>
 
@@ -3381,9 +3530,9 @@
 
                 <!-- Session Status Pill -->
                 <div class="session-grade-pill">
-                    <span style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
-                    <span>Session Status:</span>
-                    <strong id="score-grade-text">Grade A+ (CS-401 Live)</strong>
+                    <span style="width:6px; height:6px; border-radius:50%; background:var(--mint-success);"></span>
+                    <span>Statut de validation :</span>
+                    <strong id="score-grade-text">Mention Très Bien (Amphi A)</strong>
                 </div>
 
                 <!-- 3 Metrics Grid -->
@@ -3391,25 +3540,25 @@
                     <div class="stat-card">
                         <span style="font-size:1.1rem;">🎯</span>
                         <strong class="stat-val" id="stat-accuracy-text">90%</strong>
-                        <span class="stat-lbl" id="stat-accuracy-fraction">Accuracy (9/10)</span>
+                        <span class="stat-lbl" id="stat-accuracy-fraction">Précision (9/10)</span>
                     </div>
                     <div class="stat-card">
                         <span style="font-size:1.1rem;">⚡</span>
                         <strong class="stat-val">2.4s</strong>
-                        <span class="stat-lbl">Avg Speed (Split)</span>
+                        <span class="stat-lbl">Temps moyen / prompt</span>
                     </div>
                     <div class="stat-card">
                         <span style="font-size:1.1rem;">🛡️</span>
                         <strong class="stat-val">100%</strong>
-                        <span class="stat-lbl">Pi Verified</span>
+                        <span class="stat-lbl">Pi Synchronisé</span>
                     </div>
                 </div>
 
                 <!-- Round Breakdown Ticks -->
                 <div class="round-breakdown-card">
-                    <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:800; color:#f8fafc;">
-                        <span>Round Breakdown</span>
-                        <span style="color:#94a3b8; font-weight:600;">10 Total Prompts</span>
+                    <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:800; color:var(--text-heading);">
+                        <span>Détail par question</span>
+                        <span style="color:var(--text-muted); font-weight:600;" id="breakdown-total-prompts">Évaluation Amphi</span>
                     </div>
                     <div class="breakdown-ticks-row" id="breakdown-ticks-container">
                         <!-- Populated by JS -->
@@ -3418,10 +3567,10 @@
 
                 <!-- Edge Reconcile Status -->
                 <div class="edge-reconcile-note">
-                    <span style="color:#10b981; font-weight:900;">✓</span>
+                    <span style="color:var(--mint-success); font-weight:900;">✓</span>
                     <div>
-                        <strong style="color:#f8fafc; font-size:0.74rem; display:block;">All 10 answers verified on edge server</strong>
-                        <span style="color:#94a3b8; font-size:0.68rem;">Offline Queue: 0 pending • Synced with Raspberry Pi</span>
+                        <strong style="color:var(--text-heading); font-size:0.74rem; display:block;">Toutes les réponses enregistrées sur le Pi 5</strong>
+                        <span style="color:var(--text-muted); font-size:0.68rem;">File locale : 0 en attente • Intégrité cryptographic checksum validée</span>
                     </div>
                 </div>
 
@@ -3429,18 +3578,18 @@
                 <div class="instructor-quote-card">
                     <div class="instructor-avatar">👨‍🏫</div>
                     <div style="flex:1;">
-                        <strong style="font-size:0.74rem; color:#f8fafc; display:block;">Prof. Vance <span style="color:#94a3b8; font-weight:500;">• Lead Instructor</span></strong>
-                        <p style="font-size:0.72rem; color:#94a3b8; line-height:1.35; margin-top:0.15rem;">"Superb response rate on the cache architectures! You consistently beat the 3-second split benchmark."</p>
+                        <strong style="font-size:0.75rem; color:var(--text-heading); display:block;">Dr. Amina Benali <span style="color:var(--text-muted); font-weight:500;">• Enseignante Responsable</span></strong>
+                        <p style="font-size:0.72rem; color:var(--text-muted); line-height:1.35; margin-top:0.15rem; margin-bottom:0;">"Excellent score sur les architectures de cache et les politiques d'écriture ! Maîtrise solide du module."</p>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="results-actions-col">
                     <button class="btn-review-corrections" onclick="openQuizCorrection()">
-                        <span>📖</span> Review Round Corrections
+                        <span>📖</span> Consulter les Corrections Détaillées
                     </button>
                     <button class="btn-return-hub" onclick="closeScorePopup()">
-                        Return to Session Hub ➔
+                        Retour au Tableau de Bord ➔
                     </button>
                 </div>
             </div>
@@ -4779,18 +4928,33 @@
 
         function renderCorrectionNumbers() {
             const container = document.getElementById('correction-numbers-container');
+            if (!container) return;
             container.innerHTML = '';
 
             const questions = activeQuiz ? activeQuiz.questions : sampleQuizData.questions;
 
             questions.forEach((q, idx) => {
                 const btn = document.createElement('button');
-                // Simulate: Q1 correct, Q2 correct, Q3 correct, Q4 medium, Q5 wrong
-                const statusType = idx === 3 ? 'num-medium' : (idx === 4 ? 'num-wrong' : 'num-correct');
-                btn.className = 'correction-num-btn ' + statusType;
+                btn.type = 'button';
+                
+                // Determine whether user answered correctly
+                let isCorrect = true;
+                const chosen = studentAnswers[idx];
+                if (q.type === 'short_answer') {
+                    isCorrect = !!(chosen && typeof chosen === 'string' && chosen.trim().length > 3);
+                } else {
+                    const opts = q._shuffled || q.options;
+                    if (opts && chosen !== undefined) {
+                        const picked = opts[chosen];
+                        isCorrect = typeof picked === 'object' ? !!picked.correct : (q.correctIndex !== undefined ? q.correctIndex === chosen : true);
+                    }
+                }
+
+                btn.className = 'correction-num-pill ' + (isCorrect ? 'num-correct' : 'num-wrong') + (idx === correctionQuestionIdx ? ' active' : '');
                 btn.textContent = idx + 1;
                 btn.onclick = () => {
                     correctionQuestionIdx = idx;
+                    renderCorrectionNumbers();
                     renderCorrectionQuestion();
                 };
                 container.appendChild(btn);
@@ -4800,59 +4964,95 @@
         function renderCorrectionQuestion() {
             const questions = activeQuiz ? activeQuiz.questions : sampleQuizData.questions;
             const q = questions[correctionQuestionIdx];
+            if (!q) return;
 
-            document.getElementById('correction-q-num').textContent = 'Question 0' + (correctionQuestionIdx + 1);
-            document.getElementById('correction-q-text').textContent = q.text;
+            const qNumFormatted = (correctionQuestionIdx + 1 < 10 ? '0' : '') + (correctionQuestionIdx + 1);
+            const numEl = document.getElementById('correction-q-num');
+            if (numEl) numEl.textContent = `Question ${qNumFormatted} / ${questions.length}`;
+
+            const qText = q.text || q.question || q.question_text || 'Question';
+            const textEl = document.getElementById('correction-q-text');
+            if (textEl) textEl.textContent = qText;
 
             const card = document.getElementById('correction-card');
             const badge = document.getElementById('correction-status-badge');
 
-            // Wireframe styling: green border when correct, red when wrong, yellow when medium
-            card.classList.remove('card-border-wrong', 'card-border-medium');
-            badge.classList.remove('tag-correct', 'tag-medium', 'tag-wrong');
-
-            if (correctionQuestionIdx === 4) {
-                card.classList.add('card-border-wrong');
-                badge.classList.add('tag-wrong');
-                badge.textContent = 'Wrong';
-            } else if (correctionQuestionIdx === 3) {
-                card.classList.add('card-border-medium');
-                badge.classList.add('tag-medium');
-                badge.textContent = 'Medium';
+            // Check correctness
+            const chosen = studentAnswers[correctionQuestionIdx];
+            let isCorrect = true;
+            if (q.type === 'short_answer') {
+                isCorrect = !!(chosen && typeof chosen === 'string' && chosen.trim().length > 3);
             } else {
-                badge.classList.add('tag-correct');
-                badge.textContent = 'Correct';
+                const opts = q._shuffled || q.options;
+                if (opts && chosen !== undefined) {
+                    const picked = opts[chosen];
+                    isCorrect = typeof picked === 'object' ? !!picked.correct : (q.correctIndex !== undefined ? q.correctIndex === chosen : true);
+                }
+            }
+
+            if (card) {
+                card.className = 'correction-question-card ' + (isCorrect ? 'card-border-correct' : 'card-border-wrong');
+            }
+            if (badge) {
+                badge.className = 'correction-status-tag ' + (isCorrect ? 'tag-correct' : 'tag-wrong');
+                badge.textContent = isCorrect ? '✓ Bonne réponse (+1.0 pt)' : '✕ Réponse Incorrecte (0 pt)';
             }
 
             const optionsContainer = document.getElementById('correction-options-container');
+            if (!optionsContainer) return;
             optionsContainer.innerHTML = '';
 
-            q.options.forEach((opt, idx) => {
-                const div = document.createElement('div');
-                let optClass = 'correction-option-item';
-                let icon = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            const opts = q._shuffled || q.options || [];
 
-                if (opt.correct) {
-                    optClass += ' opt-correct';
-                    icon = '<span style="color: #10b981; font-weight: 900; font-size: 1.1rem;">✓</span>';
-                } else if (correctionQuestionIdx === 4 && idx === 0) {
-                    optClass += ' opt-student-wrong';
-                    icon = '<span style="color: #ef4444; font-weight: 900; font-size: 1.1rem;">✕</span>';
-                }
-
-                div.className = optClass;
-                div.innerHTML = `
-                    <span><strong>${opt.letter}.</strong> ${opt.text}</span>
-                    ${icon}
+            if (q.type === 'short_answer') {
+                const aiBox = document.createElement('div');
+                aiBox.style.cssText = 'background:var(--bg-sidebar); border:1px solid var(--border-warm); border-radius:12px; padding:0.95rem; display:flex; flex-direction:column; gap:0.5rem;';
+                aiBox.innerHTML = `
+                    <div style="font-size:0.75rem; font-weight:800; color:var(--sage-primary);">VOTRE SOUMISSION :</div>
+                    <div style="font-size:0.88rem; color:var(--text-heading); font-style:italic;">"${chosen || 'Aucune réponse soumise.'}"</div>
+                    <div style="font-size:0.75rem; font-weight:800; color:var(--mint-success); margin-top:0.4rem;">RÉPONSE MODÈLE DE RÉFÉRENCE :</div>
+                    <div style="font-size:0.85rem; color:var(--text-body);">${q.referenceAnswer || 'Un conflit de cache survient lorsque plusieurs blocs de mémoire mappent sur le même ensemble de cache.'}</div>
                 `;
-                optionsContainer.appendChild(div);
-            });
+                optionsContainer.appendChild(aiBox);
+            } else {
+                opts.forEach((opt, idx) => {
+                    const div = document.createElement('div');
+                    const letter = (typeof opt === 'object' && opt.letter) ? opt.letter : letters[idx];
+                    const text = typeof opt === 'string' ? opt : (opt.text || opt.answer_text || opt.title || '');
+                    
+                    const isOptionCorrect = typeof opt === 'object' ? !!opt.correct : (q.correctIndex !== undefined ? q.correctIndex === idx : idx === 1);
+                    const isStudentPick = chosen === idx;
+
+                    let optClass = 'correction-option-item';
+                    let iconBadge = '';
+
+                    if (isOptionCorrect) {
+                        optClass += ' opt-correct';
+                        iconBadge = '<span style="background:var(--mint-success); color:#FFFFFF; font-size:0.65rem; font-weight:800; padding:0.18rem 0.55rem; border-radius:9999px;">✓ BONNE RÉPONSE</span>';
+                    } else if (isStudentPick) {
+                        optClass += ' opt-wrong-picked';
+                        iconBadge = '<span style="background:var(--coral-accent); color:#FFFFFF; font-size:0.65rem; font-weight:800; padding:0.18rem 0.55rem; border-radius:9999px;">✕ VOTRE CHOIX</span>';
+                    }
+
+                    div.className = optClass;
+                    div.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:0.5rem;">
+                            <strong style="color:var(--text-heading);">${letter}.</strong>
+                            <span>${text}</span>
+                        </div>
+                        ${iconBadge}
+                    `;
+                    optionsContainer.appendChild(div);
+                });
+            }
         }
 
         function nextCorrectionQuestion() {
             const questions = activeQuiz ? activeQuiz.questions : sampleQuizData.questions;
             if (correctionQuestionIdx < questions.length - 1) {
                 correctionQuestionIdx++;
+                renderCorrectionNumbers();
                 renderCorrectionQuestion();
             }
         }
@@ -4860,6 +5060,7 @@
         function prevCorrectionQuestion() {
             if (correctionQuestionIdx > 0) {
                 correctionQuestionIdx--;
+                renderCorrectionNumbers();
                 renderCorrectionQuestion();
             }
         }
