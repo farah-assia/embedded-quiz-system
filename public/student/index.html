@@ -917,17 +917,23 @@
             transform: scale(0.98);
         }
 
-        /* SCREEN 5: TODAY'S QUIZ (HOME DASHBOARD) */
+        /* SCREEN 5: TODAY'S QUIZ (HOME DASHBOARD) - WARM NORDIC & PAPER PASTEL */
         .home-scroll-view {
-            padding: 1.25rem 1.25rem 6.5rem;
+            padding: 1.15rem 1.15rem 6.5rem;
             overflow-y: auto;
+            background: var(--bg-canvas, #FAF9F6);
         }
 
         .home-user-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.35rem;
+            margin-bottom: 1.15rem;
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-lg, 16px);
+            padding: 0.85rem 1rem;
+            box-shadow: 0 2px 8px rgba(45, 49, 52, 0.04);
         }
 
         .user-greeting {
@@ -940,138 +946,323 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: var(--navy-primary);
-            border: 2.5px solid var(--gold-primary);
-            color: #ffffff;
+            background: var(--sage-light, #EBF3EE);
+            border: 2px solid var(--sage-border, #C4DEC8);
+            color: var(--sage-primary, #3E6F58);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.05rem;
-            box-shadow: 0 4px 10px rgba(245, 194, 66, 0.25);
+            font-size: 1.1rem;
+            font-family: var(--font-sans, system-ui);
+            box-shadow: 0 2px 6px rgba(62, 111, 88, 0.12);
         }
 
         .user-greeting-meta strong {
             display: block;
-            font-size: 1rem;
-            color: var(--navy-primary);
+            font-size: 0.98rem;
+            color: var(--text-heading, #2D3134);
             font-weight: 800;
+            line-height: 1.25;
         }
 
         .user-greeting-meta span {
-            font-size: 0.76rem;
-            color: var(--text-muted);
+            font-size: 0.75rem;
+            color: var(--text-muted, #7A8086);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.15rem;
         }
 
-        /* Calendar Date Row */
+        .home-bell-btn {
+            position: relative;
+            cursor: pointer;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .home-bell-btn:hover {
+            background: #FFFFFF;
+            border-color: var(--border-hover, #D1CDC4);
+            transform: scale(1.04);
+        }
+
+        .home-bell-btn svg {
+            stroke: var(--text-heading, #2D3134);
+        }
+
+        .home-bell-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            background: var(--coral-accent, #E11D48);
+            border-radius: 50%;
+            border: 1.5px solid #FFFFFF;
+        }
+
+        /* LIVE AMPHITHEATER SESSION RADAR HERO CARD */
+        .amphi-radar-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F4F2ED 100%);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-left: 4px solid var(--sage-primary, #3E6F58);
+            border-radius: var(--radius-lg, 16px);
+            padding: 1.15rem 1.2rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 18px rgba(45, 49, 52, 0.06);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .amphi-radar-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45, 49, 52, 0.1);
+            border-color: var(--sage-border, #C4DEC8);
+        }
+
+        .radar-badge-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.65rem;
+        }
+
+        .radar-live-badge {
+            background: var(--mint-light, #E8F5E9);
+            border: 1px solid var(--mint-border, #A5D6A7);
+            color: var(--mint-success, #2E7D32);
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 0.22rem 0.65rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .radar-pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: #2E7D32;
+            border-radius: 50%;
+            animation: pulseRadar 1.5s infinite;
+        }
+
+        @keyframes pulseRadar {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
+            70% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(46, 125, 50, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        .radar-ap-pill {
+            font-size: 0.72rem;
+            color: var(--text-muted, #7A8086);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .radar-quiz-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-heading, #2D3134);
+            margin-bottom: 0.25rem;
+            line-height: 1.35;
+        }
+
+        .radar-quiz-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted, #7A8086);
+            font-weight: 500;
+            margin-bottom: 0.85rem;
+        }
+
+        .btn-radar-join {
+            width: 100%;
+            background: var(--sage-primary, #3E6F58);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-md, 10px);
+            padding: 0.6rem 1rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(62, 111, 88, 0.25);
+        }
+
+        .btn-radar-join:hover {
+            background: var(--sage-hover, #335c49);
+            transform: translateY(-1px);
+        }
+
+        /* SECTION HEADINGS */
+        .home-section-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-heading, #2D3134);
+            margin: 0.5rem 0 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .home-section-title span.badge-count {
+            font-size: 0.75rem;
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            color: var(--text-muted, #7A8086);
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+            font-weight: 700;
+        }
+
+        /* CALENDAR DATE ROW (PAPER NORDIC) */
         .date-picker-row {
             display: flex;
             justify-content: space-between;
-            gap: 0.4rem;
-            margin-bottom: 1.25rem;
+            gap: 0.45rem;
+            margin-bottom: 1.15rem;
         }
 
         .date-pill {
             flex: 1;
             padding: 0.65rem 0.2rem;
-            border-radius: 12px;
+            border-radius: var(--radius-md, 10px);
             text-align: center;
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 1px 3px rgba(45, 49, 52, 0.03);
         }
 
         .date-pill span {
             display: block;
             font-size: 0.68rem;
-            color: var(--text-muted);
+            color: var(--text-muted, #7A8086);
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .date-pill strong {
             display: block;
-            font-size: 0.95rem;
-            color: var(--navy-primary);
+            font-size: 1rem;
+            color: var(--text-heading, #2D3134);
             font-weight: 800;
             margin-top: 0.15rem;
         }
 
+        .date-pill:hover:not(.active) {
+            background: var(--bg-sidebar, #F4F2ED);
+            border-color: var(--border-hover, #D1CDC4);
+            transform: translateY(-1px);
+        }
+
         .date-pill.active {
-            background: var(--navy-primary);
-            border-color: var(--navy-primary);
-            box-shadow: 0 4px 12px rgba(21, 50, 71, 0.25);
+            background: var(--sage-primary, #3E6F58);
+            border-color: var(--sage-primary, #3E6F58);
+            box-shadow: 0 4px 12px rgba(62, 111, 88, 0.25);
             transform: translateY(-2px);
         }
 
         .date-pill.active span {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.82);
         }
 
         .date-pill.active strong {
-            color: #ffffff;
+            color: #FFFFFF;
         }
 
-        /* Filter Chips */
+        /* FILTER CHIPS ROW */
         .chips-filter-row {
             display: flex;
             gap: 0.45rem;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.15rem;
+            overflow-x: auto;
+            padding-bottom: 0.2rem;
         }
 
         .chip-btn {
-            padding: 0.35rem 0.85rem;
+            padding: 0.38rem 0.85rem;
             border-radius: 9999px;
             font-size: 0.78rem;
             font-weight: 600;
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            color: var(--text-body, #4A5055);
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .chip-btn:hover {
+            background: var(--bg-sidebar, #F4F2ED);
+            border-color: var(--border-hover, #D1CDC4);
         }
 
         .chip-btn.active {
-            background: var(--gold-primary);
-            border-color: var(--gold-primary);
-            color: var(--navy-primary);
-            box-shadow: 0 2px 8px rgba(245, 194, 66, 0.3);
+            background: var(--sage-primary, #3E6F58);
+            border-color: var(--sage-primary, #3E6F58);
+            color: #FFFFFF;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(62, 111, 88, 0.22);
         }
 
-        /* Student Quiz Cards */
+        /* STUDENT QUIZ CARDS (WARM NORDIC & PAPER PASTEL) */
         .quiz-card-student {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 1.25rem;
+            background: #FFFFFF;
+            border-radius: var(--radius-lg, 16px);
+            padding: 1.15rem 1.25rem;
             margin-bottom: 0.95rem;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            box-shadow: 0 2px 10px rgba(45, 49, 52, 0.04);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .quiz-card-student:hover {
-            border-color: #cbd5e1;
+            border-color: var(--border-hover, #D1CDC4);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px -4px rgba(15, 38, 54, 0.1);
+            box-shadow: 0 8px 24px rgba(45, 49, 52, 0.08);
         }
 
         .quiz-card-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.45rem;
+            margin-bottom: 0.55rem;
         }
 
         .quiz-subject-tag {
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 700;
-            color: var(--navy-primary);
+            color: var(--sage-primary, #3E6F58);
+            background: var(--sage-light, #EBF3EE);
+            padding: 0.18rem 0.55rem;
+            border-radius: 6px;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
         }
 
         .status-pill {
@@ -1079,16 +1270,33 @@
             font-weight: 700;
             padding: 0.2rem 0.6rem;
             border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
-        .status-todo { background: rgba(245, 194, 66, 0.2); color: #b45309; }
-        .status-done { background: rgba(16, 185, 129, 0.15); color: #047857; }
-        .status-missed { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+        .status-todo { 
+            background: var(--honey-light, #FFFDF0); 
+            border: 1px solid var(--honey-border, #FDE68A); 
+            color: var(--honey-warning, #D97706); 
+        }
+
+        .status-done { 
+            background: var(--mint-light, #E8F5E9); 
+            border: 1px solid var(--mint-border, #A5D6A7); 
+            color: var(--mint-success, #2E7D32); 
+        }
+
+        .status-missed { 
+            background: var(--coral-light, #FFF5F5); 
+            border: 1px solid var(--coral-border, #FECDD3); 
+            color: var(--coral-accent, #E11D48); 
+        }
 
         .quiz-card-title {
-            font-size: 1.08rem;
+            font-size: 1.05rem;
             font-weight: 800;
-            color: var(--navy-primary);
+            color: var(--text-heading, #2D3134);
             margin-bottom: 0.75rem;
             line-height: 1.35;
         }
@@ -1097,11 +1305,56 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-size: 0.78rem;
+            color: var(--text-muted, #7A8086);
             font-weight: 500;
-            border-top: 1px dashed var(--border-subtle);
+            border-top: 1px dashed var(--border-warm, #E6E3DB);
             padding-top: 0.65rem;
+        }
+
+        .quiz-action-arrow {
+            color: var(--sage-primary, #3E6F58);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: transform 0.15s;
+        }
+
+        .quiz-card-student:hover .quiz-action-arrow {
+            transform: translateX(2px);
+        }
+
+        /* PWA INSTALL CARD IN WARM NORDIC */
+        .pwa-install-banner {
+            background: var(--bg-sidebar, #F4F2ED);
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-md, 10px);
+            padding: 0.65rem 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.15rem;
+        }
+
+        .pwa-btn-install {
+            background: var(--sage-primary, #3E6F58);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-sm, 6px);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pwa-btn-dismiss {
+            background: transparent;
+            border: none;
+            color: var(--text-muted, #7A8086);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
         }
 
         /* SCREEN 6: TAKE QUIZ SCREEN (Live Solving) */
@@ -1532,51 +1785,64 @@
             transform: translateY(-1px);
         }
 
-        /* FLOATING BOTTOM DOCK NAVIGATION */
+        /* FLOATING BOTTOM DOCK NAVIGATION - WARM NORDIC CAPSULE */
         .bottom-nav {
             position: absolute;
-            bottom: 14px;
-            left: 18px;
-            right: 18px;
-            height: 62px;
-            background: var(--navy-primary);
-            border-radius: 28px;
+            bottom: 16px;
+            left: 20px;
+            right: 20px;
+            height: 64px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-warm, #E6E3DB);
+            border-radius: var(--radius-pill, 9999px);
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 0 0.85rem;
-            box-shadow: 0 10px 30px rgba(21, 50, 71, 0.35);
+            box-shadow: 0 12px 32px rgba(45, 49, 52, 0.12);
             z-index: 50;
         }
 
         .nav-btn {
             background: transparent;
             border: none;
-            color: #94a3b8;
+            color: var(--text-muted, #7A8086);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.22rem;
             font-size: 0.72rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-pill, 9999px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .nav-btn svg {
-            width: 22px;
-            height: 22px;
-            stroke: #94a3b8;
-            transition: stroke 0.2s;
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted, #7A8086);
+            transition: stroke 0.2s, transform 0.2s;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-heading, #2D3134);
+        }
+
+        .nav-btn:hover svg {
+            stroke: var(--text-heading, #2D3134);
         }
 
         .nav-btn.active {
-            color: var(--gold-primary);
+            color: var(--sage-primary, #3E6F58);
+            background: var(--sage-light, #EBF3EE);
             font-weight: 800;
         }
 
         .nav-btn.active svg {
-            stroke: var(--gold-primary);
+            stroke: var(--sage-primary, #3E6F58);
+            transform: translateY(-1px);
         }
 
         /* MODAL POPUPS */
@@ -2533,75 +2799,103 @@
             <!-- SCREEN 5: TODAY'S QUIZ (HOME DASHBOARD) -->
             <div id="screen-home" class="screen">
                 <div class="home-scroll-view">
-                    <!-- User Header -->
+                    <!-- User Header in Warm Nordic Style -->
                     <div class="home-user-header">
                         <div class="user-greeting">
                             <div class="student-avatar-ring" id="home-avatar-initials">Y</div>
                             <div class="user-greeting-meta">
-                                <strong>Hello ! <span id="home-student-name">Yasmine Halag</span></strong>
-                                <span id="home-student-class">1CP • Section 1 • G1</span>
+                                <strong>Bonjour 👋, <span id="home-student-name">Yasmine Halag</span></strong>
+                                <span>
+                                    <span style="display:inline-block; width:6px; height:6px; background:#10B981; border-radius:50%;"></span>
+                                    <span id="home-student-class">1CP • Section 1 • G1</span>
+                                </span>
                             </div>
                         </div>
-                        <div style="position: relative; cursor: pointer;" onclick="simulateIncomingQuiz()">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy-primary)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                            <span style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span>
+                        <div class="home-bell-btn" onclick="simulateIncomingQuiz()" title="Simulate Amphi Quiz Broadcast">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            <span class="home-bell-dot"></span>
+                        </div>
+                    </div>
+
+                    <!-- LIVE AMPHITHEATER SESSION RADAR HERO CARD -->
+                    <div class="amphi-radar-card" onclick="joinLiveAmphiQuiz()" title="Click to connect to live amphitheater session">
+                        <div class="radar-badge-row">
+                            <span class="radar-live-badge"><span class="radar-pulse-dot"></span> En Direct · Amphi A</span>
+                            <span class="radar-ap-pill">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                                <span>Raspberry Pi 5 Edge</span>
+                            </span>
+                        </div>
+                        <div class="radar-content">
+                            <div class="radar-title-group">
+                                <h3 class="radar-quiz-title">Architecture des Ordinateurs · Amphi A</h3>
+                                <p class="radar-quiz-sub">Dr. Amina Benali · Session interactive active (PIN: 8842)</p>
+                            </div>
+                            <button type="button" class="btn-radar-join" onclick="event.stopPropagation(); joinLiveAmphiQuiz();">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                Rejoindre l'Amphi en direct
+                            </button>
                         </div>
                     </div>
 
                     <!-- PWA Install Prompt Banner -->
                     <div id="pwa-install-card" class="pwa-install-banner hidden">
-                        <div class="pwa-install-left">
-                            <div class="pwa-install-icon">
-                                <svg width="20" height="20" viewBox="0 0 100 100" fill="none"><path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#f5c242"/></svg>
+                        <div class="pwa-install-left" style="display:flex; align-items:center; gap:0.5rem;">
+                            <div style="background:var(--sage-light); border-radius:6px; padding:0.3rem; display:flex; align-items:center;">
+                                <svg width="18" height="18" viewBox="0 0 100 100" fill="none"><path d="M50 15L90 35L50 55L10 35L50 15Z" fill="#3E6F58"/></svg>
                             </div>
-                            <div class="pwa-install-text">
-                                <h4 style="font-size:0.85rem; font-weight:800; color:var(--navy-primary);">Install κουίζυ App</h4>
-                                <p style="font-size:0.75rem; color:var(--text-muted);">Fast offline access from home screen</p>
+                            <div>
+                                <h4 style="font-size:0.82rem; font-weight:800; color:var(--text-heading); margin:0;">Installer κουίζυ</h4>
+                                <p style="font-size:0.72rem; color:var(--text-muted); margin:0;">Accès hors-ligne instantané PWA</p>
                             </div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:0.4rem;">
-                            <button class="pwa-btn-install" onclick="triggerPwaInstall()">Install</button>
+                        <div style="display:flex; align-items:center; gap:0.35rem;">
+                            <button class="pwa-btn-install" onclick="triggerPwaInstall()">Installer</button>
                             <button class="pwa-btn-dismiss" onclick="dismissPwaBanner()">✕</button>
                         </div>
                     </div>
 
-                    <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 1rem;">Today's Quiz</h2>
+                    <!-- Section Header -->
+                    <div class="home-section-title">
+                        <span>Évaluations & Quiz</span>
+                        <span class="badge-count" id="home-quiz-count">3 disponibles</span>
+                    </div>
 
-                    <!-- Calendar Date Selector -->
+                    <!-- Academic Calendar Date Selector -->
                     <div class="date-picker-row">
                         <div class="date-pill" onclick="selectDate(22, this)">
-                            <span>Mon</span>
+                            <span>Lun</span>
                             <strong>22</strong>
                         </div>
                         <div class="date-pill" onclick="selectDate(23, this)">
-                            <span>Tue</span>
+                            <span>Mar</span>
                             <strong>23</strong>
                         </div>
                         <div class="date-pill active" onclick="selectDate(24, this)">
-                            <span>Wed</span>
+                            <span>Mer</span>
                             <strong>24</strong>
                         </div>
                         <div class="date-pill" onclick="selectDate(25, this)">
-                            <span>Thu</span>
+                            <span>Jeu</span>
                             <strong>25</strong>
                         </div>
                         <div class="date-pill" onclick="selectDate(26, this)">
-                            <span>Fri</span>
+                            <span>Ven</span>
                             <strong>26</strong>
                         </div>
                     </div>
 
                     <!-- Filter Chips -->
                     <div class="chips-filter-row">
-                        <button class="chip-btn active" onclick="filterStudentQuizzes('all', this)">All</button>
-                        <button class="chip-btn" onclick="filterStudentQuizzes('todo', this)">To do</button>
-                        <button class="chip-btn" onclick="filterStudentQuizzes('done', this)">Done</button>
-                        <button class="chip-btn" onclick="filterStudentQuizzes('missed', this)">Missed</button>
+                        <button class="chip-btn active" onclick="filterStudentQuizzes('all', this)">Tous</button>
+                        <button class="chip-btn" onclick="filterStudentQuizzes('todo', this)">À faire</button>
+                        <button class="chip-btn" onclick="filterStudentQuizzes('done', this)">Terminés</button>
+                        <button class="chip-btn" onclick="filterStudentQuizzes('missed', this)">Expirés</button>
                     </div>
 
                     <!-- Quizzes List -->
                     <div id="student-quizzes-list">
-                        <!-- Populated dynamically -->
+                        <!-- Populated dynamically with Warm Nordic cards -->
                     </div>
                 </div>
             </div>
@@ -3687,41 +3981,95 @@
             renderQuizzesList(filter);
         }
 
+        function joinLiveAmphiQuiz() {
+            // Instant 1-tap join to live amphitheater session
+            const stored = localStorage.getItem('student_info');
+            const student = stored ? JSON.parse(stored) : { name: 'Yasmine Halag', email: 'yasmine.halag@univ.dz' };
+            try {
+                socket.emit('quiz:join', {
+                    quizId: 1,
+                    role: 'student',
+                    name: student.name || 'Yasmine Halag',
+                    email: student.email || 'yasmine.halag@univ.dz'
+                });
+            } catch (e) {}
+
+            // Preload amphi question data
+            launchTakeQuiz({
+                id: 1,
+                title: "Amphithéâtre A · Architecture des Ordinateurs",
+                subject: "Architecture des Ordinateurs",
+                questions: [
+                    {
+                        question: "In direct-mapped cache architecture, which address field is used to select the specific cache line / index?",
+                        options: [
+                            "Tag comparison field",
+                            "Cache Set / Line Index field",
+                            "Byte offset within block",
+                            "Virtual Page Number (VPN)"
+                        ],
+                        correctIndex: 1,
+                        type: "single_choice"
+                    },
+                    {
+                        question: "Which cache write policy guarantees that main memory is updated simultaneously on every CPU store?",
+                        options: [
+                            "Write-Through Policy",
+                            "Write-Back with dirty bit",
+                            "Write-Around Allocation",
+                            "Lazy Write Invalidation"
+                        ],
+                        correctIndex: 0,
+                        type: "single_choice"
+                    },
+                    {
+                        question: "Explain what happens during a cache conflict miss in direct-mapped architectures, and why associativity reduces it.",
+                        type: "short_answer",
+                        referenceAnswer: "A conflict miss occurs when multiple memory blocks map to the exact same cache set, repeatedly evicting each other despite free capacity in other lines. Associativity provides alternative ways within each set.",
+                        keyConcepts: ["conflict miss", "same cache set", "associativity", "eviction", "mapping", "ways"]
+                    }
+                ]
+            });
+        }
+
         function renderQuizzesList(filter) {
             const container = document.getElementById('student-quizzes-list');
+            if (!container) return;
             container.innerHTML = '';
 
             const quizzes = [
                 {
                     id: 1,
-                    subject: 'POO - Object Oriented Programming',
-                    title: 'Quiz 01 : Classes and Objects',
+                    subject: 'Architecture & Systèmes',
+                    title: 'Quiz 01 : Hiérarchies Mémoire & Cache Direct-Mapped',
                     status: 'todo',
-                    statusText: 'To do',
+                    statusText: 'À faire',
                     statusClass: 'status-todo',
-                    meta: '⏱ 15 Mins • 5 Questions • Active'
+                    meta: '⏱ 15 min • 3 Questions • Évaluation en cours'
                 },
                 {
                     id: 2,
-                    subject: 'Architecture des Ordinateurs',
-                    title: 'Quiz 02 : Système optique & CPU',
+                    subject: 'Programmation Orientée Objet',
+                    title: 'Quiz 02 : Encapsulation, Polymorphisme & Héritage C++',
                     status: 'done',
-                    statusText: 'Done',
+                    statusText: 'Terminé',
                     statusClass: 'status-done',
-                    meta: 'Score: 17/20 Points • Click to review'
+                    meta: 'Note obtenue : 17.5 / 20 • Revoir la correction'
                 },
                 {
                     id: 3,
-                    subject: 'Anglais Technique 3',
-                    title: 'Quiz 03 : Grammar & Terminology',
+                    subject: 'Anglais Technique & Scientifique',
+                    title: 'Quiz 03 : Technical Lexicon & CS Terminology',
                     status: 'missed',
-                    statusText: 'Missed',
+                    statusText: 'Expiré',
                     statusClass: 'status-missed',
-                    meta: 'Expired yesterday'
+                    meta: 'Session clôturée hier à 17h00'
                 }
             ];
 
             const filtered = filter === 'all' ? quizzes : quizzes.filter(q => q.status === filter);
+            const countEl = document.getElementById('home-quiz-count');
+            if (countEl) countEl.textContent = `${filtered.length} disponible${filtered.length > 1 ? 's' : ''}`;
 
             filtered.forEach(q => {
                 const card = document.createElement('div');
@@ -3732,7 +4080,7 @@
                     } else if (q.status === 'done') {
                         openQuizCorrection();
                     } else {
-                        alert('This quiz evaluation has expired.');
+                        alert('Cette session d\'évaluation est terminée.');
                     }
                 };
                 card.innerHTML = `
@@ -3743,7 +4091,7 @@
                     <h3 class="quiz-card-title">${q.title}</h3>
                     <div class="quiz-card-footer">
                         <span>${q.meta}</span>
-                        <span style="color: var(--navy-primary); font-weight: 700;">${q.status === 'todo' ? 'Start →' : (q.status === 'done' ? 'Review →' : 'Closed')}</span>
+                        <span class="quiz-action-arrow">${q.status === 'todo' ? 'Commencer →' : (q.status === 'done' ? 'Consulter →' : 'Clôturé')}</span>
                     </div>
                 `;
                 container.appendChild(card);
